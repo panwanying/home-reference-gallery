@@ -16,7 +16,7 @@
   const state = {
     data: clone(canonical), dirty: false, view: VIEWS.includes(params.get('view')) ? params.get('view') : 'gallery',
     readOnly: params.get('mode') === 'view', search:'', space:'all', category:'all', material:'all', materialType:'all', preference:'all', favorite:false,
-    selected: params.get('image'), zoom:false, openNotes:new Set(), noteDrafts:new Map(), assetFiles:new Map(), assetUrls:new Map(),
+    selected: params.get('image'), zoom:false, personalNoteOpen:false, openNotes:new Set(), noteDrafts:new Map(), assetFiles:new Map(), assetUrls:new Map(),
     importData:null, editing:null, toastTimer:null,
   };
 
@@ -114,10 +114,6 @@
     return element.category==='材质与肌理' ? state.data.materialTypes.find((type) => type.id===element.materialTypeId) : null;
   }
   function materialGroup(element) {return materialType(element)?.group || '其他／待确认';}
-  function materialDetail(element) {
-    const type=materialType(element);
-    return type ? `<div class="material-common"><span>通用类型 · ${escape(type.group)}</span><p>${escape(type.description)}</p></div><p class="element-description"><span class="field-help">本图表现：</span>${escape(element.appearance)}${element.appearance ? '。' : ''}${escape(element.description)}</p>` : `<p class="element-description">${escape(element.description)}</p>`;
-  }
 
   function saveDraft(message) {
     state.dirty = true;
@@ -197,8 +193,7 @@
   }
   function elementPreview(image,element) {
     return `<article class="element-preview"><button class="mini-image" data-action="detail" data-image="${escape(image.id)}" aria-label="查看${escape(image.filename)}"><img src="${escape(source(image))}" alt="${escape(image.title)}" loading="lazy"></button>
-      <div><p class="filename">${escape(image.filename)}</p><h3>${escape(element.name)}</h3><p class="location">${escape(element.location)}</p>${element.appearance ? `<p class="material-appearance">本图表现：${escape(element.appearance)}</p>` : ''}<p>${escape(element.description)}</p>
-      ${element.note || element.targetSpace ? `<div class="element-note">${element.targetSpace ? `<span>考虑用于：</span>${escape(element.targetSpace)}<br>` : ''}${escape(element.note)}</div>` : ''}
+      <div><p class="filename">${escape(image.filename)}</p><p class="element-category">${escape(element.category)} · ${escape(element.priority)}</p><h3>${escape(element.name)}</h3><p class="location">位置：${escape(element.location)}</p>
       ${preferenceButtons(image,element)}<button class="button quiet small" data-action="detail" data-image="${escape(image.id)}">查看原图与备注 ↗</button></div></article>`;
   }
   function render() {
@@ -258,7 +253,7 @@
       return `<section class="material-group"><h3>${escape(group)}<span>${matches.length} 处参考</span></h3>${typeIds.map((typeId) => {
         const type=state.data.materialTypes.find((item) => item.id===typeId);
         const references=matches.filter((row) => (row.element.materialTypeId || '')===typeId);
-        return `<section class="material-type-section"><div class="material-type-heading"><h4>${escape(type?.name || '未分类材质')}</h4><span>${new Set(references.map((row) => row.image.id)).size} 张图片共用</span>${type && !state.readOnly ? `<button class="button quiet small" data-action="edit-material-type" data-type="${escape(type.id)}">修改通用名称与说明</button>` : ''}</div>${type ? `<p class="shared-material-description">${escape(type.description)}</p>` : ''}<div class="element-grid">${references.map(({image,element}) => elementPreview(image,element)).join('')}</div></section>`;
+        return `<section class="material-type-section"><div class="material-type-heading"><h4>${escape(type?.name || '未分类材质')}</h4><span>${new Set(references.map((row) => row.image.id)).size} 张图片共用</span>${type && !state.readOnly ? `<button class="button quiet small" data-action="edit-material-type" data-type="${escape(type.id)}">修改通用名称与说明</button>` : ''}</div><div class="element-grid">${references.map(({image,element}) => elementPreview(image,element)).join('')}</div></section>`;
       }).join('')}</section>`;
     }).join('');
   }
@@ -299,29 +294,25 @@
       <div class="header-buttons"><button class="button quiet small" data-action="previous" ${index <= 0 ? 'disabled' : ''}>← 上一张</button><button class="button quiet small" data-action="next" ${index < 0 || index >= activeImageIds.length-1 ? 'disabled' : ''}>下一张 →</button><button class="close-button" data-action="close-detail" aria-label="关闭图片分析">×</button></div></header>
       <div class="detail-layout"><div class="detail-photo"><button class="image-stage ${state.zoom ? 'zoomed' : ''}" data-action="zoom" aria-label="${state.zoom ? '缩小图片' : '放大图片'}"><img src="${escape(source(image))}" alt="${escape(image.title)}，${escape(image.filename)}"></button>
       <div class="photo-footer"><span>点击图片放大 / 缩小</span><a href="${escape(source(image))}" target="_blank" rel="noopener" download="${escape(image.filename)}">查看 / 下载原图 ↗</a></div></div>
-      <section class="detail-panel"><h3>${escape(image.title)}</h3><p class="summary">${escape(image.summary)}</p>
+      <section class="detail-panel"><h3>${escape(image.title)}</h3>
       <div class="palette-list">${image.palette.map((color) => `<span class="palette-chip">${escape(color)}</span>`).join('')}</div>
-      <p class="photo-note">风格搜索辅助：${image.styleHints.map(escape).join('、') || '待补充'}；风格名称不等于你的偏好。</p>
-      <div class="detail-section-heading"><h4>逐个选择你在意的元素</h4>${state.readOnly ? '' : `<button class="button quiet small" data-action="edit-image" data-image="${escape(image.id)}">编辑整图说明</button>`}</div>
-      <p class="explain">所有元素默认未标记。每一项的选择和备注分别保存。</p>
-      ${image.elements.map((element,index) => `<article class="element-block" data-pref="${element.preference}" id="element-${escape(element.id)}"><div class="element-top"><div><p class="element-category">${escape(element.category)} · ${escape(element.priority)}</p><h4>${escape(element.name)}</h4></div><span class="element-index">${String(index+1).padStart(2,'0')}</span></div>
-      <p class="element-location">位置：${escape(element.location)}</p>${materialDetail(element)}${element.certainty !== '明确' ? `<p class="certainty">${escape(element.certainty)}</p>` : ''}
+      <div class="detail-section-heading"><h4>设计元素</h4><div class="detail-heading-actions">${!state.readOnly || image.personalNote ? `<button class="button quiet small" data-action="toggle-personal-note">${state.personalNoteOpen ? '收起整图备注' : '整图备注'}</button>` : ''}${state.readOnly ? '' : `<button class="button quiet small" data-action="edit-image" data-image="${escape(image.id)}">编辑整图说明</button>`}</div></div>
+      ${state.personalNoteOpen ? `<div class="personal-note-panel">${state.readOnly ? `<p class="element-note">${escape(image.personalNote)}</p>` : `<label class="sr-only" for="personal-note">这张图的整体备注</label><textarea id="personal-note" class="personal-note" maxlength="6000" placeholder="记录这张图的整体偏好">${escape(image.personalNote)}</textarea><button class="button outline small" data-action="save-personal" data-image="${escape(image.id)}">保存整体备注</button>`}</div>` : ''}
+      ${image.elements.map((element) => `<article class="element-block" data-pref="${element.preference}" id="element-${escape(element.id)}"><div class="element-top"><div><p class="element-category">${escape(element.category)} · ${escape(element.priority)}</p><h4>${escape(element.name)}</h4></div></div>
+      <p class="element-location">位置：${escape(element.location)}</p>
       ${preferenceButtons(image,element)}
-      ${element.note || element.targetSpace ? `<div class="element-note">${element.targetSpace ? `<span>考虑用于：</span>${escape(element.targetSpace)}<br>` : ''}${escape(element.note)}</div>` : ''}
+      ${state.readOnly && (element.note || element.targetSpace) ? `<button class="button quiet small" data-action="toggle-note" data-element="${escape(element.id)}">${state.openNotes.has(element.id) ? '收起备注' : '查看备注 / 使用位置'}</button>` : ''}
+      ${state.readOnly && state.openNotes.has(element.id) && (element.note || element.targetSpace) ? `<div class="element-note">${element.targetSpace ? `<span>考虑用于：</span>${escape(element.targetSpace)}<br>` : ''}${escape(element.note)}</div>` : ''}
       ${state.readOnly ? '' : `<button class="button quiet small" data-action="toggle-note" data-element="${escape(element.id)}">${state.openNotes.has(element.id) ? '收起备注' : '写备注 / 使用位置'}</button><button class="button quiet small" data-action="edit-element" data-image="${escape(image.id)}" data-element="${escape(element.id)}">修改本图分析</button>${materialType(element) ? `<button class="button quiet small" data-action="edit-material-type" data-type="${escape(element.materialTypeId)}">修改通用类型</button>` : ''}`}
       ${noteEditor(image,element)}</article>`).join('') || '<p class="summary">这张图还没有元素分析。可以手动添加，或后续继续分析。</p>'}
       ${state.readOnly ? '' : `<button class="button outline full" data-action="add-element" data-image="${escape(image.id)}">＋ 补充一个设计元素</button>`}
-      ${image.keywords.length ? `<div class="detail-section-heading"><h4>继续找图的关键词</h4></div><div class="detail-keywords">${image.keywords.map((word) => `<span>${escape(word)}</span>`).join('')}</div>` : ''}
-      ${image.questions.length ? `<div class="detail-section-heading"><h4>与设计师讨论</h4></div><ul class="question-list">${image.questions.map((q) => `<li>${escape(q)}</li>`).join('')}</ul>` : ''}
-      <div class="detail-section-heading"><h4>这张图的整体备注</h4></div>${state.readOnly ? `<p class="summary">${escape(image.personalNote) || '尚无整体备注'}</p>` : `<label class="sr-only" for="personal-note">这张图的整体备注</label><textarea id="personal-note" class="personal-note" maxlength="6000" placeholder="例如：喜欢整体配色，只想参考床头和窗帘。">${escape(image.personalNote)}</textarea><button class="button outline small" data-action="save-personal" data-image="${escape(image.id)}">保存整体备注</button>`}
-      ${image.imageNote ? `<p class="photo-note">图片说明：${escape(image.imageNote)}</p>` : ''}
       </section></div>`;
     dialog.querySelector('.detail-panel').scrollTop = previousScroll;
     dialog.querySelector('.detail-layout').scrollTop = previousMobileScroll;
   }
   function openDetail(id) {
     if (!getImage(id)) return;
-    state.selected=id; state.zoom=false; state.openNotes.clear();
+    state.selected=id; state.zoom=false; state.personalNoteOpen=false; state.openNotes.clear();
     renderDetail();
     if (!$('detail-dialog').open) $('detail-dialog').showModal();
     updateAddress();
@@ -467,7 +458,7 @@
     const sheet=document.createElement('section');sheet.className='print-sheet';
     const rows=state.data.images.flatMap((image) => image.elements.filter((element) => element.preference !== 'unmarked').map((element) => ({image,element})));
     sheet.innerHTML=`<h1>家的参考册 · 设计师沟通清单</h1><p>生成日期：${new Date().toLocaleDateString('zh-CN')}　${state.dirty ? '包含当前本机草稿' : '已上传版本'}。仅列出已标记的元素；未标记不等于不喜欢。</p>`+
-      (rows.length ? CATEGORIES.map((category) => {const group=rows.filter((row) => row.element.category===category);return group.length ? `<h2>${category}</h2>${group.map(({image,element}) => `<article class="print-item"><img src="${escape(source(image))}" alt="${escape(image.filename)}"><div><h3>${escape(element.name)} <span class="pref-status">· ${LABELS[element.preference]}</span></h3><p>参考文件：${escape(image.filename)}｜位置：${escape(element.location)}</p>${materialType(element) ? `<p>材质细类：${escape(materialGroup(element))}｜通用说明：${escape(materialType(element).description)}</p><p>本图表现：${escape(element.appearance)}</p>` : ''}<p>${escape(element.description)}</p>${element.targetSpace ? `<p>考虑用于：${escape(element.targetSpace)}</p>` : ''}${element.note ? `<p>我的备注：${escape(element.note)}</p>` : ''}<p>设计师意见：________________________________________________</p></div></article>`).join('')}` : '';}).join('') : '<p>尚未标记偏好。请先在图片分析中选择喜欢、待考虑或不喜欢的元素。</p>');
+      (rows.length ? CATEGORIES.map((category) => {const group=rows.filter((row) => row.element.category===category);return group.length ? `<h2>${category}</h2>${group.map(({image,element}) => `<article class="print-item"><img src="${escape(source(image))}" alt="${escape(image.filename)}"><div><h3>${escape(element.name)} <span class="pref-status">· ${LABELS[element.preference]}</span></h3><p>参考文件：${escape(image.filename)}｜位置：${escape(element.location)}</p><p>分类：${escape(element.category)} · ${escape(element.priority)}</p>${element.targetSpace ? `<p>考虑用于：${escape(element.targetSpace)}</p>` : ''}${element.note ? `<p>我的备注：${escape(element.note)}</p>` : ''}<p>设计师意见：________________________________________________</p></div></article>`).join('')}` : '';}).join('') : '<p>尚未标记偏好。请先在图片分析中选择喜欢、待考虑或不喜欢的元素。</p>');
     document.body.append(sheet);setTimeout(() => window.print(),150);
   }
 
@@ -481,6 +472,7 @@
       case 'close-detail':closeDetail();break;
       case 'previous':case 'next':{const images=matchedImages();const index=images.findIndex((image) => image.id===state.selected);const next=images[index+(action==='next'?1:-1)];if(next)openDetail(next.id);break;}
       case 'zoom':state.zoom=!state.zoom;renderDetail();break;
+      case 'toggle-personal-note':state.personalNoteOpen=!state.personalNoteOpen;renderDetail();break;
       case 'retry-image':{
         const image=getImage(imageId);if(!image)return;
         const wrap=button.closest('.photo-wrap');const element=wrap.querySelector('img');
