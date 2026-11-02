@@ -1,7 +1,7 @@
 window.REFERENCE_DATA = {
   "schemaVersion": 1,
   "collectionId": "home-reference-trial",
-  "revision": "trial-4-initial",
+  "revision": "trial-4-taxonomy-v1",
   "title": "家的参考册",
   "images": [
     {
@@ -25,38 +25,44 @@ window.REFERENCE_DATA = {
         {
           "id": "001-01",
           "category": "材质与肌理",
-          "name": "红棕木色与木纹",
+          "name": "木纹饰面",
           "location": "床架、床头柜、窗边开放柜",
-          "description": "温暖偏红棕的木色贯穿多件家具，木纹可见；实木或木皮需另行确认。",
+          "description": "红棕色贯穿床架、床头柜和窗边柜，木纹可见，整体偏温暖。",
           "certainty": "外观明确，材质待确认",
           "priority": "主要",
           "preference": "unmarked",
           "note": "",
-          "targetSpace": ""
+          "targetSpace": "",
+          "materialTypeId": "wood-grain",
+          "appearance": "红棕木色"
         },
         {
           "id": "001-02",
           "category": "材质与肌理",
-          "name": "浅色粗织软包",
+          "name": "粗织织物",
           "location": "床头靠背",
           "description": "米白织物具有颗粒和粗织视觉质感，形成柔软厚实的床头；织物成分无法确认。",
           "certainty": "外观明确，材质待确认",
           "priority": "主要",
           "preference": "unmarked",
           "note": "",
-          "targetSpace": ""
+          "targetSpace": "",
+          "materialTypeId": "textured-textile",
+          "appearance": "浅色粗织软包"
         },
         {
           "id": "001-03",
           "category": "材质与肌理",
-          "name": "亮银色管状金属",
+          "name": "亮银色金属",
           "location": "床尾及床侧框架",
           "description": "细圆管、连续弯折和反光表面，与厚实的木质床框形成轻重对比；金属及表面处理待确认。",
           "certainty": "外观明确，材质待确认",
           "priority": "次要",
           "preference": "unmarked",
           "note": "",
-          "targetSpace": ""
+          "targetSpace": "",
+          "materialTypeId": "polished-metal",
+          "appearance": "亮银色管状金属"
         },
         {
           "id": "001-04",
@@ -181,50 +187,58 @@ window.REFERENCE_DATA = {
         {
           "id": "002-01",
           "category": "材质与肌理",
-          "name": "蓝绿釉面小规格砖",
+          "name": "釉面砖",
           "location": "淋浴背墙",
           "description": "长方形砖竖向排列，釉面可见起伏反光与色差；有手工感，不代表一定手工制作。",
           "certainty": "外观明确，工艺待确认",
           "priority": "主要",
           "preference": "unmarked",
           "note": "",
-          "targetSpace": ""
+          "targetSpace": "",
+          "materialTypeId": "glazed-tile",
+          "appearance": "蓝绿釉面小规格砖"
         },
         {
           "id": "002-02",
           "category": "材质与肌理",
-          "name": "米色石纹大板块",
+          "name": "石纹饰面",
           "location": "侧墙及地面",
           "description": "浅米色细碎石纹、较大板块和清晰拼缝，与局部小砖对比；天然石材或仿石瓷砖无法确认。",
           "certainty": "外观明确，材质待确认",
           "priority": "主要",
           "preference": "unmarked",
           "note": "",
-          "targetSpace": ""
+          "targetSpace": "",
+          "materialTypeId": "stone-pattern",
+          "appearance": "米色石纹大板块"
         },
         {
           "id": "002-03",
           "category": "材质与肌理",
-          "name": "深木纹浴室柜",
+          "name": "木纹饰面",
           "location": "洗手台下方",
-          "description": "深棕木纹柜体、宽抽屉和开放底层架；实际板材及防潮做法需设计师确认。",
+          "description": "深棕木纹柜体配宽抽屉和开放底层架，在浅色墙地面中形成较重的视觉体量。",
           "certainty": "外观明确，材质待确认",
           "priority": "主要",
           "preference": "unmarked",
           "note": "",
-          "targetSpace": ""
+          "targetSpace": "",
+          "materialTypeId": "wood-grain",
+          "appearance": "深棕木色、醒目木纹"
         },
         {
           "id": "002-04",
           "category": "材质与肌理",
-          "name": "古铜色五金",
+          "name": "古铜色金属",
           "location": "水龙头、花洒、把手、壁灯",
           "description": "偏暗的古铜色统一多个细节；不据此确认黄铜、铜质或具体镀层。",
           "certainty": "外观明确，材质待确认",
           "priority": "主要",
           "preference": "unmarked",
           "note": "",
-          "targetSpace": ""
+          "targetSpace": "",
+          "materialTypeId": "antique-metal",
+          "appearance": "古铜色五金"
         },
         {
           "id": "002-05",
@@ -338,26 +352,30 @@ window.REFERENCE_DATA = {
         {
           "id": "003-01",
           "category": "材质与肌理",
-          "name": "暖木色连续饰面",
+          "name": "木纹饰面",
           "location": "门套、顶部、墙边与柜体",
-          "description": "木色从立面延伸到顶面，产生包裹感；实木、木皮或木纹板材无法凭图确认。",
+          "description": "木色从门套、墙边延伸到顶面，形成连续的包裹感。",
           "certainty": "外观明确，材质待确认",
           "priority": "主要",
           "preference": "unmarked",
           "note": "",
-          "targetSpace": ""
+          "targetSpace": "",
+          "materialTypeId": "wood-grain",
+          "appearance": "偏暖木色、连续铺设"
         },
         {
           "id": "003-02",
           "category": "材质与肌理",
-          "name": "软木留言展示板",
+          "name": "软木板",
           "location": "正对入口的墙面",
           "description": "棕色颗粒板面可钉挂明信片和挂件；图中文字也提到软木板，可作为材质识别依据。",
           "certainty": "明确",
           "priority": "主要",
           "preference": "unmarked",
           "note": "",
-          "targetSpace": ""
+          "targetSpace": "",
+          "materialTypeId": "cork-board",
+          "appearance": "软木留言展示板"
         },
         {
           "id": "003-03",
@@ -410,14 +428,16 @@ window.REFERENCE_DATA = {
         {
           "id": "003-07",
           "category": "材质与肌理",
-          "name": "浅色大板块地面",
+          "name": "浅色板块饰面",
           "location": "玄关地面",
           "description": "浅米色地面拼缝较少，减轻大面积木色的视觉重量；实际地面材料待确认。",
           "certainty": "外观明确，材质待确认",
           "priority": "次要",
           "preference": "unmarked",
           "note": "",
-          "targetSpace": ""
+          "targetSpace": "",
+          "materialTypeId": "light-floor",
+          "appearance": "浅色大板块地面"
         },
         {
           "id": "003-08",
@@ -485,14 +505,16 @@ window.REFERENCE_DATA = {
         {
           "id": "004-01",
           "category": "材质与肌理",
-          "name": "深棕木纹家具",
+          "name": "木纹饰面",
           "location": "斗柜、茶几、小柜与层板",
-          "description": "多件深棕木色家具集中出现，斗柜正面木纹醒目；木种及实木、贴皮做法需另行确认。",
+          "description": "斗柜、茶几、小柜与层板集中使用深棕木色，斗柜正面木纹较醒目。",
           "certainty": "外观明确，材质待确认",
           "priority": "主要",
           "preference": "unmarked",
           "note": "",
-          "targetSpace": ""
+          "targetSpace": "",
+          "materialTypeId": "wood-grain",
+          "appearance": "深棕木色、可见木纹"
         },
         {
           "id": "004-02",
@@ -545,14 +567,16 @@ window.REFERENCE_DATA = {
         {
           "id": "004-06",
           "category": "材质与肌理",
-          "name": "玻璃与细框茶几",
+          "name": "玻璃感饰面",
           "location": "画面右下",
           "description": "深色玻璃感台面配细木框，保留较轻盈的线条；台面材料和着色方式需确认。",
           "certainty": "外观明确，材质待确认",
           "priority": "次要",
           "preference": "unmarked",
           "note": "",
-          "targetSpace": ""
+          "targetSpace": "",
+          "materialTypeId": "glass-surface",
+          "appearance": "玻璃与细框茶几"
         },
         {
           "id": "004-07",
@@ -632,6 +656,66 @@ window.REFERENCE_DATA = {
       "personalNote": "",
       "favorite": false,
       "analysisStatus": "analyzed"
+    }
+  ],
+  "taxonomyVersion": 1,
+  "migrateFromRevisions": [
+    "trial-4-initial"
+  ],
+  "materialTypes": [
+    {
+      "id": "wood-grain",
+      "group": "木质",
+      "name": "木纹饰面",
+      "description": "可见木纹的木质或仿木表面。具体木种，以及实木、木皮或仿木做法，需要结合样品确认。"
+    },
+    {
+      "id": "textured-textile",
+      "group": "织物与软包",
+      "name": "粗织织物",
+      "description": "具有可见编织或颗粒肌理的织物表面。纤维成分与具体面料类型需要另行确认。"
+    },
+    {
+      "id": "polished-metal",
+      "group": "金属",
+      "name": "亮银色金属",
+      "description": "具有反光效果的银色金属外观。基材与镀层、抛光等表面工艺需要另行确认。"
+    },
+    {
+      "id": "glazed-tile",
+      "group": "瓷砖",
+      "name": "釉面砖",
+      "description": "表面具有釉面光泽的砖类饰面。色彩、规格与铺贴方向在每张参考图中分别记录。"
+    },
+    {
+      "id": "stone-pattern",
+      "group": "石质",
+      "name": "石纹饰面",
+      "description": "具有石材纹理的表面。仅凭图片不区分天然石材、仿石瓷砖或其他仿石材料。"
+    },
+    {
+      "id": "antique-metal",
+      "group": "金属",
+      "name": "古铜色金属",
+      "description": "古铜色或做旧铜色的金属外观，不直接等同于铜质或黄铜材质。"
+    },
+    {
+      "id": "cork-board",
+      "group": "墙面",
+      "name": "软木板",
+      "description": "带颗粒肌理、可用于钉挂展示的软木板饰面。记录其展示用途和本图的具体位置。"
+    },
+    {
+      "id": "light-floor",
+      "group": "其他／待确认",
+      "name": "浅色板块饰面",
+      "description": "只能确认浅色板块外观，实际材料尚不明确，暂不归为石材或瓷砖。"
+    },
+    {
+      "id": "glass-surface",
+      "group": "玻璃与镜面",
+      "name": "玻璃感饰面",
+      "description": "具有玻璃感的平整表面。透明度、着色及实际材料需要结合原图细节和样品确认。"
     }
   ]
 };

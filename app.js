@@ -2,17 +2,20 @@
 
 (() => {
   const CATEGORIES = ['材质与肌理','色彩搭配','造型与线条','灯光与氛围','家具与软装','空间与部位'];
+  const MATERIAL_GROUPS = ['石质','木质','瓷砖','墙面','金属','玻璃与镜面','织物与软包','编织','其他／待确认'];
+  const LEGACY_MATERIAL_IDS = {'001-01':'wood-grain','001-02':'textured-textile','001-03':'polished-metal','002-01':'glazed-tile','002-02':'stone-pattern','002-03':'wood-grain','002-04':'antique-metal','003-01':'wood-grain','003-02':'cork-board','003-07':'light-floor','004-01':'wood-grain','004-06':'glass-surface'};
   const LABELS = {unmarked:'未标记',liked:'喜欢',considering:'待考虑',disliked:'不喜欢'};
   const VIEWS = ['gallery','categories','preferences','pending'];
   const $ = (id) => document.getElementById(id);
   const escape = (value) => String(value ?? '').replace(/[&<>"']/g, (char) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
   const clone = (value) => JSON.parse(JSON.stringify(value));
   const canonical = clone(window.REFERENCE_DATA);
+  normalizeTaxonomy(canonical);
   const draftKey = `reference-draft:${canonical.collectionId}`;
   const params = new URLSearchParams(location.search);
   const state = {
     data: clone(canonical), dirty: false, view: VIEWS.includes(params.get('view')) ? params.get('view') : 'gallery',
-    readOnly: params.get('mode') === 'view', search:'', space:'all', category:'all', preference:'all', favorite:false,
+    readOnly: params.get('mode') === 'view', search:'', space:'all', category:'all', material:'all', materialType:'all', preference:'all', favorite:false,
     selected: params.get('image'), zoom:false, openNotes:new Set(), noteDrafts:new Map(), assetFiles:new Map(), assetUrls:new Map(),
     importData:null, editing:null, toastTimer:null,
   };
@@ -59,6 +62,7 @@
       throw new Error('这不是当前参考图库的有效更新文件');
     }
     if (data.images.length > 2000) throw new Error('单个图库最多导入2000张图片');
+    normalizeTaxonomy(data);
     const imageIds = new Set();
     for (const image of data.images) {
       if (!image || typeof image.id !== 'string' || imageIds.has(image.id)) throw new Error('图片编号缺失或重复');
@@ -86,6 +90,33 @@
       image.analysisStatus = image.analysisStatus === 'pending' ? 'pending' : 'analyzed';
     }
     return data;
+  }
+
+  function normalizeTaxonomy(data) {
+    if(!Array.isArray(data.materialTypes)) data.materialTypes=clone(window.REFERENCE_DATA.materialTypes || []);
+    if(data.materialTypes.length>200) throw new Error('通用材质类型最多200种');
+    const ids=new Set();
+    for(const type of data.materialTypes){
+      if(!type || typeof type.id!=='string' || !type.id || type.id.length>100 || ids.has(type.id) || !MATERIAL_GROUPS.includes(type.group) || typeof type.name!=='string' || !type.name.trim() || type.name.length>200 || typeof type.description!=='string' || type.description.length>6000) throw new Error('通用材质类型格式不正确');
+      ids.add(type.id);
+    }
+    for(const image of data.images || []) for(const element of image.elements || []){
+      if(element.category!=='材质与肌理') continue;
+      if(!element.materialTypeId) element.materialTypeId=LEGACY_MATERIAL_IDS[element.id] || '';
+      const type=data.materialTypes.find((item) => item.id===element.materialTypeId);
+      element.appearance=typeof element.appearance==='string' ? element.appearance : String(element.name || '');
+      if(type) element.name=type.name;
+      else element.materialTypeId='';
+    }
+    data.taxonomyVersion=1;
+  }
+  function materialType(element) {
+    return element.category==='材质与肌理' ? state.data.materialTypes.find((type) => type.id===element.materialTypeId) : null;
+  }
+  function materialGroup(element) {return materialType(element)?.group || '其他／待确认';}
+  function materialDetail(element) {
+    const type=materialType(element);
+    return type ? `<div class="material-common"><span>通用类型 · ${escape(type.group)}</span><p>${escape(type.description)}</p></div><p class="element-description"><span class="field-help">本图表现：</span>${escape(element.appearance)}${element.appearance ? '。' : ''}${escape(element.description)}</p>` : `<p class="element-description">${escape(element.description)}</p>`;
   }
 
   function saveDraft(message) {
@@ -120,10 +151,12 @@
   function matchedElements(image) {
     return image.elements.filter((element) => {
       if (state.category !== 'all' && element.category !== state.category) return false;
+      if (state.material !== 'all' && (element.category!=='材质与肌理' || materialGroup(element)!==state.material)) return false;
+      if (state.materialType !== 'all' && element.materialTypeId!==state.materialType) return false;
       if (state.preference !== 'all' && element.preference !== state.preference) return false;
       if (state.view === 'preferences' && element.preference === 'unmarked') return false;
       if (state.search && !imageSearchMatch(image)) {
-        return [element.name,element.location,element.description,element.note,element.targetSpace,element.category]
+        return [element.name,element.appearance,materialType(element)?.description,materialType(element)?.group,element.location,element.description,element.note,element.targetSpace,element.category]
           .join(' ').toLowerCase().includes(state.search.toLowerCase());
       }
       return true;
@@ -135,7 +168,7 @@
       if (state.favorite && !image.favorite) return false;
       if (state.view === 'pending' && image.analysisStatus !== 'pending') return false;
       const elements = matchedElements(image);
-      if (state.view === 'preferences' || state.category !== 'all' || state.preference !== 'all') return elements.length > 0;
+      if (state.view === 'preferences' || state.category !== 'all' || state.preference !== 'all' || state.material!=='all' || state.materialType!=='all') return elements.length > 0;
       if (state.search && !imageSearchMatch(image) && !elements.length) return false;
       return true;
     });
@@ -164,13 +197,14 @@
   }
   function elementPreview(image,element) {
     return `<article class="element-preview"><button class="mini-image" data-action="detail" data-image="${escape(image.id)}" aria-label="查看${escape(image.filename)}"><img src="${escape(source(image))}" alt="${escape(image.title)}" loading="lazy"></button>
-      <div><p class="filename">${escape(image.filename)}</p><h3>${escape(element.name)}</h3><p class="location">${escape(element.location)}</p><p>${escape(element.description)}</p>
+      <div><p class="filename">${escape(image.filename)}</p><h3>${escape(element.name)}</h3><p class="location">${escape(element.location)}</p>${element.appearance ? `<p class="material-appearance">本图表现：${escape(element.appearance)}</p>` : ''}<p>${escape(element.description)}</p>
       ${element.note || element.targetSpace ? `<div class="element-note">${element.targetSpace ? `<span>考虑用于：</span>${escape(element.targetSpace)}<br>` : ''}${escape(element.note)}</div>` : ''}
       ${preferenceButtons(image,element)}<button class="button quiet small" data-action="detail" data-image="${escape(image.id)}">查看原图与备注 ↗</button></div></article>`;
   }
   function render() {
     document.body.classList.toggle('view-only',state.readOnly);
     $('mode-button').textContent = state.readOnly ? '编辑本机草稿' : '切换为查看模式';
+    $('material-type-filter-label').hidden=state.category!=='材质与肌理' && state.material==='all';
     const allElements = state.data.images.flatMap((image) => image.elements);
     $('count-images').textContent = state.data.images.length;
     $('count-elements').textContent = allElements.length;
@@ -206,6 +240,7 @@
       $('content').innerHTML = intro + (rows.length ? CATEGORIES.map((category) => {
         const group = rows.filter((row) => row.element.category === category);
         if (!group.length) return '';
+        if(category==='材质与肌理') return `<section class="category-section"><div class="category-heading"><h2>${category}</h2><span>${group.length} 个参考</span>${state.readOnly ? '' : '<button class="button quiet small" data-action="add-material-type">＋ 新建通用材质类型</button>'}</div>${renderMaterialGroups(group)}</section>`;
         return `<section class="category-section"><div class="category-heading"><h2>${category}</h2><span>${group.length} 个参考</span></div><div class="element-grid">${group.map(({image,element}) => elementPreview(image,element)).join('')}</div></section>`;
       }).join('') : state.view === 'preferences' ? empty('先选几个你喜欢的细节','打开一张参考图，分别标记里面的材质、配色或灯具。','view-gallery','去看参考图') : empty('没有符合条件的元素','试试减少筛选条件。'));
     }
@@ -215,12 +250,31 @@
     });
   }
 
+  function renderMaterialGroups(rows) {
+    return MATERIAL_GROUPS.map((group) => {
+      const matches=rows.filter((row) => materialGroup(row.element)===group);
+      if(!matches.length)return '';
+      const typeIds=[...new Set(matches.map((row) => row.element.materialTypeId || ''))];
+      return `<section class="material-group"><h3>${escape(group)}<span>${matches.length} 处参考</span></h3>${typeIds.map((typeId) => {
+        const type=state.data.materialTypes.find((item) => item.id===typeId);
+        const references=matches.filter((row) => (row.element.materialTypeId || '')===typeId);
+        return `<section class="material-type-section"><div class="material-type-heading"><h4>${escape(type?.name || '未分类材质')}</h4><span>${new Set(references.map((row) => row.image.id)).size} 张图片共用</span>${type && !state.readOnly ? `<button class="button quiet small" data-action="edit-material-type" data-type="${escape(type.id)}">修改通用名称与说明</button>` : ''}</div>${type ? `<p class="shared-material-description">${escape(type.description)}</p>` : ''}<div class="element-grid">${references.map(({image,element}) => elementPreview(image,element)).join('')}</div></section>`;
+      }).join('')}</section>`;
+    }).join('');
+  }
+
   function refreshFilterOptions() {
     $('space-filter').innerHTML = '<option value="all">全部空间</option>' + [...new Set(state.data.images.map((image) => image.space))].map((space) => `<option value="${escape(space)}">${escape(space)}</option>`).join('');
     if (![...$('space-filter').options].some((option) => option.value === state.space)) state.space = 'all';
     $('space-filter').value = state.space;
     $('category-filter').innerHTML = '<option value="all">全部元素</option>' + CATEGORIES.map((category) => `<option value="${category}">${category}</option>`).join('');
     $('category-filter').value = state.category;
+    $('material-filter').innerHTML='<option value="all">全部材质细类</option>'+MATERIAL_GROUPS.map((group) => `<option value="${escape(group)}">${escape(group)}</option>`).join('');
+    $('material-filter').value=state.material;
+    const types=state.data.materialTypes.filter((type) => state.material==='all' || type.group===state.material);
+    $('material-type-filter').innerHTML='<option value="all">全部通用类型</option>'+types.map((type) => `<option value="${escape(type.id)}">${escape(type.name)}</option>`).join('');
+    if(!types.some((type) => type.id===state.materialType))state.materialType='all';
+    $('material-type-filter').value=state.materialType;
     $('preference-filter').value = state.preference;
     $('favorite-filter').checked = state.favorite;
     $('search').value = state.search;
@@ -251,10 +305,10 @@
       <div class="detail-section-heading"><h4>逐个选择你在意的元素</h4>${state.readOnly ? '' : `<button class="button quiet small" data-action="edit-image" data-image="${escape(image.id)}">编辑整图说明</button>`}</div>
       <p class="explain">所有元素默认未标记。每一项的选择和备注分别保存。</p>
       ${image.elements.map((element,index) => `<article class="element-block" data-pref="${element.preference}" id="element-${escape(element.id)}"><div class="element-top"><div><p class="element-category">${escape(element.category)} · ${escape(element.priority)}</p><h4>${escape(element.name)}</h4></div><span class="element-index">${String(index+1).padStart(2,'0')}</span></div>
-      <p class="element-location">位置：${escape(element.location)}</p><p class="element-description">${escape(element.description)}</p>${element.certainty !== '明确' ? `<p class="certainty">${escape(element.certainty)}</p>` : ''}
+      <p class="element-location">位置：${escape(element.location)}</p>${materialDetail(element)}${element.certainty !== '明确' ? `<p class="certainty">${escape(element.certainty)}</p>` : ''}
       ${preferenceButtons(image,element)}
       ${element.note || element.targetSpace ? `<div class="element-note">${element.targetSpace ? `<span>考虑用于：</span>${escape(element.targetSpace)}<br>` : ''}${escape(element.note)}</div>` : ''}
-      ${state.readOnly ? '' : `<button class="button quiet small" data-action="toggle-note" data-element="${escape(element.id)}">${state.openNotes.has(element.id) ? '收起备注' : '写备注 / 使用位置'}</button><button class="button quiet small" data-action="edit-element" data-image="${escape(image.id)}" data-element="${escape(element.id)}">修改分析</button>`}
+      ${state.readOnly ? '' : `<button class="button quiet small" data-action="toggle-note" data-element="${escape(element.id)}">${state.openNotes.has(element.id) ? '收起备注' : '写备注 / 使用位置'}</button><button class="button quiet small" data-action="edit-element" data-image="${escape(image.id)}" data-element="${escape(element.id)}">修改本图分析</button>${materialType(element) ? `<button class="button quiet small" data-action="edit-material-type" data-type="${escape(element.materialTypeId)}">修改通用类型</button>` : ''}`}
       ${noteEditor(image,element)}</article>`).join('') || '<p class="summary">这张图还没有元素分析。可以手动添加，或后续继续分析。</p>'}
       ${state.readOnly ? '' : `<button class="button outline full" data-action="add-element" data-image="${escape(image.id)}">＋ 补充一个设计元素</button>`}
       ${image.keywords.length ? `<div class="detail-section-heading"><h4>继续找图的关键词</h4></div><div class="detail-keywords">${image.keywords.map((word) => `<span>${escape(word)}</span>`).join('')}</div>` : ''}
@@ -287,7 +341,8 @@
     const field=(label,name,value,area=false) => `<label class="field">${label}${area ? `<textarea name="${name}" maxlength="6000">${escape(value)}</textarea>` : `<input name="${name}" value="${escape(value)}" maxlength="200" ${['title','space','name'].includes(name) ? 'required' : ''}>`}</label>`;
     const isElement=adding || element;
     const contents=isElement ?
-      field('元素名称','name',element?.name || '') + `<div class="field-grid"><label class="field">分类<select name="category">${CATEGORIES.map((category) => `<option ${element?.category === category ? 'selected' : ''}>${category}</option>`).join('')}</select></label><label class="field">主次<select name="priority"><option ${element?.priority !== '次要' ? 'selected' : ''}>主要</option><option ${element?.priority === '次要' ? 'selected' : ''}>次要</option></select></label></div>` +
+      field('本图表现 / 其他元素名称','name',element?.appearance || element?.name || '') + `<div class="field-grid"><label class="field">分类<select name="category">${CATEGORIES.map((category) => `<option ${element?.category === category ? 'selected' : ''}>${category}</option>`).join('')}</select></label><label class="field">主次<select name="priority"><option ${element?.priority !== '次要' ? 'selected' : ''}>主要</option><option ${element?.priority === '次要' ? 'selected' : ''}>次要</option></select></label></div>` +
+      `<label class="field">通用材质类型（用于材质与肌理）<select name="materialTypeId"><option value="">未分类 / 暂不确定</option>${MATERIAL_GROUPS.map((group) => {const types=state.data.materialTypes.filter((type) => type.group===group);return types.length ? `<optgroup label="${escape(group)}">${types.map((type) => `<option value="${escape(type.id)}" ${element?.materialTypeId===type.id ? 'selected' : ''}>${escape(type.name)}</option>`).join('')}</optgroup>` : '';}).join('')}</select><span class="field-help">同类材质请选择已有类型。名称与通用说明共用，本图表现和喜好分别记录。</span></label>` +
       field('位于图片中的哪里','location',element?.location || '') + field('具体表现','description',element?.description || '',true) + field('确定程度','certainty',element?.certainty || '待确认') :
       field('图片标题','title',image.title) + field('空间','space',image.space) + field('整体说明','summary',image.summary,true) +
       field('色彩（每行一个）','palette',image.palette.join('\n'),true) + field('风格搜索辅助（每行一个）','styleHints',image.styleHints.join('\n'),true) +
@@ -298,10 +353,23 @@
   }
   function saveEditor(form) {
     if (!state.editing || !form.reportValidity()) return;
-    const fields=new FormData(form); const image=getImage(state.editing.imageId);
+    const fields=new FormData(form);
     const read=(name) => String(fields.get(name) || '').trim();
+    if(state.editing.kind==='material-type'){
+      const values={group:read('group'),name:read('name'),description:read('description')};
+      const duplicate=state.data.materialTypes.some((type) => type.id!==state.editing.typeId && type.group===values.group && type.name===values.name);
+      if(duplicate){toast('这一细类已有同名类型，请直接选用已有类型。');return;}
+      if(state.editing.typeId) Object.assign(state.data.materialTypes.find((type) => type.id===state.editing.typeId),values);
+      else state.data.materialTypes.push({...values,id:`material-${Date.now()}-${Math.random().toString(36).slice(2,7)}`});
+      normalizeTaxonomy(state.data);$('edit-dialog').close();refreshFilterOptions();saveDraft('通用类型已更新，所有引用的图片同步使用；各图喜好保持原样。');return;
+    }
+    const image=getImage(state.editing.imageId);
     if (state.editing.adding || state.editing.elementId) {
       const values={name:read('name'),category:read('category'),priority:read('priority'),location:read('location'),description:read('description'),certainty:read('certainty')};
+      values.materialTypeId=values.category==='材质与肌理' ? read('materialTypeId') : '';
+      values.appearance=values.category==='材质与肌理' ? values.name : '';
+      const type=state.data.materialTypes.find((item) => item.id===values.materialTypeId);
+      if(type)values.name=type.name;
       if (state.editing.adding) image.elements.push({...values,id:`el-${Date.now()}-${Math.random().toString(36).slice(2,7)}`,preference:'unmarked',note:'',targetSpace:''});
       else Object.assign(getElement(image.id,state.editing.elementId),values);
     } else {
@@ -309,6 +377,15 @@
       for (const name of ['palette','styleHints','keywords','questions']) image[name]=read(name).split('\n').map((s) => s.trim()).filter(Boolean);
     }
     $('edit-dialog').close(); refreshFilterOptions(); saveDraft('修改已保存到本机草稿。');
+  }
+
+  function editMaterialType(typeId) {
+    if(state.readOnly)return;
+    const type=state.data.materialTypes.find((item) => item.id===typeId);
+    state.editing={kind:'material-type',typeId};
+    const count=type ? state.data.images.filter((image) => image.elements.some((element) => element.materialTypeId===type.id)).length : 0;
+    $('edit-dialog').innerHTML=`<header class="small-dialog-header"><h2 id="edit-title">${type ? '修改通用材质类型' : '新建通用材质类型'}</h2><button class="close-button" data-action="close-editor" aria-label="关闭编辑">×</button></header><form id="edit-form" class="small-dialog-body"><p>${type ? `这项类型被 ${count} 张图片共用。修改名称和说明，会同步到这些图片；每张图的表现、位置和喜好分别保留。` : '先定义材质的通用名称和说明，再在图片的元素分析中选用。同一种材质无需反复起名。'}</p><label class="field">材质细类<select name="group">${MATERIAL_GROUPS.map((group) => `<option ${type?.group===group ? 'selected' : ''}>${escape(group)}</option>`).join('')}</select></label><label class="field">通用名称<input name="name" value="${escape(type?.name || '')}" maxlength="200" placeholder="例如：木纹饰面、胡桃木纹理" required></label><label class="field">通用说明<textarea name="description" maxlength="6000" placeholder="只写这类材质共有的特征。颜色、位置和本图差异写在逐图分析中。">${escape(type?.description || '')}</textarea></label><p class="field-help">仅凭照片无法确认实际木种时，使用纹理或饰面名称，并标注待确认。</p><div class="dialog-actions"><button type="button" class="button quiet" data-action="close-editor">取消</button><button type="submit" class="button primary">保存通用类型</button></div></form>`;
+    $('edit-dialog').showModal();
   }
 
   function download(blob,filename) {
@@ -382,7 +459,7 @@
     utility('确认导入资料',`<p>将导入 ${incoming.images.length} 张图片的分析与标记，替换当前浏览器的资料草稿。原 Git 仓库不会自动改变。</p><p>如果文件包含新的图片路径，还需要把对应的 assets 图片文件上传到仓库。</p><div class="dialog-actions"><button class="button quiet" data-action="close-utility">取消</button><button class="button primary" data-action="confirm-import">导入并保存为本机草稿</button></div>`);
   }
   function resetFilters(redraw=true) {
-    state.search='';state.space='all';state.category='all';state.preference='all';state.favorite=false;
+    state.search='';state.space='all';state.category='all';state.material='all';state.materialType='all';state.preference='all';state.favorite=false;
     refreshFilterOptions();if(redraw)render();
   }
   function printChecklist() {
@@ -390,13 +467,13 @@
     const sheet=document.createElement('section');sheet.className='print-sheet';
     const rows=state.data.images.flatMap((image) => image.elements.filter((element) => element.preference !== 'unmarked').map((element) => ({image,element})));
     sheet.innerHTML=`<h1>家的参考册 · 设计师沟通清单</h1><p>生成日期：${new Date().toLocaleDateString('zh-CN')}　${state.dirty ? '包含当前本机草稿' : '已上传版本'}。仅列出已标记的元素；未标记不等于不喜欢。</p>`+
-      (rows.length ? CATEGORIES.map((category) => {const group=rows.filter((row) => row.element.category===category);return group.length ? `<h2>${category}</h2>${group.map(({image,element}) => `<article class="print-item"><img src="${escape(source(image))}" alt="${escape(image.filename)}"><div><h3>${escape(element.name)} <span class="pref-status">· ${LABELS[element.preference]}</span></h3><p>参考文件：${escape(image.filename)}｜位置：${escape(element.location)}</p><p>${escape(element.description)}</p>${element.targetSpace ? `<p>考虑用于：${escape(element.targetSpace)}</p>` : ''}${element.note ? `<p>我的备注：${escape(element.note)}</p>` : ''}<p>设计师意见：________________________________________________</p></div></article>`).join('')}` : '';}).join('') : '<p>尚未标记偏好。请先在图片分析中选择喜欢、待考虑或不喜欢的元素。</p>');
+      (rows.length ? CATEGORIES.map((category) => {const group=rows.filter((row) => row.element.category===category);return group.length ? `<h2>${category}</h2>${group.map(({image,element}) => `<article class="print-item"><img src="${escape(source(image))}" alt="${escape(image.filename)}"><div><h3>${escape(element.name)} <span class="pref-status">· ${LABELS[element.preference]}</span></h3><p>参考文件：${escape(image.filename)}｜位置：${escape(element.location)}</p>${materialType(element) ? `<p>材质细类：${escape(materialGroup(element))}｜通用说明：${escape(materialType(element).description)}</p><p>本图表现：${escape(element.appearance)}</p>` : ''}<p>${escape(element.description)}</p>${element.targetSpace ? `<p>考虑用于：${escape(element.targetSpace)}</p>` : ''}${element.note ? `<p>我的备注：${escape(element.note)}</p>` : ''}<p>设计师意见：________________________________________________</p></div></article>`).join('')}` : '';}).join('') : '<p>尚未标记偏好。请先在图片分析中选择喜欢、待考虑或不喜欢的元素。</p>');
     document.body.append(sheet);setTimeout(() => window.print(),150);
   }
 
   async function handleAction(button) {
     const action=button.dataset.action;const imageId=button.dataset.image;const elementId=button.dataset.element;
-    if (['preference','favorite','edit-image','edit-element','add-element','save-note','save-personal','upload','import'].includes(action) && state.readOnly) return;
+    if (['preference','favorite','edit-image','edit-element','add-element','edit-material-type','add-material-type','save-note','save-personal','upload','import'].includes(action) && state.readOnly) return;
     switch(action) {
       case 'view':state.view=button.dataset.view;updateAddress();render();break;
       case 'view-gallery':state.view='gallery';resetFilters();updateAddress();break;
@@ -420,6 +497,8 @@
       case 'edit-image':editor(imageId);break;
       case 'edit-element':editor(imageId,elementId);break;
       case 'add-element':editor(imageId,null,true);break;
+      case 'edit-material-type':editMaterialType(button.dataset.type);break;
+      case 'add-material-type':editMaterialType();break;
       case 'close-editor':$('edit-dialog').close();break;
       case 'close-utility':$('utility-dialog').close();break;
       case 'reset-filters':resetFilters();break;
@@ -465,8 +544,14 @@
     state.noteDrafts.set(key,draft);
   });
   $('search').addEventListener('input',(event) => {state.search=event.target.value.trim();render();});
-  for (const [id,key] of [['space-filter','space'],['category-filter','category'],['preference-filter','preference']]) {
-    $(id).addEventListener('change',(event) => {state[key]=event.target.value;render();});
+  for (const [id,key] of [['space-filter','space'],['category-filter','category'],['preference-filter','preference'],['material-filter','material'],['material-type-filter','materialType']]) {
+    $(id).addEventListener('change',(event) => {
+      state[key]=event.target.value;
+      if(key==='material'){state.materialType='all';if(state.material!=='all')state.category='材质与肌理';}
+      if(key==='materialType' && state.materialType!=='all'){state.category='材质与肌理';state.material=state.data.materialTypes.find((type) => type.id===state.materialType)?.group || 'all';}
+      if(key==='category' && state.category!=='材质与肌理'){state.material='all';state.materialType='all';}
+      refreshFilterOptions();render();
+    });
   }
   $('favorite-filter').addEventListener('change',(event) => {state.favorite=event.target.checked;render();});
   $('detail-dialog').addEventListener('cancel',() => {state.selected=null;updateAddress();});
@@ -481,7 +566,11 @@
     try {
       const raw=localStorage.getItem(draftKey);
       if(raw){const draft=JSON.parse(raw);if(draft.baseRevision===canonical.revision){state.data=validateDataset(draft.data);state.dirty=true;restoreMessage='已恢复本机草稿；上传到 Git 后才会同步给其他人。';}
-      else restoreMessage='已加载 Git 上的新版本；旧版本本机草稿未覆盖新资料。';}
+      else if(canonical.migrateFromRevisions?.includes(draft.baseRevision) && !draft.data.taxonomyVersion){
+        state.data=validateDataset(draft.data);state.data.revision=canonical.revision;state.dirty=true;
+        localStorage.setItem(draftKey,JSON.stringify({baseRevision:canonical.revision,data:state.data}));
+        restoreMessage='原有标记和备注已保留，并升级为通用材质分类。';
+      } else restoreMessage='已加载 Git 上的新版本；旧版本本机草稿未覆盖新资料。';}
     } catch {restoreMessage='本机草稿无法读取，已打开已上传的资料。';}
     for (const image of state.data.images.filter((item) => item._pendingAsset)) {
       try {const file=await readAsset(image.imageUrl);if(file){state.assetFiles.set(image.imageUrl,file);state.assetUrls.set(image.imageUrl,URL.createObjectURL(file));}else restoreMessage=`${image.filename} 的本机图片草稿缺失，请重新添加。`;}
