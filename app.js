@@ -71,6 +71,7 @@
         if (typeof image[key] !== 'string' || image[key].length > 10000) throw new Error('图片资料格式不正确');
       }
       if (!/^assets\/[^/\\?#]+\.(jpe?g|png|webp|gif)$/i.test(image.imageUrl)) throw new Error('图片路径必须位于 assets 文件夹');
+      if (image.thumbnailUrl !== undefined && (typeof image.thumbnailUrl !== 'string' || !/^thumbs\/[^/\\?#]+\.(jpe?g|png|webp)$/i.test(image.thumbnailUrl))) throw new Error('预览图路径必须位于 thumbs 文件夹');
       if (!Array.isArray(image.elements) || image.elements.length > 100) throw new Error('元素数量或格式不正确');
       const elementIds = new Set();
       for (const element of image.elements) {
@@ -128,8 +129,9 @@
     if (message) toast(message);
   }
   function getImage(id) { return state.data.images.find((image) => image.id === id); }
-  function source(image) {
-    return state.assetUrls.get(image.imageUrl) || window.REFERENCE_ASSETS?.[image.imageUrl] || image.imageUrl;
+  function source(image, thumbnail=false) {
+    const path=thumbnail && image.thumbnailUrl ? image.thumbnailUrl : image.imageUrl;
+    return state.assetUrls.get(image.imageUrl) || window.REFERENCE_ASSETS?.[path] || path;
   }
   function getElement(imageId,elementId) { return getImage(imageId)?.elements.find((element) => element.id === elementId); }
   function updateAddress() {
@@ -182,7 +184,7 @@
     const liked = image.elements.filter((element) => element.preference === 'liked').length;
     const tags = [...new Set(image.elements.map((element) => element.name))].slice(0,3);
     return `<article class="image-card"><div class="photo-wrap">
-      <button class="photo-button" data-action="detail" data-image="${escape(image.id)}" aria-label="查看${escape(image.filename)}的分析"><img src="${escape(source(image))}" alt="${escape(image.title)}，原文件${escape(image.filename)}" loading="lazy"></button>
+      <button class="photo-button" data-action="detail" data-image="${escape(image.id)}" aria-label="查看${escape(image.filename)}的分析"><img src="${escape(source(image,true))}" alt="${escape(image.title)}，原文件${escape(image.filename)}" loading="lazy" decoding="async"></button>
       <div class="image-loading"><span>正在读取图片…</span></div>
       <span class="space-label">${escape(image.space)}</span>
       ${state.readOnly ? '' : `<button class="favorite-button ${image.favorite ? 'selected' : ''}" aria-pressed="${image.favorite}" data-action="favorite" data-image="${escape(image.id)}" aria-label="${image.favorite ? '取消收藏' : '收藏'}${escape(image.filename)}">${image.favorite ? '★' : '☆'}</button>`}
@@ -192,7 +194,7 @@
       <div class="card-bottom"><span>${image.analysisStatus === 'pending' ? '待分析' : `${image.elements.length} 个设计元素`}</span><span class="${liked ? 'like-text' : ''}">${liked ? `${liked} 个喜欢` : '尚未选择偏好'}</span></div></div></article>`;
   }
   function elementPreview(image,element) {
-    return `<article class="element-preview"><button class="mini-image" data-action="detail" data-image="${escape(image.id)}" aria-label="查看${escape(image.filename)}"><img src="${escape(source(image))}" alt="${escape(image.title)}" loading="lazy"></button>
+    return `<article class="element-preview"><button class="mini-image" data-action="detail" data-image="${escape(image.id)}" aria-label="查看${escape(image.filename)}"><img src="${escape(source(image,true))}" alt="${escape(image.title)}" loading="lazy" decoding="async"></button>
       <div><p class="filename">${escape(image.filename)}</p><p class="element-category">${escape(element.category)} · ${escape(element.priority)}</p><h3>${escape(element.name)}</h3><p class="location">位置：${escape(element.location)}</p>
       ${preferenceButtons(image,element)}<button class="button quiet small" data-action="detail" data-image="${escape(image.id)}">查看原图与备注 ↗</button></div></article>`;
   }
@@ -226,7 +228,7 @@
       $('result-count').textContent = `显示 ${images.length} / ${state.data.images.length} 张参考图`;
       $('content').innerHTML = images.length ? `<div class="gallery">${images.map(card).join('')}</div>` :
         (state.view === 'pending' && !state.data.images.some((image) => image.analysisStatus === 'pending') ?
-        empty('首批 4 张已完成分析','添加新图片后，会在这里等待补充分析。',state.readOnly ? 'view-gallery' : 'upload',state.readOnly ? '查看全部参考' : '添加参考图') :
+        empty('当前参考图已完成分析','添加新图片后，会在这里等待补充分析。',state.readOnly ? 'view-gallery' : 'upload',state.readOnly ? '查看全部参考' : '添加参考图') :
         empty('没有符合条件的图片','试试减少筛选条件，或换个关键词。'));
     } else {
       const rows = images.flatMap((image) => matchedElements(image).map((element) => ({image,element})));
@@ -478,7 +480,7 @@
         const wrap=button.closest('.photo-wrap');const element=wrap.querySelector('img');
         wrap.classList.remove('image-failed','image-ready');
         wrap.querySelector('.image-loading').innerHTML='<span>正在重新读取图片…</span>';
-        const url=source(image);element.src=url.startsWith('data:')?url:`${url}${url.includes('?')?'&':'?'}retry=${Date.now()}`;
+        const url=source(image,true);element.src=url.startsWith('data:')?url:`${url}${url.includes('?')?'&':'?'}retry=${Date.now()}`;
         break;
       }
       case 'favorite':{const image=getImage(imageId);image.favorite=!image.favorite;saveDraft(image.favorite?'已收藏图片；其中的元素仍需分别选择。':'已取消图片收藏。');break;}
@@ -558,10 +560,21 @@
     try {
       const raw=localStorage.getItem(draftKey);
       if(raw){const draft=JSON.parse(raw);if(draft.baseRevision===canonical.revision){state.data=validateDataset(draft.data);state.dirty=true;restoreMessage='已恢复本机草稿；上传到 Git 后才会同步给其他人。';}
-      else if(canonical.migrateFromRevisions?.includes(draft.baseRevision) && !draft.data.taxonomyVersion){
-        state.data=validateDataset(draft.data);state.data.revision=canonical.revision;state.dirty=true;
+      else if(canonical.migrateFromRevisions?.includes(draft.baseRevision)){
+        const previous=validateDataset(draft.data);
+        const previousImages=new Map(previous.images.map((image) => [image.id,image]));
+        const canonicalIds=new Set(canonical.images.map((image) => image.id));
+        const types=new Map(canonical.materialTypes.map((type) => [type.id,clone(type)]));
+        previous.materialTypes.forEach((type) => types.set(type.id,type));
+        const images=canonical.images.map((image) => {
+          const saved=previousImages.get(image.id);
+          if(!saved) return clone(image);
+          return {...clone(image),...saved, ...(saved.imageUrl===image.imageUrl && !saved.thumbnailUrl ? {thumbnailUrl:image.thumbnailUrl} : {})};
+        });
+        images.push(...previous.images.filter((image) => !canonicalIds.has(image.id)));
+        state.data=validateDataset({...clone(canonical),images,materialTypes:[...types.values()]});state.dirty=true;
         localStorage.setItem(draftKey,JSON.stringify({baseRevision:canonical.revision,data:state.data}));
-        restoreMessage='原有标记和备注已保留，并升级为通用材质分类。';
+        restoreMessage='已补充新版参考图，原有标记、备注和本机新增图片已保留。';
       } else restoreMessage='已加载 Git 上的新版本；旧版本本机草稿未覆盖新资料。';}
     } catch {restoreMessage='本机草稿无法读取，已打开已上传的资料。';}
     for (const image of state.data.images.filter((item) => item._pendingAsset)) {
