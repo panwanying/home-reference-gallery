@@ -101,7 +101,9 @@
     if (message) toast(message);
   }
   function getImage(id) { return state.data.images.find((image) => image.id === id); }
-  function source(image) { return state.assetUrls.get(image.imageUrl) || image.imageUrl; }
+  function source(image) {
+    return state.assetUrls.get(image.imageUrl) || window.REFERENCE_ASSETS?.[image.imageUrl] || image.imageUrl;
+  }
   function getElement(imageId,elementId) { return getImage(imageId)?.elements.find((element) => element.id === elementId); }
   function updateAddress() {
     const url = new URL(location.href);
