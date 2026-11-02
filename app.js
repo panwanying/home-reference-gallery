@@ -154,6 +154,7 @@
     const tags = [...new Set(image.elements.map((element) => element.name))].slice(0,3);
     return `<article class="image-card"><div class="photo-wrap">
       <button class="photo-button" data-action="detail" data-image="${escape(image.id)}" aria-label="查看${escape(image.filename)}的分析"><img src="${escape(source(image))}" alt="${escape(image.title)}，原文件${escape(image.filename)}" loading="lazy"></button>
+      <div class="image-loading"><span>正在读取图片…</span></div>
       <span class="space-label">${escape(image.space)}</span>
       ${state.readOnly ? '' : `<button class="favorite-button ${image.favorite ? 'selected' : ''}" aria-pressed="${image.favorite}" data-action="favorite" data-image="${escape(image.id)}" aria-label="${image.favorite ? '取消收藏' : '收藏'}${escape(image.filename)}">${image.favorite ? '★' : '☆'}</button>`}
       </div><div class="card-body"><p class="filename">${escape(image.filename)}</p>
@@ -209,6 +210,9 @@
       }).join('') : state.view === 'preferences' ? empty('先选几个你喜欢的细节','打开一张参考图，分别标记里面的材质、配色或灯具。','view-gallery','去看参考图') : empty('没有符合条件的元素','试试减少筛选条件。'));
     }
     if ($('detail-dialog').open && state.selected) renderDetail();
+    document.querySelectorAll('.photo-button img').forEach((image) => {
+      if(image.complete && image.naturalWidth>0) image.closest('.photo-wrap').classList.add('image-ready');
+    });
   }
 
   function refreshFilterOptions() {
@@ -400,6 +404,14 @@
       case 'close-detail':closeDetail();break;
       case 'previous':case 'next':{const images=matchedImages();const index=images.findIndex((image) => image.id===state.selected);const next=images[index+(action==='next'?1:-1)];if(next)openDetail(next.id);break;}
       case 'zoom':state.zoom=!state.zoom;renderDetail();break;
+      case 'retry-image':{
+        const image=getImage(imageId);if(!image)return;
+        const wrap=button.closest('.photo-wrap');const element=wrap.querySelector('img');
+        wrap.classList.remove('image-failed','image-ready');
+        wrap.querySelector('.image-loading').innerHTML='<span>正在重新读取图片…</span>';
+        const url=source(image);element.src=url.startsWith('data:')?url:`${url}${url.includes('?')?'&':'?'}retry=${Date.now()}`;
+        break;
+      }
       case 'favorite':{const image=getImage(imageId);image.favorite=!image.favorite;saveDraft(image.favorite?'已收藏图片；其中的元素仍需分别选择。':'已取消图片收藏。');break;}
       case 'preference':{const element=getElement(imageId,elementId);if(!element || !Object.hasOwn(LABELS,button.dataset.preference))return;element.preference=element.preference===button.dataset.preference?'unmarked':button.dataset.preference;saveDraft();break;}
       case 'toggle-note':if(state.openNotes.has(elementId))state.openNotes.delete(elementId);else state.openNotes.add(elementId);renderDetail();break;
@@ -435,6 +447,15 @@
     handleAction(button).catch((error) => toast(error.message || '操作未完成，请重试。'));
   });
   document.addEventListener('submit',(event) => {if(event.target.id==='edit-form'){event.preventDefault();saveEditor(event.target);}});
+  document.addEventListener('load',(event) => {
+    if(event.target.matches?.('.photo-button img')) event.target.closest('.photo-wrap').classList.add('image-ready');
+  },true);
+  document.addEventListener('error',(event) => {
+    if(!event.target.matches?.('.photo-button img'))return;
+    const wrap=event.target.closest('.photo-wrap');const imageId=event.target.closest('.photo-button').dataset.image;
+    wrap.classList.add('image-failed');
+    wrap.querySelector('.image-loading').innerHTML=`<span>图片暂未读取</span><button class="button outline small" data-action="retry-image" data-image="${escape(imageId)}">重新加载图片</button>`;
+  },true);
   document.addEventListener('input',(event) => {
     const elementId=event.target.dataset.noteText || event.target.dataset.noteSpace;
     if(!elementId || !state.selected) return;
