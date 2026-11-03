@@ -229,12 +229,12 @@
       if (button.dataset.view === state.view) button.setAttribute('aria-current','page'); else button.removeAttribute('aria-current');
     });
     const heading = {
-      gallery:['从图片里，找到喜欢的细节。','先看整体，再分别选择材质、配色、造型和灯光。'],
-      categories:['把同一类元素，放在一起看。','同一张图可以属于多个类别；点击缩略图回到完整分析。'],
-      preferences:['留给设计师的，是具体的偏好。','点开图片查看大图、元素位置并调整偏好。'],
-      pending:['新的灵感，先放在这里。','新增图片默认待分析；你可以手动补充，也可以后续交给我继续分析。'],
+      gallery:'全部参考',
+      categories:'元素分类',
+      preferences:'我的偏好',
+      pending:'待分析图片',
     }[state.view];
-    $('page-title').textContent = heading[0]; $('page-description').textContent = heading[1];
+    $('page-title').textContent = heading;
     $('view-notice').hidden = !state.readOnly;
     $('view-notice').textContent = '当前为查看模式。链接展示已上传版本；切换到编辑模式只会修改当前浏览器的草稿。';
     const images = matchedImages();
