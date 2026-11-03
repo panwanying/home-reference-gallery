@@ -205,6 +205,7 @@
   }
   function render() {
     document.body.classList.toggle('view-only',state.readOnly);
+    document.body.classList.toggle('preferences-view',state.view==='preferences');
     $('mode-button').textContent = state.readOnly ? '编辑本机草稿' : '切换为查看模式';
     $('material-type-filter-label').hidden=state.category!=='材质与肌理' && state.material==='all';
     const allElements = state.data.images.flatMap((image) => image.elements);

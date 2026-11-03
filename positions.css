@@ -24,7 +24,33 @@
 .toast.actionable.visible{pointer-events:auto}
 .toast.actionable button{border:1px solid #ffffff80;border-radius:5px;background:transparent;color:white;padding:5px 9px;font-size:12px;white-space:nowrap}
 .toast.actionable button:focus-visible{outline:2px solid white;outline-offset:2px}
+/* Preference cards use more of a wide screen and remain two columns on phones. */
+.preferences-view .element-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+.preferences-view .element-preview{min-width:0}
+.preferences-view .element-preview>div{min-width:0}
+@media(min-width:1200px){
+  .preferences-view .element-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
+@media(max-width:950px){
+  .preferences-view .workspace{grid-template-columns:minmax(0,1fr)}
+  .preferences-view .sidebar{min-width:0}
+}
 @media(max-width:650px){
+  .preferences-view .element-grid{gap:10px}
+  .preferences-view .element-preview{grid-template-columns:minmax(0,1fr);gap:9px;padding:10px;align-content:start}
+  .preferences-view .element-preview .mini-image{width:100%;height:clamp(128px,36vw,190px);background:#edf2f4}
+  .preferences-view .mini-image img{width:100%;height:100%;object-fit:contain}
+  .preferences-view .element-preview .filename{font-size:10px;line-height:1.5;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden}
+  .preferences-view .element-preview .element-category{font-size:10px;line-height:1.5;margin-top:5px}
+  .preferences-view .element-preview h3{font-size:13px;line-height:1.6}
+  .preferences-view .element-preview .location{font-size:11px;line-height:1.6;margin-bottom:7px}
+  .preferences-view .element-preview .pref-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:5px}
+  .preferences-view .element-preview .pref-button{font-size:11px;min-height:34px;padding:5px 2px}
+  .preferences-view .element-preview .button{width:100%;min-height:32px;font-size:11px;padding:5px 0}
+  .preferences-view .element-preview .group-badge{font-size:11px;margin-top:4px}
+  .preferences-view .material-group{padding:10px}
+  .preferences-view .material-type-heading{align-items:center}
+  .preferences-view .material-type-heading>span{font-size:10px}
   .detail-layout{display:flex;flex-direction:column;overflow:hidden}
   .detail-photo{height:42%;flex:0 0 42%;min-height:195px;gap:5px;padding:10px 12px 7px;border-bottom:1px solid var(--line)}
   .detail-panel{flex:1;min-height:0;overflow:auto;overscroll-behavior:contain;padding-top:16px}
