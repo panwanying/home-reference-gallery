@@ -74,6 +74,7 @@
       }
       if (!/^assets\/[^/\\?#]+\.(jpe?g|png|webp|gif)$/i.test(image.imageUrl)) throw new Error('图片路径必须位于 assets 文件夹');
       if (image.thumbnailUrl !== undefined && (typeof image.thumbnailUrl !== 'string' || !/^thumbs\/[^/\\?#]+\.(jpe?g|png|webp)$/i.test(image.thumbnailUrl))) throw new Error('预览图路径必须位于 thumbs 文件夹');
+      if(image.batch!==undefined && (typeof image.batch!=='string' || image.batch.length>200)) throw new Error('图片批次格式不正确');
       if (!Array.isArray(image.elements) || image.elements.length > 100) throw new Error('元素数量或格式不正确');
       const elementIds = new Set();
       for (const element of image.elements) {
@@ -145,16 +146,16 @@
     if (state.selected && state.activeElement) url.searchParams.set('element',state.activeElement);
     if (state.selected && state.detailPreference) url.searchParams.set('detailPref',state.detailPreference);
     if (state.selected && state.detailSequence?.[state.detailCursor]) url.searchParams.set('entry',state.detailSequence[state.detailCursor].elementId);
+    if(state.search)url.searchParams.set('q',state.search);
     if(state.view==='preferences'){
       for(const key of ['space','category','material','materialType','preference']) if(state[key]!=='all')url.searchParams.set(key,state[key]);
-      if(state.search)url.searchParams.set('q',state.search);
       if(state.favorite)url.searchParams.set('favorite','1');
     }
     if (state.readOnly) url.searchParams.set('mode','view');
     history.replaceState(null,'',url);
   }
   function imageSearchMatch(image) {
-    return [image.filename,image.title,image.space,image.summary,image.personalNote,...image.palette,...image.styleHints]
+    return [image.filename,image.title,image.space,image.summary,image.batch,image.personalNote,...image.palette,...image.styleHints]
       .join(' ').toLowerCase().includes(state.search.toLowerCase());
   }
   function matchedElements(image) {
