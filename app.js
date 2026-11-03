@@ -16,15 +16,16 @@
   const state = {
     data: clone(canonical), dirty: false, view: VIEWS.includes(params.get('view')) ? params.get('view') : 'gallery',
     readOnly: params.get('mode') === 'view', search:'', space:'all', category:'all', material:'all', materialType:'all', preference:'all', favorite:false,
-    selected: params.get('image'), activeElement:params.get('element'), zoom:false, personalNoteOpen:false, openNotes:new Set(), noteDrafts:new Map(), assetFiles:new Map(), assetUrls:new Map(),
-    importData:null, editing:null, toastTimer:null,
+    selected: params.get('image'), activeElement:params.get('element'), detailPreference:Object.hasOwn(LABELS,params.get('detailPref')) && params.get('detailPref')!=='unmarked' ? params.get('detailPref') : null, zoom:false, personalNoteOpen:false, openNotes:new Set(), noteDrafts:new Map(), assetFiles:new Map(), assetUrls:new Map(),
+    importData:null, editing:null, lastDeletion:null, toastTimer:null,
   };
 
-  function toast(message) {
-    $('toast').textContent = message;
+  function toast(message,action=null) {
+    $('toast').innerHTML = `${escape(message)}${action ? `<button data-action="${escape(action)}">撤销删除</button>` : ''}`;
+    $('toast').classList.toggle('actionable',!!action);
     $('toast').classList.add('visible');
     clearTimeout(state.toastTimer);
-    state.toastTimer = setTimeout(() => $('toast').classList.remove('visible'), 5200);
+    state.toastTimer = setTimeout(() => $('toast').classList.remove('visible'), action ? 20000 : 5200);
   }
 
   function assetDatabase() {
@@ -62,6 +63,7 @@
       throw new Error('这不是当前参考图库的有效更新文件');
     }
     if (data.images.length > 2000) throw new Error('单个图库最多导入2000张图片');
+    if(data.deletedImageIds!==undefined && (!Array.isArray(data.deletedImageIds) || data.deletedImageIds.length>20000 || data.deletedImageIds.some((id) => typeof id!=='string' || !id || id.length>200))) throw new Error('已删除图片记录格式不正确');
     normalizeTaxonomy(data);
     const imageIds = new Set();
     for (const image of data.images) {
@@ -90,6 +92,7 @@
       image.favorite = image.favorite === true;
       image.analysisStatus = image.analysisStatus === 'pending' ? 'pending' : 'analyzed';
     }
+    if(data.deletedImageIds?.some((id) => imageIds.has(id))) throw new Error('图片同时存在于图库和已删除记录中');
     return data;
   }
 
@@ -136,10 +139,11 @@
   function getElement(imageId,elementId) { return getImage(imageId)?.elements.find((element) => element.id === elementId); }
   function updateAddress() {
     const url = new URL(location.href);
-    for (const key of ['view','image','element','mode']) url.searchParams.delete(key);
+    for (const key of ['view','image','element','detailPref','mode']) url.searchParams.delete(key);
     if (state.view !== 'gallery') url.searchParams.set('view',state.view);
     if (state.selected) url.searchParams.set('image',state.selected);
     if (state.selected && state.activeElement) url.searchParams.set('element',state.activeElement);
+    if (state.selected && state.detailPreference) url.searchParams.set('detailPref',state.detailPreference);
     if (state.readOnly) url.searchParams.set('mode','view');
     history.replaceState(null,'',url);
   }
@@ -319,9 +323,13 @@
   }
   const imageStageObserver=new ResizeObserver(() => syncImageStage());
   function locateElement(elementId) {
-    if(!getElement(state.selected,elementId))return;
+    const element=getElement(state.selected,elementId);
+    if(!element || (state.detailPreference && element.preference!==state.detailPreference))return;
     state.activeElement=state.activeElement===elementId ? null : elementId;
     renderDetail(true);updateAddress();
+  }
+  function detailImages() {
+    return matchedImages().filter((image) => !state.detailPreference || image.elements.some((element) => element.preference===state.detailPreference));
   }
   function renderDetail(focusPosition=false) {
     const image = getImage(state.selected);
@@ -329,32 +337,34 @@
     const dialog = $('detail-dialog');
     const previousScroll = dialog.querySelector('.detail-panel')?.scrollTop || 0;
     const previousMobileScroll = dialog.querySelector('.detail-layout')?.scrollTop || 0;
-    const activeImageIds = matchedImages().map((item) => item.id);
+    const elements=image.elements.filter((element) => !state.detailPreference || element.preference===state.detailPreference);
+    if(state.activeElement && !elements.some((element) => element.id===state.activeElement)){state.activeElement=null;updateAddress();}
+    const activeImageIds = detailImages().map((item) => item.id);
     const index = activeImageIds.indexOf(image.id);
-    const selectedElement=image.elements.find((element) => element.id===state.activeElement);
+    const selectedElement=elements.find((element) => element.id===state.activeElement);
     const selectedPosition=selectedElement && positionFor(image,selectedElement);
     const positionSummary=selectedElement ? `${escape(selectedElement.name)} · ${selectedPosition?.scene ? '整体范围' : selectedPosition?.points ? `${selectedPosition.points.length} 处位置` : '暂未标注位置'}` : '点选元素，查看图中位置';
     const oldStage=dialog.querySelector('.image-stage');
     const stageScroll={left:oldStage?.scrollLeft || 0,top:oldStage?.scrollTop || 0};
     const focusedLocate=document.activeElement?.closest?.('[data-action="locate-element"]')?.dataset.element;
     imageStageObserver.disconnect();
-    dialog.innerHTML = `<header class="detail-header"><div><h2 id="detail-title">${escape(image.filename)}</h2><small>${escape(image.space)} · ${image.elements.length} 个设计元素</small></div>
+    dialog.innerHTML = `<header class="detail-header"><div><h2 id="detail-title">${escape(image.filename)}</h2><small>${escape(image.space)} · ${elements.length} 个${state.detailPreference ? LABELS[state.detailPreference] : '设计'}元素</small></div>
       <div class="header-buttons"><button class="button quiet small" data-action="previous" ${index <= 0 ? 'disabled' : ''}>← 上一张</button><button class="button quiet small" data-action="next" ${index < 0 || index >= activeImageIds.length-1 ? 'disabled' : ''}>下一张 →</button><button class="close-button" data-action="close-detail" aria-label="关闭图片分析">×</button></div></header>
       <div class="detail-layout"><div class="detail-photo"><div class="image-stage ${state.zoom ? 'zoomed' : ''}"><button class="image-canvas" data-action="zoom" aria-label="${state.zoom ? '缩小图片' : '放大图片'}"><img src="${escape(source(image))}" alt="${escape(image.title)}，${escape(image.filename)}"><span class="position-overlay" aria-hidden="true">${positionOverlay(image,selectedElement)}</span></button></div>
       <div class="position-status" role="status"><span>${positionSummary}</span>${selectedElement ? '<button class="button quiet small" data-action="clear-position">清除选择</button>' : ''}</div>
       <div class="photo-footer"><span>点击图片放大 / 缩小</span><a href="${escape(source(image))}" target="_blank" rel="noopener" download="${escape(image.filename)}">查看 / 下载原图 ↗</a></div></div>
       <section class="detail-panel"><h3>${escape(image.title)}</h3>
       <div class="palette-list">${image.palette.map((color) => `<span class="palette-chip">${escape(color)}</span>`).join('')}</div>
-      <div class="detail-section-heading"><h4>设计元素</h4><div class="detail-heading-actions">${!state.readOnly || image.personalNote ? `<button class="button quiet small" data-action="toggle-personal-note">${state.personalNoteOpen ? '收起整图备注' : '整图备注'}</button>` : ''}${state.readOnly ? '' : `<button class="button quiet small" data-action="edit-image" data-image="${escape(image.id)}">编辑整图说明</button>`}</div></div>
+      <div class="detail-section-heading"><h4>${state.detailPreference ? `${LABELS[state.detailPreference]}的元素` : '设计元素'}</h4><div class="detail-heading-actions">${!state.readOnly || image.personalNote ? `<button class="button quiet small" data-action="toggle-personal-note">${state.personalNoteOpen ? '收起整图备注' : '整图备注'}</button>` : ''}${state.readOnly ? '' : `<button class="button quiet small" data-action="edit-image" data-image="${escape(image.id)}">编辑整图说明</button><button class="button quiet small danger-text" data-action="delete-image" data-image="${escape(image.id)}">删除图片</button>`}</div></div>
       ${state.personalNoteOpen ? `<div class="personal-note-panel">${state.readOnly ? `<p class="element-note">${escape(image.personalNote)}</p>` : `<label class="sr-only" for="personal-note">这张图的整体备注</label><textarea id="personal-note" class="personal-note" maxlength="6000" placeholder="记录这张图的整体偏好">${escape(image.personalNote)}</textarea><button class="button outline small" data-action="save-personal" data-image="${escape(image.id)}">保存整体备注</button>`}</div>` : ''}
-      ${image.elements.map((element) => `<article class="element-block ${state.activeElement===element.id ? 'position-selected' : ''}" data-select-element="${escape(element.id)}" data-pref="${element.preference}" id="element-${escape(element.id)}"><div class="element-top"><div><p class="element-category">${escape(element.category)} · ${escape(element.priority)}</p><h4>${escape(element.name)}</h4></div><button class="locate-button" data-action="locate-element" data-element="${escape(element.id)}" aria-pressed="${state.activeElement===element.id}" aria-label="在图片上定位${escape(element.name)}">${state.activeElement===element.id ? '已定位' : '定位'}</button></div>
+      ${elements.map((element) => `<article class="element-block ${state.activeElement===element.id ? 'position-selected' : ''}" data-select-element="${escape(element.id)}" data-pref="${element.preference}" id="element-${escape(element.id)}"><div class="element-top"><div><p class="element-category">${escape(element.category)} · ${escape(element.priority)}</p><h4>${escape(element.name)}</h4></div><button class="locate-button" data-action="locate-element" data-element="${escape(element.id)}" aria-pressed="${state.activeElement===element.id}" aria-label="在图片上定位${escape(element.name)}">${state.activeElement===element.id ? '已定位' : '定位'}</button></div>
       <p class="element-location">位置：${escape(element.location)}</p>
       ${preferenceButtons(image,element)}
       ${state.readOnly && (element.note || element.targetSpace) ? `<button class="button quiet small" data-action="toggle-note" data-element="${escape(element.id)}">${state.openNotes.has(element.id) ? '收起备注' : '查看备注 / 使用位置'}</button>` : ''}
       ${state.readOnly && state.openNotes.has(element.id) && (element.note || element.targetSpace) ? `<div class="element-note">${element.targetSpace ? `<span>考虑用于：</span>${escape(element.targetSpace)}<br>` : ''}${escape(element.note)}</div>` : ''}
       ${state.readOnly ? '' : `<button class="button quiet small" data-action="toggle-note" data-element="${escape(element.id)}">${state.openNotes.has(element.id) ? '收起备注' : '写备注 / 使用位置'}</button><button class="button quiet small" data-action="edit-element" data-image="${escape(image.id)}" data-element="${escape(element.id)}">修改本图分析</button>${materialType(element) ? `<button class="button quiet small" data-action="edit-material-type" data-type="${escape(element.materialTypeId)}">修改通用类型</button>` : ''}`}
-      ${noteEditor(image,element)}</article>`).join('') || '<p class="summary">这张图还没有元素分析。可以手动添加，或后续继续分析。</p>'}
-      ${state.readOnly ? '' : `<button class="button outline full" data-action="add-element" data-image="${escape(image.id)}">＋ 补充一个设计元素</button>`}
+      ${noteEditor(image,element)}</article>`).join('') || (state.detailPreference ? `<p class="summary">这张图目前没有标记为“${LABELS[state.detailPreference]}”的元素。</p>` : '<p class="summary">这张图还没有元素分析。可以手动添加，或后续继续分析。</p>')}
+      ${state.readOnly || state.detailPreference ? '' : `<button class="button outline full" data-action="add-element" data-image="${escape(image.id)}">＋ 补充一个设计元素</button>`}
       </section></div>`;
     dialog.querySelector('.detail-panel').scrollTop = previousScroll;
     dialog.querySelector('.detail-layout').scrollTop = previousMobileScroll;
@@ -362,19 +372,47 @@
     imageStageObserver.observe(dialog.querySelector('.image-stage'));
     requestAnimationFrame(() => {syncImageStage(focusPosition);const stage=dialog.querySelector('.image-stage');if(stage && !focusPosition)stage.scrollTo(stageScroll);});
   }
-  function openDetail(id,elementId=null) {
+  function openDetail(id,elementId=null,preferenceScope=undefined) {
     if (!getImage(id)) return;
+    const clickedElement=getElement(id,elementId);
+    let scope=preferenceScope;
+    if(scope===undefined) scope=state.view==='preferences' ? (state.preference!=='all' ? state.preference : clickedElement?.preference) : null;
+    state.detailPreference=Object.hasOwn(LABELS,scope) && scope!=='unmarked' ? scope : null;
     state.selected=id; state.activeElement=getElement(id,elementId)?.id || null; state.zoom=false; state.personalNoteOpen=false; state.openNotes.clear();
     renderDetail();
     if (!$('detail-dialog').open) $('detail-dialog').showModal();
     updateAddress();
   }
   function closeDetail() {
-    $('detail-dialog').close();imageStageObserver.disconnect();state.selected=null;state.activeElement=null;state.zoom=false;updateAddress();
+    $('detail-dialog').close();imageStageObserver.disconnect();state.selected=null;state.activeElement=null;state.detailPreference=null;state.zoom=false;updateAddress();
   }
   function utility(title,body) {
     $('utility-dialog').innerHTML = `<header class="small-dialog-header"><h2 id="utility-title">${escape(title)}</h2><button class="close-button" data-action="close-utility" aria-label="关闭">×</button></header><div class="small-dialog-body">${body}</div>`;
     if (!$('utility-dialog').open) $('utility-dialog').showModal();
+  }
+  function confirmImageDeletion(imageId) {
+    if(state.readOnly)return;
+    const image=getImage(imageId);if(!image)return;
+    const marked=image.elements.filter((element) => element.preference!=='unmarked').length;
+    utility('删除这张参考图？',`<p><strong>${escape(image.filename)}</strong></p><p>这张图及其 ${image.elements.length} 个元素会从图库中移除${marked ? `，其中包含 ${marked} 个已标记元素` : ''}。删除后可立即撤销。</p><p>删除先保存到本机草稿；导出更新并上传后，分享网页才会同步。</p><div class="dialog-actions"><button class="button quiet" data-action="close-utility">取消</button><button class="button danger-button" data-action="confirm-delete-image" data-image="${escape(imageId)}">删除图片</button></div>`);
+  }
+  function deleteImage(imageId) {
+    if(state.readOnly)return;
+    const index=state.data.images.findIndex((image) => image.id===imageId);if(index<0)return;
+    const [image]=state.data.images.splice(index,1);
+    state.lastDeletion={image,index};
+    state.data.deletedImageIds=[...new Set([...(state.data.deletedImageIds || []),imageId])];
+    $('utility-dialog').close();if(state.selected===imageId)closeDetail();
+    refreshFilterOptions();saveDraft();toast(`已删除 ${image.filename}，尚未上传。`,'undo-delete-image');
+  }
+  function undoImageDeletion() {
+    if(state.readOnly || !state.lastDeletion)return;
+    const {image,index}=state.lastDeletion;
+    if(state.data.images.some((item) => item.id===image.id || item.imageUrl===image.imageUrl)){toast('同名图片已存在，未恢复重复图片。');return;}
+    state.data.images.splice(Math.min(index,state.data.images.length),0,image);
+    state.data.deletedImageIds=(state.data.deletedImageIds || []).filter((id) => id!==image.id);
+    if(!state.data.deletedImageIds.length)delete state.data.deletedImageIds;
+    state.lastDeletion=null;$('utility-dialog').close();refreshFilterOptions();saveDraft('已恢复图片及其原有标记和备注。');
   }
   function editor(imageId,elementId,adding=false) {
     if (state.readOnly) return;
@@ -463,7 +501,7 @@
   }
   function showExport() {
     const pending=state.data.images.filter((image) => image._pendingAsset).length;
-    utility('导出更新，上传到 Git',`<p>这里的标记和备注先保存在本机。把导出文件上传至仓库，网页更新后，其他电脑和设计师才能看到。</p>
+    utility('导出更新，上传到 Git',`<p>这里的标记、备注和图片删除先保存在本机。把导出文件上传至仓库，网页更新后，其他电脑和设计师才能看到。</p>${state.lastDeletion ? '<button class="button outline small" data-action="undo-delete-image">撤销最近一次删除</button>' : ''}
       <button class="export-option" data-action="export-data" ${pending ? 'disabled' : ''}><strong>只导出更新文件 · data.js</strong><span>${pending ? `有 ${pending} 张新图片，请使用下面的更新包` : '适合只修改偏好、备注或分析；上传到仓库根目录替换同名文件。'}</span></button>
       <button class="export-option" data-action="export-zip"><strong>导出更新包 · ZIP</strong><span>包含 data.js${pending ? ` 和 ${pending} 张新增图片` : '，本次没有新增图片'}。解压后按原目录上传，保留已有文件。</span></button>
       <button class="export-option" data-action="export-json"><strong>另存一份资料备份 · JSON</strong><span>可在其他电脑导入标记；不包含图片本身。</span></button><p class="field-help" style="margin-top:18px">下载成功不等于已经上传。网页显示“本机草稿”时，线上版本尚未改变。</p>`);
@@ -516,15 +554,18 @@
 
   async function handleAction(button) {
     const action=button.dataset.action;const imageId=button.dataset.image;const elementId=button.dataset.element;
-    if (['preference','favorite','edit-image','edit-element','add-element','edit-material-type','add-material-type','save-note','save-personal','upload','import'].includes(action) && state.readOnly) return;
+    if (['preference','favorite','edit-image','edit-element','add-element','edit-material-type','add-material-type','save-note','save-personal','upload','import','delete-image','confirm-delete-image','undo-delete-image'].includes(action) && state.readOnly) return;
     switch(action) {
       case 'view':state.view=button.dataset.view;updateAddress();render();break;
       case 'view-gallery':state.view='gallery';resetFilters();updateAddress();break;
       case 'detail':openDetail(imageId,elementId);break;
+      case 'delete-image':confirmImageDeletion(imageId);break;
+      case 'confirm-delete-image':deleteImage(imageId);break;
+      case 'undo-delete-image':undoImageDeletion();break;
       case 'locate-element':locateElement(elementId);break;
       case 'clear-position':state.activeElement=null;renderDetail();updateAddress();break;
       case 'close-detail':closeDetail();break;
-      case 'previous':case 'next':{const images=matchedImages();const index=images.findIndex((image) => image.id===state.selected);const next=images[index+(action==='next'?1:-1)];if(next)openDetail(next.id);break;}
+      case 'previous':case 'next':{const images=detailImages();const index=images.findIndex((image) => image.id===state.selected);const next=images[index+(action==='next'?1:-1)];if(next)openDetail(next.id,null,state.detailPreference);break;}
       case 'zoom':state.zoom=!state.zoom;renderDetail(true);break;
       case 'toggle-personal-note':state.personalNoteOpen=!state.personalNoteOpen;renderDetail();break;
       case 'retry-image':{
@@ -550,7 +591,7 @@
       case 'reset-filters':resetFilters();break;
       case 'upload':$('image-input').click();break;
       case 'import':$('data-input').click();break;
-      case 'confirm-import':state.data=state.importData;state.importData=null;state.selected=null;$('detail-dialog').close();$('utility-dialog').close();refreshFilterOptions();saveDraft('资料已导入本机；图片需要另行上传。');updateAddress();break;
+      case 'confirm-import':state.data=state.importData;state.importData=null;state.lastDeletion=null;closeDetail();$('utility-dialog').close();refreshFilterOptions();saveDraft('资料已导入本机；图片需要另行上传。');updateAddress();break;
       case 'export':showExport();break;
       case 'export-data':if(state.data.images.some((image) => image._pendingAsset))return;download(new Blob([dataScript(exportedData())],{type:'text/javascript;charset=utf-8'}),'data.js');toast('data.js 已导出。请上传到仓库根目录替换同名文件。');break;
       case 'export-json':download(new Blob([JSON.stringify(exportedData(),null,2)],{type:'application/json'}),'装修参考册-资料备份.json');toast('资料备份已导出；此文件不包含图片。');break;
@@ -605,7 +646,7 @@
     });
   }
   $('favorite-filter').addEventListener('change',(event) => {state.favorite=event.target.checked;render();});
-  $('detail-dialog').addEventListener('cancel',() => {imageStageObserver.disconnect();state.selected=null;state.activeElement=null;updateAddress();});
+  $('detail-dialog').addEventListener('cancel',() => {imageStageObserver.disconnect();state.selected=null;state.activeElement=null;state.detailPreference=null;updateAddress();});
   $('image-input').addEventListener('change',(event) => {addImages([...event.target.files]).catch((error) => toast(error.message));event.target.value='';});
   $('data-input').addEventListener('change',(event) => {const file=event.target.files[0];if(file)importData(file).catch((error) => toast(error instanceof SyntaxError?'文件无法解析，请选择导出的 JSON 或 data.js。':error.message));event.target.value='';});
   window.addEventListener('beforeunload',(event) => {
@@ -621,15 +662,16 @@
         const previous=validateDataset(draft.data);
         const previousImages=new Map(previous.images.map((image) => [image.id,image]));
         const canonicalIds=new Set(canonical.images.map((image) => image.id));
+        const deletedIds=new Set([...(canonical.deletedImageIds || []),...(previous.deletedImageIds || [])]);
         const types=new Map(canonical.materialTypes.map((type) => [type.id,clone(type)]));
         previous.materialTypes.forEach((type) => types.set(type.id,type));
-        const images=canonical.images.map((image) => {
+        const images=canonical.images.filter((image) => !deletedIds.has(image.id)).map((image) => {
           const saved=previousImages.get(image.id);
           if(!saved) return clone(image);
           return {...clone(image),...saved, ...(saved.imageUrl===image.imageUrl && !saved.thumbnailUrl ? {thumbnailUrl:image.thumbnailUrl} : {})};
         });
-        images.push(...previous.images.filter((image) => !canonicalIds.has(image.id)));
-        state.data=validateDataset({...clone(canonical),images,materialTypes:[...types.values()]});state.dirty=true;
+        images.push(...previous.images.filter((image) => !canonicalIds.has(image.id) && !deletedIds.has(image.id)));
+        state.data=validateDataset({...clone(canonical),images,materialTypes:[...types.values()],...(deletedIds.size ? {deletedImageIds:[...deletedIds]} : {})});state.dirty=true;
         localStorage.setItem(draftKey,JSON.stringify({baseRevision:canonical.revision,data:state.data}));
         restoreMessage='已补充新版参考图，原有标记、备注和本机新增图片已保留。';
       } else restoreMessage='已加载 Git 上的新版本；旧版本本机草稿未覆盖新资料。';}
@@ -639,7 +681,7 @@
       catch {restoreMessage='本机新增图片暂时无法读取，请检查浏览器存储权限。';}
     }
     refreshFilterOptions();render();
-    if(state.selected && getImage(state.selected))openDetail(state.selected,state.activeElement);
+    if(state.selected && getImage(state.selected))openDetail(state.selected,state.activeElement,state.detailPreference || undefined);
     if(restoreMessage)toast(restoreMessage);
   }
   init().catch((error) => { $('content').innerHTML=empty('图库未能正常加载','请刷新页面或检查 data.js 文件。');toast(error.message); });

@@ -17,6 +17,13 @@
 .locate-button{border:1px solid #c2d4e6;border-radius:5px;background:white;color:#315f70;font-size:11px;line-height:1.5;padding:5px 9px;flex-shrink:0}
 .locate-button:hover,.locate-button[aria-pressed=true]{background:#126bcb;color:white;border-color:#126bcb}
 .locate-button:focus-visible{outline:2px solid #126bcb;outline-offset:3px}
+.danger-text{color:var(--red)}
+.danger-button{background:#a33c49;color:white;border:1px solid #a33c49}
+.danger-button:hover{background:#862d39}
+.toast.actionable{display:flex;align-items:center;gap:12px}
+.toast.actionable.visible{pointer-events:auto}
+.toast.actionable button{border:1px solid #ffffff80;border-radius:5px;background:transparent;color:white;padding:5px 9px;font-size:12px;white-space:nowrap}
+.toast.actionable button:focus-visible{outline:2px solid white;outline-offset:2px}
 @media(max-width:650px){
   .detail-layout{display:flex;flex-direction:column;overflow:hidden}
   .detail-photo{height:42%;flex:0 0 42%;min-height:195px;gap:5px;padding:10px 12px 7px;border-bottom:1px solid var(--line)}
