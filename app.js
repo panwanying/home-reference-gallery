@@ -15,9 +15,9 @@
   const params = new URLSearchParams(location.search);
   const state = {
     data: clone(canonical), dirty: false, view: VIEWS.includes(params.get('view')) ? params.get('view') : 'gallery',
-    readOnly: params.get('mode') === 'view', search:'', space:'all', category:'all', material:'all', materialType:'all', preference:'all', favorite:false,
+    readOnly: params.get('mode') === 'view', search:params.get('q') || '', space:params.get('space') || 'all', category:CATEGORIES.includes(params.get('category')) ? params.get('category') : 'all', material:MATERIAL_GROUPS.includes(params.get('material')) ? params.get('material') : 'all', materialType:params.get('materialType') || 'all', preference:Object.hasOwn(LABELS,params.get('preference')) ? params.get('preference') : 'all', favorite:params.get('favorite')==='1',
     selected: params.get('image'), activeElement:params.get('element'), detailPreference:Object.hasOwn(LABELS,params.get('detailPref')) && params.get('detailPref')!=='unmarked' ? params.get('detailPref') : null, zoom:false, personalNoteOpen:false, openNotes:new Set(), noteDrafts:new Map(), assetFiles:new Map(), assetUrls:new Map(),
-    importData:null, editing:null, lastDeletion:null, toastTimer:null,
+    importData:null, editing:null, lastDeletion:null, detailSequence:null, detailCursor:-1, toastTimer:null,
   };
 
   function toast(message,action=null) {
@@ -139,11 +139,17 @@
   function getElement(imageId,elementId) { return getImage(imageId)?.elements.find((element) => element.id === elementId); }
   function updateAddress() {
     const url = new URL(location.href);
-    for (const key of ['view','image','element','detailPref','mode']) url.searchParams.delete(key);
+    for (const key of ['view','image','element','entry','detailPref','mode','q','space','category','material','materialType','preference','favorite']) url.searchParams.delete(key);
     if (state.view !== 'gallery') url.searchParams.set('view',state.view);
     if (state.selected) url.searchParams.set('image',state.selected);
     if (state.selected && state.activeElement) url.searchParams.set('element',state.activeElement);
     if (state.selected && state.detailPreference) url.searchParams.set('detailPref',state.detailPreference);
+    if (state.selected && state.detailSequence?.[state.detailCursor]) url.searchParams.set('entry',state.detailSequence[state.detailCursor].elementId);
+    if(state.view==='preferences'){
+      for(const key of ['space','category','material','materialType','preference']) if(state[key]!=='all')url.searchParams.set(key,state[key]);
+      if(state.search)url.searchParams.set('q',state.search);
+      if(state.favorite)url.searchParams.set('favorite','1');
+    }
     if (state.readOnly) url.searchParams.set('mode','view');
     history.replaceState(null,'',url);
   }
@@ -199,6 +205,7 @@
       <div class="card-bottom"><span>${image.analysisStatus === 'pending' ? '待分析' : `${image.elements.length} 个设计元素`}</span><span class="${liked ? 'like-text' : ''}">${liked ? `${liked} 个喜欢` : '尚未选择偏好'}</span></div></div></article>`;
   }
   function elementPreview(image,element) {
+    if(state.view==='preferences') return `<article class="element-preview preference-card"><button class="mini-image preference-photo" data-action="detail" data-image="${escape(image.id)}" data-element="${escape(element.id)}" aria-label="查看${escape(element.name)}的大图"><img src="${escape(source(image,true))}" alt="${escape(element.name)}，${escape(image.title)}" loading="lazy" decoding="async"></button><div class="preference-caption"><h3><button class="preference-name" data-action="detail" data-image="${escape(image.id)}" data-element="${escape(element.id)}">${escape(element.name)}</button></h3><span class="group-badge pref-${element.preference}">${LABELS[element.preference]}</span></div></article>`;
     return `<article class="element-preview"><button class="mini-image" data-action="detail" data-image="${escape(image.id)}" data-element="${escape(element.id)}" aria-label="查看${escape(image.filename)}中${escape(element.name)}的位置"><img src="${escape(source(image,true))}" alt="${escape(image.title)}" loading="lazy" decoding="async"></button>
       <div><p class="filename">${escape(image.filename)}</p><p class="element-category">${escape(element.category)} · ${escape(element.priority)}</p><h3>${escape(element.name)}</h3><p class="location">位置：${escape(element.location)}</p>
       ${preferenceButtons(image,element)}<button class="button quiet small" data-action="detail" data-image="${escape(image.id)}" data-element="${escape(element.id)}">查看原图与位置 ↗</button></div></article>`;
@@ -223,7 +230,7 @@
     const heading = {
       gallery:['从图片里，找到喜欢的细节。','先看整体，再分别选择材质、配色、造型和灯光。'],
       categories:['把同一类元素，放在一起看。','同一张图可以属于多个类别；点击缩略图回到完整分析。'],
-      preferences:['留给设计师的，是具体的偏好。','只汇总你标记过的元素，并保留原图、位置与个人备注。'],
+      preferences:['留给设计师的，是具体的偏好。','点开图片查看大图、元素位置并调整偏好。'],
       pending:['新的灵感，先放在这里。','新增图片默认待分析；你可以手动补充，也可以后续交给我继续分析。'],
     }[state.view];
     $('page-title').textContent = heading[0]; $('page-description').textContent = heading[1];
@@ -239,11 +246,11 @@
     } else {
       const rows = images.flatMap((image) => matchedElements(image).map((element) => ({image,element})));
       $('result-count').textContent = `显示 ${rows.length} 个元素 · 来自 ${images.length} 张参考图`;
-      const intro = state.view === 'preferences' ? `<div class="preference-intro"><strong>喜欢 ${allElements.filter((e) => e.preference === 'liked').length}</strong>　待考虑 ${allElements.filter((e) => e.preference === 'considering').length}　不喜欢 ${allElements.filter((e) => e.preference === 'disliked').length}<br><span class="field-help">图片中出现的其他元素，仍保持未标记；收藏图片与选择元素分别记录。</span></div>` : '';
+      const intro = state.view === 'preferences' ? `<div class="preference-intro"><strong>喜欢 ${allElements.filter((e) => e.preference === 'liked').length}</strong>　待考虑 ${allElements.filter((e) => e.preference === 'considering').length}　不喜欢 ${allElements.filter((e) => e.preference === 'disliked').length}</div>` : '';
       $('content').innerHTML = intro + (rows.length ? CATEGORIES.map((category) => {
         const group = rows.filter((row) => row.element.category === category);
         if (!group.length) return '';
-        if(category==='材质与肌理') return `<section class="category-section"><div class="category-heading"><h2>${category}</h2><span>${group.length} 个参考</span>${state.readOnly ? '' : '<button class="button quiet small" data-action="add-material-type">＋ 新建通用材质类型</button>'}</div>${renderMaterialGroups(group)}</section>`;
+        if(category==='材质与肌理') return `<section class="category-section"><div class="category-heading"><h2>${category}</h2><span>${group.length} 个参考</span>${state.readOnly || state.view==='preferences' ? '' : '<button class="button quiet small" data-action="add-material-type">＋ 新建通用材质类型</button>'}</div>${renderMaterialGroups(group)}</section>`;
         return `<section class="category-section"><div class="category-heading"><h2>${category}</h2><span>${group.length} 个参考</span></div><div class="element-grid">${group.map(({image,element}) => elementPreview(image,element)).join('')}</div></section>`;
       }).join('') : state.view === 'preferences' ? empty('先选几个你喜欢的细节','打开一张参考图，分别标记里面的材质、配色或灯具。','view-gallery','去看参考图') : empty('没有符合条件的元素','试试减少筛选条件。'));
     }
@@ -261,7 +268,7 @@
       return `<section class="material-group"><h3>${escape(group)}<span>${matches.length} 处参考</span></h3>${typeIds.map((typeId) => {
         const type=state.data.materialTypes.find((item) => item.id===typeId);
         const references=matches.filter((row) => (row.element.materialTypeId || '')===typeId);
-        return `<section class="material-type-section"><div class="material-type-heading"><h4>${escape(type?.name || '未分类材质')}</h4><span>${new Set(references.map((row) => row.image.id)).size} 张图片共用</span>${type && !state.readOnly ? `<button class="button quiet small" data-action="edit-material-type" data-type="${escape(type.id)}">修改通用名称与说明</button>` : ''}</div><div class="element-grid">${references.map(({image,element}) => elementPreview(image,element)).join('')}</div></section>`;
+        return `<section class="material-type-section"><div class="material-type-heading"><h4>${escape(type?.name || '未分类材质')}</h4><span>${new Set(references.map((row) => row.image.id)).size} 张图片共用</span>${type && !state.readOnly && state.view!=='preferences' ? `<button class="button quiet small" data-action="edit-material-type" data-type="${escape(type.id)}">修改通用名称与说明</button>` : ''}</div><div class="element-grid">${references.map(({image,element}) => elementPreview(image,element)).join('')}</div></section>`;
       }).join('')}</section>`;
     }).join('');
   }
@@ -329,8 +336,26 @@
     state.activeElement=state.activeElement===elementId ? null : elementId;
     renderDetail(true);updateAddress();
   }
-  function detailImages() {
-    return matchedImages().filter((image) => !state.detailPreference || image.elements.some((element) => element.preference===state.detailPreference));
+  function preferenceEntries() {
+    return [...$('content').querySelectorAll('.preference-photo')].map((button) => ({imageId:button.dataset.image,elementId:button.dataset.element}));
+  }
+  function detailNavigation() {
+    if(state.detailSequence){
+      const find=(direction) => {
+        if(state.detailCursor<0)return null;
+        for(let index=state.detailCursor+direction;index>=0 && index<state.detailSequence.length;index+=direction){
+          const entry=state.detailSequence[index];const image=getImage(entry.imageId);
+          const element=image && (state.space==='all' || image.space===state.space) && (!state.favorite || image.favorite) && matchedElements(image).find((item) => item.id===entry.elementId);
+          if(element)return {...entry,preference:element.preference};
+        }
+        return null;
+      };
+      return {previous:find(-1),next:find(1)};
+    }
+    const images=matchedImages().filter((image) => !state.detailPreference || image.elements.some((element) => element.preference===state.detailPreference));
+    const index=images.findIndex((image) => image.id===state.selected);
+    const entry=(image) => image ? {imageId:image.id,elementId:null,preference:state.detailPreference} : null;
+    return {previous:index>0 ? entry(images[index-1]) : null,next:index>=0 ? entry(images[index+1]) : null};
   }
   function renderDetail(focusPosition=false) {
     const image = getImage(state.selected);
@@ -340,8 +365,7 @@
     const previousMobileScroll = dialog.querySelector('.detail-layout')?.scrollTop || 0;
     const elements=image.elements.filter((element) => !state.detailPreference || element.preference===state.detailPreference);
     if(state.activeElement && !elements.some((element) => element.id===state.activeElement)){state.activeElement=null;updateAddress();}
-    const activeImageIds = detailImages().map((item) => item.id);
-    const index = activeImageIds.indexOf(image.id);
+    const navigation=detailNavigation();
     const selectedElement=elements.find((element) => element.id===state.activeElement);
     const selectedPosition=selectedElement && positionFor(image,selectedElement);
     const positionSummary=selectedElement ? `${escape(selectedElement.name)} · ${selectedPosition?.scene ? '整体范围' : selectedPosition?.points ? `${selectedPosition.points.length} 处位置` : '暂未标注位置'}` : '点选元素，查看图中位置';
@@ -350,7 +374,7 @@
     const focusedLocate=document.activeElement?.closest?.('[data-action="locate-element"]')?.dataset.element;
     imageStageObserver.disconnect();
     dialog.innerHTML = `<header class="detail-header"><div><h2 id="detail-title">${escape(image.filename)}</h2><small>${escape(image.space)} · ${elements.length} 个${state.detailPreference ? LABELS[state.detailPreference] : '设计'}元素</small></div>
-      <div class="header-buttons"><button class="button quiet small" data-action="previous" ${index <= 0 ? 'disabled' : ''}>← 上一张</button><button class="button quiet small" data-action="next" ${index < 0 || index >= activeImageIds.length-1 ? 'disabled' : ''}>下一张 →</button><button class="close-button" data-action="close-detail" aria-label="关闭图片分析">×</button></div></header>
+      <div class="header-buttons"><button class="button quiet small" data-action="previous" ${navigation.previous ? '' : 'disabled'}>← 上一张</button><button class="button quiet small" data-action="next" ${navigation.next ? '' : 'disabled'}>下一张 →</button><button class="close-button" data-action="close-detail" aria-label="关闭图片分析">×</button></div></header>
       <div class="detail-layout"><div class="detail-photo"><div class="image-stage ${state.zoom ? 'zoomed' : ''}"><button class="image-canvas" data-action="zoom" aria-label="${state.zoom ? '缩小图片' : '放大图片'}"><img src="${escape(source(image))}" alt="${escape(image.title)}，${escape(image.filename)}"><span class="position-overlay" aria-hidden="true">${positionOverlay(image,selectedElement)}</span></button></div>
       <div class="position-status" role="status"><span>${positionSummary}</span>${selectedElement ? '<button class="button quiet small" data-action="clear-position">清除选择</button>' : ''}</div>
       <div class="photo-footer"><span>点击图片放大 / 缩小</span><a href="${escape(source(image))}" target="_blank" rel="noopener" download="${escape(image.filename)}">查看 / 下载原图 ↗</a></div></div>
@@ -373,19 +397,28 @@
     imageStageObserver.observe(dialog.querySelector('.image-stage'));
     requestAnimationFrame(() => {syncImageStage(focusPosition);const stage=dialog.querySelector('.image-stage');if(stage && !focusPosition)stage.scrollTo(stageScroll);});
   }
-  function openDetail(id,elementId=null,preferenceScope=undefined) {
+  function openDetail(id,elementId=null,preferenceScope=undefined,entryId=elementId) {
     if (!getImage(id)) return;
     const clickedElement=getElement(id,elementId);
     let scope=preferenceScope;
     if(scope===undefined) scope=state.view==='preferences' ? (state.preference!=='all' ? state.preference : clickedElement?.preference) : null;
     state.detailPreference=Object.hasOwn(LABELS,scope) && scope!=='unmarked' ? scope : null;
+    if(state.view==='preferences'){
+      if(!state.detailSequence)state.detailSequence=preferenceEntries();
+      let cursor=state.detailSequence.findIndex((entry) => entry.imageId===id && entry.elementId===entryId);
+      if(cursor<0)cursor=state.detailSequence.findIndex((entry) => entry.imageId===id && (!state.detailPreference || getElement(id,entry.elementId)?.preference===state.detailPreference));
+      state.detailCursor=cursor;
+    } else {state.detailSequence=null;state.detailCursor=-1;}
     state.selected=id; state.activeElement=getElement(id,elementId)?.id || null; state.zoom=false; state.personalNoteOpen=false; state.openNotes.clear();
     renderDetail();
     if (!$('detail-dialog').open) $('detail-dialog').showModal();
+    const panel=$('detail-dialog').querySelector('.detail-panel');
+    const block=state.activeElement && $('detail-dialog').querySelector(`#element-${CSS.escape(state.activeElement)}`);
+    if(block){const bounds=block.getBoundingClientRect();const viewport=panel.getBoundingClientRect();if(bounds.top<viewport.top || bounds.bottom>viewport.bottom)panel.scrollTop+=bounds.top-viewport.top-12;}
     updateAddress();
   }
   function closeDetail() {
-    $('detail-dialog').close();imageStageObserver.disconnect();state.selected=null;state.activeElement=null;state.detailPreference=null;state.zoom=false;updateAddress();
+    $('detail-dialog').close();imageStageObserver.disconnect();state.selected=null;state.activeElement=null;state.detailPreference=null;state.detailSequence=null;state.detailCursor=-1;state.zoom=false;updateAddress();
   }
   function utility(title,body) {
     $('utility-dialog').innerHTML = `<header class="small-dialog-header"><h2 id="utility-title">${escape(title)}</h2><button class="close-button" data-action="close-utility" aria-label="关闭">×</button></header><div class="small-dialog-body">${body}</div>`;
@@ -542,7 +575,7 @@
   }
   function resetFilters(redraw=true) {
     state.search='';state.space='all';state.category='all';state.material='all';state.materialType='all';state.preference='all';state.favorite=false;
-    refreshFilterOptions();if(redraw)render();
+    refreshFilterOptions();if(redraw)render();if(state.view==='preferences')updateAddress();
   }
   function printChecklist() {
     document.querySelector('.print-sheet')?.remove();
@@ -566,7 +599,7 @@
       case 'locate-element':locateElement(elementId);break;
       case 'clear-position':state.activeElement=null;renderDetail();updateAddress();break;
       case 'close-detail':closeDetail();break;
-      case 'previous':case 'next':{const images=detailImages();const index=images.findIndex((image) => image.id===state.selected);const next=images[index+(action==='next'?1:-1)];if(next)openDetail(next.id,null,state.detailPreference);break;}
+      case 'previous':case 'next':{const entry=detailNavigation()[action];if(entry)openDetail(entry.imageId,entry.elementId,entry.preference);break;}
       case 'zoom':state.zoom=!state.zoom;renderDetail(true);break;
       case 'toggle-personal-note':state.personalNoteOpen=!state.personalNoteOpen;renderDetail();break;
       case 'retry-image':{
@@ -636,18 +669,18 @@
     if(event.target.dataset.noteText) draft.note=event.target.value; else draft.targetSpace=event.target.value;
     state.noteDrafts.set(key,draft);
   });
-  $('search').addEventListener('input',(event) => {state.search=event.target.value.trim();render();});
+  $('search').addEventListener('input',(event) => {state.search=event.target.value.trim();render();if(state.view==='preferences')updateAddress();});
   for (const [id,key] of [['space-filter','space'],['category-filter','category'],['preference-filter','preference'],['material-filter','material'],['material-type-filter','materialType']]) {
     $(id).addEventListener('change',(event) => {
       state[key]=event.target.value;
       if(key==='material'){state.materialType='all';if(state.material!=='all')state.category='材质与肌理';}
       if(key==='materialType' && state.materialType!=='all'){state.category='材质与肌理';state.material=state.data.materialTypes.find((type) => type.id===state.materialType)?.group || 'all';}
       if(key==='category' && state.category!=='材质与肌理'){state.material='all';state.materialType='all';}
-      refreshFilterOptions();render();
+      refreshFilterOptions();render();if(state.view==='preferences')updateAddress();
     });
   }
-  $('favorite-filter').addEventListener('change',(event) => {state.favorite=event.target.checked;render();});
-  $('detail-dialog').addEventListener('cancel',() => {imageStageObserver.disconnect();state.selected=null;state.activeElement=null;state.detailPreference=null;updateAddress();});
+  $('favorite-filter').addEventListener('change',(event) => {state.favorite=event.target.checked;render();if(state.view==='preferences')updateAddress();});
+  $('detail-dialog').addEventListener('cancel',() => {imageStageObserver.disconnect();state.selected=null;state.activeElement=null;state.detailPreference=null;state.detailSequence=null;state.detailCursor=-1;updateAddress();});
   $('image-input').addEventListener('change',(event) => {addImages([...event.target.files]).catch((error) => toast(error.message));event.target.value='';});
   $('data-input').addEventListener('change',(event) => {const file=event.target.files[0];if(file)importData(file).catch((error) => toast(error instanceof SyntaxError?'文件无法解析，请选择导出的 JSON 或 data.js。':error.message));event.target.value='';});
   window.addEventListener('beforeunload',(event) => {
@@ -682,7 +715,7 @@
       catch {restoreMessage='本机新增图片暂时无法读取，请检查浏览器存储权限。';}
     }
     refreshFilterOptions();render();
-    if(state.selected && getImage(state.selected))openDetail(state.selected,state.activeElement,state.detailPreference || undefined);
+    if(state.selected && getImage(state.selected))openDetail(state.selected,state.activeElement,state.detailPreference || undefined,params.get('entry') || state.activeElement);
     if(restoreMessage)toast(restoreMessage);
   }
   init().catch((error) => { $('content').innerHTML=empty('图库未能正常加载','请刷新页面或检查 data.js 文件。');toast(error.message); });

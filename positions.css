@@ -28,6 +28,15 @@
 .preferences-view .element-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
 .preferences-view .element-preview{min-width:0}
 .preferences-view .element-preview>div{min-width:0}
+.preferences-view .preference-card{display:flex;flex-direction:column;gap:0;padding:0;overflow:hidden}
+.preferences-view .preference-card .preference-photo{display:block;width:100%;padding:0;height:auto;border-radius:0;background:#e9edef}
+.preferences-view .preference-photo img{width:100%;height:auto;aspect-ratio:4/5;object-fit:contain}
+.preferences-view .preference-photo:focus-visible{outline-offset:-3px}
+.preferences-view .preference-caption{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 14px;flex:1}
+.preferences-view .preference-card h3{margin:0;min-width:0;font-size:14px;line-height:1.6}
+.preference-name{padding:0;border:0;border-radius:3px;background:none;font-weight:600;line-height:inherit;text-align:left;overflow-wrap:anywhere}
+.preference-name:hover{color:var(--blue)}
+.preferences-view .preference-caption .group-badge{flex-shrink:0;white-space:nowrap;font-size:11px;margin:0}
 @media(min-width:1200px){
   .preferences-view .element-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
 }
@@ -37,17 +46,9 @@
 }
 @media(max-width:650px){
   .preferences-view .element-grid{gap:10px}
-  .preferences-view .element-preview{grid-template-columns:minmax(0,1fr);gap:9px;padding:10px;align-content:start}
-  .preferences-view .element-preview .mini-image{width:100%;height:clamp(128px,36vw,190px);background:#edf2f4}
-  .preferences-view .mini-image img{width:100%;height:100%;object-fit:contain}
-  .preferences-view .element-preview .filename{font-size:10px;line-height:1.5;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden}
-  .preferences-view .element-preview .element-category{font-size:10px;line-height:1.5;margin-top:5px}
-  .preferences-view .element-preview h3{font-size:13px;line-height:1.6}
-  .preferences-view .element-preview .location{font-size:11px;line-height:1.6;margin-bottom:7px}
-  .preferences-view .element-preview .pref-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:5px}
-  .preferences-view .element-preview .pref-button{font-size:11px;min-height:34px;padding:5px 2px}
-  .preferences-view .element-preview .button{width:100%;min-height:32px;font-size:11px;padding:5px 0}
-  .preferences-view .element-preview .group-badge{font-size:11px;margin-top:4px}
+  .preferences-view .preference-caption{padding:9px 10px;gap:6px}
+  .preferences-view .preference-card h3{font-size:13px}
+  .preferences-view .preference-caption .group-badge{font-size:10px;padding:3px 6px}
   .preferences-view .material-group{padding:10px}
   .preferences-view .material-type-heading{align-items:center}
   .preferences-view .material-type-heading>span{font-size:10px}
