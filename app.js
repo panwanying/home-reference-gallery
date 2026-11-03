@@ -16,7 +16,7 @@
   const state = {
     data: clone(canonical), dirty: false, view: VIEWS.includes(params.get('view')) ? params.get('view') : 'gallery',
     readOnly: params.get('mode') === 'view', search:'', space:'all', category:'all', material:'all', materialType:'all', preference:'all', favorite:false,
-    selected: params.get('image'), zoom:false, personalNoteOpen:false, openNotes:new Set(), noteDrafts:new Map(), assetFiles:new Map(), assetUrls:new Map(),
+    selected: params.get('image'), activeElement:params.get('element'), zoom:false, personalNoteOpen:false, openNotes:new Set(), noteDrafts:new Map(), assetFiles:new Map(), assetUrls:new Map(),
     importData:null, editing:null, toastTimer:null,
   };
 
@@ -136,9 +136,10 @@
   function getElement(imageId,elementId) { return getImage(imageId)?.elements.find((element) => element.id === elementId); }
   function updateAddress() {
     const url = new URL(location.href);
-    for (const key of ['view','image','mode']) url.searchParams.delete(key);
+    for (const key of ['view','image','element','mode']) url.searchParams.delete(key);
     if (state.view !== 'gallery') url.searchParams.set('view',state.view);
     if (state.selected) url.searchParams.set('image',state.selected);
+    if (state.selected && state.activeElement) url.searchParams.set('element',state.activeElement);
     if (state.readOnly) url.searchParams.set('mode','view');
     history.replaceState(null,'',url);
   }
@@ -194,9 +195,9 @@
       <div class="card-bottom"><span>${image.analysisStatus === 'pending' ? '待分析' : `${image.elements.length} 个设计元素`}</span><span class="${liked ? 'like-text' : ''}">${liked ? `${liked} 个喜欢` : '尚未选择偏好'}</span></div></div></article>`;
   }
   function elementPreview(image,element) {
-    return `<article class="element-preview"><button class="mini-image" data-action="detail" data-image="${escape(image.id)}" aria-label="查看${escape(image.filename)}"><img src="${escape(source(image,true))}" alt="${escape(image.title)}" loading="lazy" decoding="async"></button>
+    return `<article class="element-preview"><button class="mini-image" data-action="detail" data-image="${escape(image.id)}" data-element="${escape(element.id)}" aria-label="查看${escape(image.filename)}中${escape(element.name)}的位置"><img src="${escape(source(image,true))}" alt="${escape(image.title)}" loading="lazy" decoding="async"></button>
       <div><p class="filename">${escape(image.filename)}</p><p class="element-category">${escape(element.category)} · ${escape(element.priority)}</p><h3>${escape(element.name)}</h3><p class="location">位置：${escape(element.location)}</p>
-      ${preferenceButtons(image,element)}<button class="button quiet small" data-action="detail" data-image="${escape(image.id)}">查看原图与备注 ↗</button></div></article>`;
+      ${preferenceButtons(image,element)}<button class="button quiet small" data-action="detail" data-image="${escape(image.id)}" data-element="${escape(element.id)}">查看原图与位置 ↗</button></div></article>`;
   }
   function render() {
     document.body.classList.toggle('view-only',state.readOnly);
@@ -284,7 +285,45 @@
       <label class="field">喜欢或不喜欢的具体原因<textarea data-note-text="${escape(element.id)}" maxlength="6000" placeholder="例如：喜欢木色，但不喜欢格栅造型">${escape(draft.note)}</textarea></label>
       <button class="button outline small" data-action="save-note" data-image="${escape(image.id)}" data-element="${escape(element.id)}">保存到本机草稿</button></div>`;
   }
-  function renderDetail() {
+  function positionFor(image,element) {
+    const record=window.REFERENCE_POSITIONS?.images?.[image.id];
+    if(!record || record.imageUrl!==image.imageUrl) return null;
+    const position=record.elements?.[element.id];
+    if(!position) return null;
+    if(position==='scene') return {scene:record.scene || [2,2,96,96]};
+    return {points:position};
+  }
+  function positionOverlay(image,element) {
+    if(!element) return '';
+    const position=positionFor(image,element);
+    if(!position) return '';
+    if(position.scene){
+      const [x,y,width,height]=position.scene;
+      return `<span class="position-scene" style="left:${x}%;top:${y}%;width:${width}%;height:${height}%"><span>整体范围</span></span>`;
+    }
+    return position.points.map(([x,y],index) => `<span class="position-pin" style="left:${x}%;top:${y}%"><span>${index+1}</span></span>`).join('');
+  }
+  function syncImageStage(focus=false) {
+    const stage=$('detail-dialog').querySelector('.image-stage');
+    const canvas=stage?.querySelector('.image-canvas');
+    const photo=canvas?.querySelector('img');
+    if(!photo?.naturalWidth || !stage.clientWidth || !stage.clientHeight) return;
+    const scale=state.zoom ? stage.clientWidth*1.6/photo.naturalWidth : Math.min(stage.clientWidth/photo.naturalWidth,stage.clientHeight/photo.naturalHeight);
+    canvas.style.width=`${photo.naturalWidth*scale}px`;
+    canvas.style.height=`${photo.naturalHeight*scale}px`;
+    if(focus && state.zoom){
+      const image=getImage(state.selected);const element=getElement(state.selected,state.activeElement);
+      const point=element && positionFor(image,element)?.points?.[0];
+      if(point) stage.scrollTo({left:point[0]/100*canvas.offsetWidth-stage.clientWidth/2,top:point[1]/100*canvas.offsetHeight-stage.clientHeight/2});
+    }
+  }
+  const imageStageObserver=new ResizeObserver(() => syncImageStage());
+  function locateElement(elementId) {
+    if(!getElement(state.selected,elementId))return;
+    state.activeElement=state.activeElement===elementId ? null : elementId;
+    renderDetail(true);updateAddress();
+  }
+  function renderDetail(focusPosition=false) {
     const image = getImage(state.selected);
     if (!image) return closeDetail();
     const dialog = $('detail-dialog');
@@ -292,15 +331,23 @@
     const previousMobileScroll = dialog.querySelector('.detail-layout')?.scrollTop || 0;
     const activeImageIds = matchedImages().map((item) => item.id);
     const index = activeImageIds.indexOf(image.id);
+    const selectedElement=image.elements.find((element) => element.id===state.activeElement);
+    const selectedPosition=selectedElement && positionFor(image,selectedElement);
+    const positionSummary=selectedElement ? `${escape(selectedElement.name)} · ${selectedPosition?.scene ? '整体范围' : selectedPosition?.points ? `${selectedPosition.points.length} 处位置` : '暂未标注位置'}` : '点选元素，查看图中位置';
+    const oldStage=dialog.querySelector('.image-stage');
+    const stageScroll={left:oldStage?.scrollLeft || 0,top:oldStage?.scrollTop || 0};
+    const focusedLocate=document.activeElement?.closest?.('[data-action="locate-element"]')?.dataset.element;
+    imageStageObserver.disconnect();
     dialog.innerHTML = `<header class="detail-header"><div><h2 id="detail-title">${escape(image.filename)}</h2><small>${escape(image.space)} · ${image.elements.length} 个设计元素</small></div>
       <div class="header-buttons"><button class="button quiet small" data-action="previous" ${index <= 0 ? 'disabled' : ''}>← 上一张</button><button class="button quiet small" data-action="next" ${index < 0 || index >= activeImageIds.length-1 ? 'disabled' : ''}>下一张 →</button><button class="close-button" data-action="close-detail" aria-label="关闭图片分析">×</button></div></header>
-      <div class="detail-layout"><div class="detail-photo"><button class="image-stage ${state.zoom ? 'zoomed' : ''}" data-action="zoom" aria-label="${state.zoom ? '缩小图片' : '放大图片'}"><img src="${escape(source(image))}" alt="${escape(image.title)}，${escape(image.filename)}"></button>
+      <div class="detail-layout"><div class="detail-photo"><div class="image-stage ${state.zoom ? 'zoomed' : ''}"><button class="image-canvas" data-action="zoom" aria-label="${state.zoom ? '缩小图片' : '放大图片'}"><img src="${escape(source(image))}" alt="${escape(image.title)}，${escape(image.filename)}"><span class="position-overlay" aria-hidden="true">${positionOverlay(image,selectedElement)}</span></button></div>
+      <div class="position-status" role="status"><span>${positionSummary}</span>${selectedElement ? '<button class="button quiet small" data-action="clear-position">清除选择</button>' : ''}</div>
       <div class="photo-footer"><span>点击图片放大 / 缩小</span><a href="${escape(source(image))}" target="_blank" rel="noopener" download="${escape(image.filename)}">查看 / 下载原图 ↗</a></div></div>
       <section class="detail-panel"><h3>${escape(image.title)}</h3>
       <div class="palette-list">${image.palette.map((color) => `<span class="palette-chip">${escape(color)}</span>`).join('')}</div>
       <div class="detail-section-heading"><h4>设计元素</h4><div class="detail-heading-actions">${!state.readOnly || image.personalNote ? `<button class="button quiet small" data-action="toggle-personal-note">${state.personalNoteOpen ? '收起整图备注' : '整图备注'}</button>` : ''}${state.readOnly ? '' : `<button class="button quiet small" data-action="edit-image" data-image="${escape(image.id)}">编辑整图说明</button>`}</div></div>
       ${state.personalNoteOpen ? `<div class="personal-note-panel">${state.readOnly ? `<p class="element-note">${escape(image.personalNote)}</p>` : `<label class="sr-only" for="personal-note">这张图的整体备注</label><textarea id="personal-note" class="personal-note" maxlength="6000" placeholder="记录这张图的整体偏好">${escape(image.personalNote)}</textarea><button class="button outline small" data-action="save-personal" data-image="${escape(image.id)}">保存整体备注</button>`}</div>` : ''}
-      ${image.elements.map((element) => `<article class="element-block" data-pref="${element.preference}" id="element-${escape(element.id)}"><div class="element-top"><div><p class="element-category">${escape(element.category)} · ${escape(element.priority)}</p><h4>${escape(element.name)}</h4></div></div>
+      ${image.elements.map((element) => `<article class="element-block ${state.activeElement===element.id ? 'position-selected' : ''}" data-select-element="${escape(element.id)}" data-pref="${element.preference}" id="element-${escape(element.id)}"><div class="element-top"><div><p class="element-category">${escape(element.category)} · ${escape(element.priority)}</p><h4>${escape(element.name)}</h4></div><button class="locate-button" data-action="locate-element" data-element="${escape(element.id)}" aria-pressed="${state.activeElement===element.id}" aria-label="在图片上定位${escape(element.name)}">${state.activeElement===element.id ? '已定位' : '定位'}</button></div>
       <p class="element-location">位置：${escape(element.location)}</p>
       ${preferenceButtons(image,element)}
       ${state.readOnly && (element.note || element.targetSpace) ? `<button class="button quiet small" data-action="toggle-note" data-element="${escape(element.id)}">${state.openNotes.has(element.id) ? '收起备注' : '查看备注 / 使用位置'}</button>` : ''}
@@ -311,16 +358,19 @@
       </section></div>`;
     dialog.querySelector('.detail-panel').scrollTop = previousScroll;
     dialog.querySelector('.detail-layout').scrollTop = previousMobileScroll;
+    if(focusedLocate)dialog.querySelector(`[data-action="locate-element"][data-element="${CSS.escape(focusedLocate)}"]`)?.focus({preventScroll:true});
+    imageStageObserver.observe(dialog.querySelector('.image-stage'));
+    requestAnimationFrame(() => {syncImageStage(focusPosition);const stage=dialog.querySelector('.image-stage');if(stage && !focusPosition)stage.scrollTo(stageScroll);});
   }
-  function openDetail(id) {
+  function openDetail(id,elementId=null) {
     if (!getImage(id)) return;
-    state.selected=id; state.zoom=false; state.personalNoteOpen=false; state.openNotes.clear();
+    state.selected=id; state.activeElement=getElement(id,elementId)?.id || null; state.zoom=false; state.personalNoteOpen=false; state.openNotes.clear();
     renderDetail();
     if (!$('detail-dialog').open) $('detail-dialog').showModal();
     updateAddress();
   }
   function closeDetail() {
-    $('detail-dialog').close(); state.selected=null; state.zoom=false; updateAddress();
+    $('detail-dialog').close();imageStageObserver.disconnect();state.selected=null;state.activeElement=null;state.zoom=false;updateAddress();
   }
   function utility(title,body) {
     $('utility-dialog').innerHTML = `<header class="small-dialog-header"><h2 id="utility-title">${escape(title)}</h2><button class="close-button" data-action="close-utility" aria-label="关闭">×</button></header><div class="small-dialog-body">${body}</div>`;
@@ -470,10 +520,12 @@
     switch(action) {
       case 'view':state.view=button.dataset.view;updateAddress();render();break;
       case 'view-gallery':state.view='gallery';resetFilters();updateAddress();break;
-      case 'detail':openDetail(imageId);break;
+      case 'detail':openDetail(imageId,elementId);break;
+      case 'locate-element':locateElement(elementId);break;
+      case 'clear-position':state.activeElement=null;renderDetail();updateAddress();break;
       case 'close-detail':closeDetail();break;
       case 'previous':case 'next':{const images=matchedImages();const index=images.findIndex((image) => image.id===state.selected);const next=images[index+(action==='next'?1:-1)];if(next)openDetail(next.id);break;}
-      case 'zoom':state.zoom=!state.zoom;renderDetail();break;
+      case 'zoom':state.zoom=!state.zoom;renderDetail(true);break;
       case 'toggle-personal-note':state.personalNoteOpen=!state.personalNoteOpen;renderDetail();break;
       case 'retry-image':{
         const image=getImage(imageId);if(!image)return;
@@ -516,12 +568,17 @@
   }
 
   document.addEventListener('click',(event) => {
-    const button=event.target.closest('[data-action]');if(!button || button.disabled)return;
+    const button=event.target.closest('[data-action]');
+    if(!button && !event.target.closest('button,a,input,textarea,select,label')){
+      const element=event.target.closest('[data-select-element]');if(element)locateElement(element.dataset.selectElement);
+    }
+    if(!button || button.disabled)return;
     handleAction(button).catch((error) => toast(error.message || '操作未完成，请重试。'));
   });
   document.addEventListener('submit',(event) => {if(event.target.id==='edit-form'){event.preventDefault();saveEditor(event.target);}});
   document.addEventListener('load',(event) => {
     if(event.target.matches?.('.photo-button img')) event.target.closest('.photo-wrap').classList.add('image-ready');
+    if(event.target.matches?.('.image-canvas img')) syncImageStage(true);
   },true);
   document.addEventListener('error',(event) => {
     if(!event.target.matches?.('.photo-button img'))return;
@@ -548,7 +605,7 @@
     });
   }
   $('favorite-filter').addEventListener('change',(event) => {state.favorite=event.target.checked;render();});
-  $('detail-dialog').addEventListener('cancel',() => {state.selected=null;updateAddress();});
+  $('detail-dialog').addEventListener('cancel',() => {imageStageObserver.disconnect();state.selected=null;state.activeElement=null;updateAddress();});
   $('image-input').addEventListener('change',(event) => {addImages([...event.target.files]).catch((error) => toast(error.message));event.target.value='';});
   $('data-input').addEventListener('change',(event) => {const file=event.target.files[0];if(file)importData(file).catch((error) => toast(error instanceof SyntaxError?'文件无法解析，请选择导出的 JSON 或 data.js。':error.message));event.target.value='';});
   window.addEventListener('beforeunload',(event) => {
@@ -582,7 +639,7 @@
       catch {restoreMessage='本机新增图片暂时无法读取，请检查浏览器存储权限。';}
     }
     refreshFilterOptions();render();
-    if(state.selected && getImage(state.selected))openDetail(state.selected);
+    if(state.selected && getImage(state.selected))openDetail(state.selected,state.activeElement);
     if(restoreMessage)toast(restoreMessage);
   }
   init().catch((error) => { $('content').innerHTML=empty('图库未能正常加载','请刷新页面或检查 data.js 文件。');toast(error.message); });
