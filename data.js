@@ -1,7 +1,7 @@
 window.REFERENCE_DATA = {
   "schemaVersion": 1,
   "collectionId": "home-reference-trial",
-  "revision": "batch-20261109-single-items-v1",
+  "revision": "update-1794216428730",
   "title": "家的参考册",
   "images": [
     {
@@ -13238,7 +13238,7 @@ window.REFERENCE_DATA = {
           "description": "深色立柱搭配错落横枝，可挂衣帽与随身物品。",
           "certainty": "可见外观",
           "priority": "主要",
-          "preference": "liked",
+          "preference": "unmarked",
           "note": "",
           "targetSpace": ""
         }
@@ -13362,7 +13362,7 @@ window.REFERENCE_DATA = {
           "description": "宽锥形编织灯罩搭配深色瓶形灯身。",
           "certainty": "可见外观",
           "priority": "主要",
-          "preference": "liked",
+          "preference": "unmarked",
           "note": "",
           "targetSpace": ""
         }
@@ -13685,7 +13685,7 @@ window.REFERENCE_DATA = {
           "description": "木色框架配编织靠背和深色坐面。",
           "certainty": "可见外观",
           "priority": "主要",
-          "preference": "liked",
+          "preference": "unmarked",
           "note": "",
           "targetSpace": ""
         },
@@ -13697,7 +13697,7 @@ window.REFERENCE_DATA = {
           "description": "米白灯罩带横向细褶，呈上窄下圆的灯笼轮廓。",
           "certainty": "可见外观",
           "priority": "主要",
-          "preference": "liked",
+          "preference": "unmarked",
           "note": "",
           "targetSpace": ""
         }
@@ -13736,7 +13736,7 @@ window.REFERENCE_DATA = {
           "description": "薄床框、圆柱形床腿，图中以两张单人床并排摆放。",
           "certainty": "可见外观",
           "priority": "主要",
-          "preference": "liked",
+          "preference": "unmarked",
           "note": "",
           "targetSpace": ""
         }
@@ -13874,7 +13874,7 @@ window.REFERENCE_DATA = {
           "description": "上下排列的乳白球形灯罩，适合镜旁补光。",
           "certainty": "可见外观",
           "priority": "主要",
-          "preference": "liked",
+          "preference": "unmarked",
           "note": "",
           "targetSpace": ""
         }
@@ -13937,7 +13937,7 @@ window.REFERENCE_DATA = {
           "description": "木色开放分格架，集中陈列杯具与小物。",
           "certainty": "可见外观",
           "priority": "主要",
-          "preference": "liked",
+          "preference": "unmarked",
           "note": "",
           "targetSpace": ""
         }
