@@ -1,7 +1,7 @@
 window.REFERENCE_DATA = {
   "schemaVersion": 1,
   "collectionId": "home-reference-trial",
-  "revision": "update-1793689538624",
+  "revision": "batch-20261109-single-items-v1",
   "title": "家的参考册",
   "images": [
     {
@@ -13168,6 +13168,792 @@ window.REFERENCE_DATA = {
       "personalNote": "",
       "favorite": false,
       "analysisStatus": "analyzed"
+    },
+    {
+      "id": "ref-d8c09b6656",
+      "filename": "微信图片_20261109163208_75_167.jpg",
+      "space": "柜类单品",
+      "title": "圆弧木色高柜",
+      "summary": "圆弧木色高柜。",
+      "batch": "11.9 单品软装与家具",
+      "styleHints": [],
+      "palette": [
+        "暖木色"
+      ],
+      "elements": [
+        {
+          "id": "d8c09b6656-01",
+          "category": "家具与软装",
+          "name": "圆弧木色高柜",
+          "location": "主要单品",
+          "description": "弧形柜身配圆形拉手，底部带竖向格栅。",
+          "certainty": "可见外观",
+          "priority": "主要",
+          "preference": "liked",
+          "note": "",
+          "targetSpace": ""
+        }
+      ],
+      "keywords": [
+        "圆弧木色高柜"
+      ],
+      "questions": [],
+      "imageNote": "按主要单品简要整理；材质、品牌与尺寸需另行确认。",
+      "imageUrl": "assets/微信图片_20261109163208_75_167.jpg",
+      "thumbnailUrl": "thumbs/微信图片_20261109163208_75_167.jpg",
+      "personalNote": "",
+      "favorite": false,
+      "analysisStatus": "analyzed"
+    },
+    {
+      "id": "ref-aaf92a2063",
+      "filename": "微信图片_20261109163208_76_167.jpg",
+      "space": "灯具与挂衣架",
+      "title": "分节落地灯与树枝形挂衣架",
+      "summary": "分节落地灯与树枝形挂衣架。",
+      "batch": "11.9 单品软装与家具",
+      "styleHints": [],
+      "palette": [
+        "米白",
+        "深棕"
+      ],
+      "elements": [
+        {
+          "id": "aaf92a2063-01",
+          "category": "灯光与氛围",
+          "name": "分节落地灯",
+          "location": "主要单品",
+          "description": "米白透光灯罩以收腰分节形成竖向轮廓。",
+          "certainty": "可见外观",
+          "priority": "主要",
+          "preference": "liked",
+          "note": "",
+          "targetSpace": ""
+        },
+        {
+          "id": "aaf92a2063-02",
+          "category": "家具与软装",
+          "name": "树枝形挂衣架",
+          "location": "主要单品",
+          "description": "深色立柱搭配错落横枝，可挂衣帽与随身物品。",
+          "certainty": "可见外观",
+          "priority": "主要",
+          "preference": "liked",
+          "note": "",
+          "targetSpace": ""
+        }
+      ],
+      "keywords": [
+        "分节落地灯",
+        "树枝形挂衣架"
+      ],
+      "questions": [],
+      "imageNote": "按主要单品简要整理；材质、品牌与尺寸需另行确认。",
+      "imageUrl": "assets/微信图片_20261109163208_76_167.jpg",
+      "thumbnailUrl": "thumbs/微信图片_20261109163208_76_167.jpg",
+      "personalNote": "",
+      "favorite": false,
+      "analysisStatus": "analyzed"
+    },
+    {
+      "id": "ref-2e3a13a64c",
+      "filename": "微信图片_20261109163208_77_167.jpg",
+      "space": "柜类单品",
+      "title": "双抽屉床头柜",
+      "summary": "双抽屉床头柜。",
+      "batch": "11.9 单品软装与家具",
+      "styleHints": [],
+      "palette": [
+        "深木色",
+        "浅棕"
+      ],
+      "elements": [
+        {
+          "id": "2e3a13a64c-01",
+          "category": "家具与软装",
+          "name": "双抽屉床头柜",
+          "location": "主要单品",
+          "description": "深色外框搭配浅色纹理抽屉面和小巧拉手。",
+          "certainty": "可见外观",
+          "priority": "主要",
+          "preference": "liked",
+          "note": "",
+          "targetSpace": ""
+        }
+      ],
+      "keywords": [
+        "双抽屉床头柜"
+      ],
+      "questions": [],
+      "imageNote": "按主要单品简要整理；材质、品牌与尺寸需另行确认。",
+      "imageUrl": "assets/微信图片_20261109163208_77_167.jpg",
+      "thumbnailUrl": "thumbs/微信图片_20261109163208_77_167.jpg",
+      "personalNote": "",
+      "favorite": false,
+      "analysisStatus": "analyzed"
+    },
+    {
+      "id": "ref-948eb85dcf",
+      "filename": "微信图片_20261109163208_78_167.jpg",
+      "space": "柜类单品",
+      "title": "多抽屉长边柜",
+      "summary": "多抽屉长边柜。",
+      "batch": "11.9 单品软装与家具",
+      "styleHints": [],
+      "palette": [
+        "红棕木色",
+        "黑色"
+      ],
+      "elements": [
+        {
+          "id": "948eb85dcf-01",
+          "category": "家具与软装",
+          "name": "多抽屉长边柜",
+          "location": "主要单品",
+          "description": "低矮横向柜体，多格抽屉配弧形拉手和细腿。",
+          "certainty": "可见外观",
+          "priority": "主要",
+          "preference": "liked",
+          "note": "",
+          "targetSpace": ""
+        }
+      ],
+      "keywords": [
+        "多抽屉长边柜"
+      ],
+      "questions": [],
+      "imageNote": "按主要单品简要整理；材质、品牌与尺寸需另行确认。",
+      "imageUrl": "assets/微信图片_20261109163208_78_167.jpg",
+      "thumbnailUrl": "thumbs/微信图片_20261109163208_78_167.jpg",
+      "personalNote": "",
+      "favorite": false,
+      "analysisStatus": "analyzed"
+    },
+    {
+      "id": "ref-2f3af23034",
+      "filename": "微信图片_20261109163208_79_167.jpg",
+      "space": "边柜与台灯",
+      "title": "木纹展示边柜与编织台灯",
+      "summary": "木纹展示边柜与编织台灯。",
+      "batch": "11.9 单品软装与家具",
+      "styleHints": [],
+      "palette": [
+        "棕色",
+        "黑色"
+      ],
+      "elements": [
+        {
+          "id": "2f3af23034-01",
+          "category": "家具与软装",
+          "name": "木纹展示边柜",
+          "location": "主要单品",
+          "description": "瘤状木纹柜身搭配黑色台面与上层展示空间。",
+          "certainty": "可见外观",
+          "priority": "主要",
+          "preference": "liked",
+          "note": "",
+          "targetSpace": ""
+        },
+        {
+          "id": "2f3af23034-02",
+          "category": "灯光与氛围",
+          "name": "编织锥形罩台灯",
+          "location": "主要单品",
+          "description": "宽锥形编织灯罩搭配深色瓶形灯身。",
+          "certainty": "可见外观",
+          "priority": "主要",
+          "preference": "liked",
+          "note": "",
+          "targetSpace": ""
+        }
+      ],
+      "keywords": [
+        "木纹展示边柜",
+        "编织锥形罩台灯"
+      ],
+      "questions": [],
+      "imageNote": "按主要单品简要整理；材质、品牌与尺寸需另行确认。",
+      "imageUrl": "assets/微信图片_20261109163208_79_167.jpg",
+      "thumbnailUrl": "thumbs/微信图片_20261109163208_79_167.jpg",
+      "personalNote": "",
+      "favorite": false,
+      "analysisStatus": "analyzed"
+    },
+    {
+      "id": "ref-a38ec3ea3c",
+      "filename": "微信图片_20261109163208_80_167.jpg",
+      "space": "沙发单品",
+      "title": "深灰蓝低矮布艺沙发",
+      "summary": "深灰蓝低矮布艺沙发。",
+      "batch": "11.9 单品软装与家具",
+      "styleHints": [],
+      "palette": [
+        "灰蓝",
+        "深灰"
+      ],
+      "elements": [
+        {
+          "id": "a38ec3ea3c-01",
+          "category": "家具与软装",
+          "name": "低矮布艺沙发",
+          "location": "主要单品",
+          "description": "宽坐深、低靠背，搭配同色大靠垫与肌理织物外观。",
+          "certainty": "可见外观",
+          "priority": "主要",
+          "preference": "liked",
+          "note": "",
+          "targetSpace": ""
+        }
+      ],
+      "keywords": [
+        "低矮布艺沙发"
+      ],
+      "questions": [],
+      "imageNote": "按主要单品简要整理；材质、品牌与尺寸需另行确认。",
+      "imageUrl": "assets/微信图片_20261109163208_80_167.jpg",
+      "thumbnailUrl": "thumbs/微信图片_20261109163208_80_167.jpg",
+      "personalNote": "",
+      "favorite": false,
+      "analysisStatus": "analyzed"
+    },
+    {
+      "id": "ref-5e6858ac5f",
+      "filename": "微信图片_20261109163208_81_167.jpg",
+      "space": "柜类单品",
+      "title": "拼色多抽屉柜",
+      "summary": "拼色多抽屉柜。",
+      "batch": "11.9 单品软装与家具",
+      "styleHints": [],
+      "palette": [
+        "黑色",
+        "浅棕"
+      ],
+      "elements": [
+        {
+          "id": "5e6858ac5f-01",
+          "category": "家具与软装",
+          "name": "拼色多抽屉柜",
+          "location": "主要单品",
+          "description": "黑色框架配浅棕纹理抽屉面，花形与条形拉手混用。",
+          "certainty": "可见外观",
+          "priority": "主要",
+          "preference": "liked",
+          "note": "",
+          "targetSpace": ""
+        }
+      ],
+      "keywords": [
+        "拼色多抽屉柜"
+      ],
+      "questions": [],
+      "imageNote": "按主要单品简要整理；材质、品牌与尺寸需另行确认。",
+      "imageUrl": "assets/微信图片_20261109163208_81_167.jpg",
+      "thumbnailUrl": "thumbs/微信图片_20261109163208_81_167.jpg",
+      "personalNote": "",
+      "favorite": false,
+      "analysisStatus": "analyzed"
+    },
+    {
+      "id": "ref-c99649a233",
+      "filename": "微信图片_20261109163208_82_167.jpg",
+      "space": "柜类单品",
+      "title": "木框玻璃展示柜",
+      "summary": "木框玻璃展示柜。",
+      "batch": "11.9 单品软装与家具",
+      "styleHints": [],
+      "palette": [
+        "深木色",
+        "透明"
+      ],
+      "elements": [
+        {
+          "id": "c99649a233-01",
+          "category": "家具与软装",
+          "name": "木框玻璃展示柜",
+          "location": "主要单品",
+          "description": "细长木框双门，玻璃展示区配中段木纹门板。",
+          "certainty": "可见外观",
+          "priority": "主要",
+          "preference": "liked",
+          "note": "",
+          "targetSpace": ""
+        }
+      ],
+      "keywords": [
+        "木框玻璃展示柜"
+      ],
+      "questions": [],
+      "imageNote": "按主要单品简要整理；材质、品牌与尺寸需另行确认。",
+      "imageUrl": "assets/微信图片_20261109163208_82_167.jpg",
+      "thumbnailUrl": "thumbs/微信图片_20261109163208_82_167.jpg",
+      "personalNote": "",
+      "favorite": false,
+      "analysisStatus": "analyzed"
+    },
+    {
+      "id": "ref-57d970a16c",
+      "filename": "微信图片_20261109163208_83_167.jpg",
+      "space": "柜类单品",
+      "title": "折线抽屉高柜",
+      "summary": "折线抽屉高柜。",
+      "batch": "11.9 单品软装与家具",
+      "styleHints": [],
+      "palette": [
+        "红棕木色",
+        "黑色"
+      ],
+      "elements": [
+        {
+          "id": "57d970a16c-01",
+          "category": "家具与软装",
+          "name": "折线抽屉高柜",
+          "location": "主要单品",
+          "description": "抽屉面交错倾斜形成折线，搭配黑色圆球拉手。",
+          "certainty": "可见外观",
+          "priority": "主要",
+          "preference": "liked",
+          "note": "",
+          "targetSpace": ""
+        }
+      ],
+      "keywords": [
+        "折线抽屉高柜"
+      ],
+      "questions": [],
+      "imageNote": "按主要单品简要整理；材质、品牌与尺寸需另行确认。",
+      "imageUrl": "assets/微信图片_20261109163208_83_167.jpg",
+      "thumbnailUrl": "thumbs/微信图片_20261109163208_83_167.jpg",
+      "personalNote": "",
+      "favorite": false,
+      "analysisStatus": "analyzed"
+    },
+    {
+      "id": "ref-1d08d44099",
+      "filename": "微信图片_20261109163208_84_167.jpg",
+      "space": "沙发与吊灯",
+      "title": "橄榄绿沙发与多球吊灯",
+      "summary": "橄榄绿沙发与多球吊灯。",
+      "batch": "11.9 单品软装与家具",
+      "styleHints": [],
+      "palette": [
+        "橄榄绿",
+        "棕色",
+        "米白"
+      ],
+      "elements": [
+        {
+          "id": "1d08d44099-01",
+          "category": "家具与软装",
+          "name": "橄榄绿布艺沙发",
+          "location": "主要单品",
+          "description": "长条软包沙发配圆润扶手和外露木色支脚。",
+          "certainty": "可见外观",
+          "priority": "主要",
+          "preference": "liked",
+          "note": "",
+          "targetSpace": ""
+        },
+        {
+          "id": "1d08d44099-02",
+          "category": "灯光与氛围",
+          "name": "多球复古吊灯",
+          "location": "主要单品",
+          "description": "乳白球形灯罩搭配金色弯臂与木色中柱。",
+          "certainty": "可见外观",
+          "priority": "主要",
+          "preference": "liked",
+          "note": "",
+          "targetSpace": ""
+        }
+      ],
+      "keywords": [
+        "橄榄绿布艺沙发",
+        "多球复古吊灯"
+      ],
+      "questions": [],
+      "imageNote": "按主要单品简要整理；材质、品牌与尺寸需另行确认。",
+      "imageUrl": "assets/微信图片_20261109163208_84_167.jpg",
+      "thumbnailUrl": "thumbs/微信图片_20261109163208_84_167.jpg",
+      "personalNote": "",
+      "favorite": false,
+      "analysisStatus": "analyzed"
+    },
+    {
+      "id": "ref-1610b8e93a",
+      "filename": "微信图片_20261109163208_85_167.jpg",
+      "space": "钟表单品",
+      "title": "木框长方形挂钟",
+      "summary": "木框长方形挂钟。",
+      "batch": "11.9 单品软装与家具",
+      "styleHints": [],
+      "palette": [
+        "深木色",
+        "白色"
+      ],
+      "elements": [
+        {
+          "id": "1610b8e93a-01",
+          "category": "家具与软装",
+          "name": "木框长方形挂钟",
+          "location": "主要单品",
+          "description": "上部简洁钟面，下部为纹理窗格，整体呈细长木框轮廓。",
+          "certainty": "可见外观",
+          "priority": "主要",
+          "preference": "liked",
+          "note": "",
+          "targetSpace": ""
+        }
+      ],
+      "keywords": [
+        "木框长方形挂钟"
+      ],
+      "questions": [],
+      "imageNote": "按主要单品简要整理；材质、品牌与尺寸需另行确认。",
+      "imageUrl": "assets/微信图片_20261109163208_85_167.jpg",
+      "thumbnailUrl": "thumbs/微信图片_20261109163208_85_167.jpg",
+      "personalNote": "",
+      "favorite": false,
+      "analysisStatus": "analyzed"
+    },
+    {
+      "id": "ref-b2162aa6ef",
+      "filename": "微信图片_20261109163208_86_167.jpg",
+      "space": "灯具单品",
+      "title": "锥形透光罩台灯",
+      "summary": "锥形透光罩台灯。",
+      "batch": "11.9 单品软装与家具",
+      "styleHints": [],
+      "palette": [
+        "黑色",
+        "暖白"
+      ],
+      "elements": [
+        {
+          "id": "b2162aa6ef-01",
+          "category": "灯光与氛围",
+          "name": "锥形透光罩台灯",
+          "location": "主要单品",
+          "description": "深色锥形罩内有竖向光线，底座带侧向旋钮。",
+          "certainty": "可见外观",
+          "priority": "主要",
+          "preference": "liked",
+          "note": "",
+          "targetSpace": ""
+        }
+      ],
+      "keywords": [
+        "锥形透光罩台灯"
+      ],
+      "questions": [],
+      "imageNote": "按主要单品简要整理；材质、品牌与尺寸需另行确认。",
+      "imageUrl": "assets/微信图片_20261109163208_86_167.jpg",
+      "thumbnailUrl": "thumbs/微信图片_20261109163208_86_167.jpg",
+      "personalNote": "",
+      "favorite": false,
+      "analysisStatus": "analyzed"
+    },
+    {
+      "id": "ref-11af61fe2f",
+      "filename": "微信图片_20261109163208_87_167.jpg",
+      "space": "餐桌椅与吊灯",
+      "title": "木色餐桌椅与灯笼吊灯",
+      "summary": "木色餐桌椅与灯笼吊灯。",
+      "batch": "11.9 单品软装与家具",
+      "styleHints": [],
+      "palette": [
+        "暖木色",
+        "米白"
+      ],
+      "elements": [
+        {
+          "id": "11af61fe2f-01",
+          "category": "家具与软装",
+          "name": "木色长方形餐桌",
+          "location": "主要单品",
+          "description": "简洁薄桌面配细长木色桌腿。",
+          "certainty": "可见外观",
+          "priority": "主要",
+          "preference": "liked",
+          "note": "",
+          "targetSpace": ""
+        },
+        {
+          "id": "11af61fe2f-02",
+          "category": "家具与软装",
+          "name": "藤编靠背餐椅",
+          "location": "主要单品",
+          "description": "木色框架配编织靠背和深色坐面。",
+          "certainty": "可见外观",
+          "priority": "主要",
+          "preference": "liked",
+          "note": "",
+          "targetSpace": ""
+        },
+        {
+          "id": "11af61fe2f-03",
+          "category": "灯光与氛围",
+          "name": "灯笼形吊灯",
+          "location": "主要单品",
+          "description": "米白灯罩带横向细褶，呈上窄下圆的灯笼轮廓。",
+          "certainty": "可见外观",
+          "priority": "主要",
+          "preference": "liked",
+          "note": "",
+          "targetSpace": ""
+        }
+      ],
+      "keywords": [
+        "木色长方形餐桌",
+        "藤编靠背餐椅",
+        "灯笼形吊灯"
+      ],
+      "questions": [],
+      "imageNote": "按主要单品简要整理；材质、品牌与尺寸需另行确认。",
+      "imageUrl": "assets/微信图片_20261109163208_87_167.jpg",
+      "thumbnailUrl": "thumbs/微信图片_20261109163208_87_167.jpg",
+      "personalNote": "",
+      "favorite": false,
+      "analysisStatus": "analyzed"
+    },
+    {
+      "id": "ref-f079502fed",
+      "filename": "微信图片_20261109163208_88_167.jpg",
+      "space": "床具单品",
+      "title": "简洁木色单人床",
+      "summary": "简洁木色单人床。",
+      "batch": "11.9 单品软装与家具",
+      "styleHints": [],
+      "palette": [
+        "浅木色",
+        "白色"
+      ],
+      "elements": [
+        {
+          "id": "f079502fed-01",
+          "category": "家具与软装",
+          "name": "简洁木色单人床",
+          "location": "主要单品",
+          "description": "薄床框、圆柱形床腿，图中以两张单人床并排摆放。",
+          "certainty": "可见外观",
+          "priority": "主要",
+          "preference": "liked",
+          "note": "",
+          "targetSpace": ""
+        }
+      ],
+      "keywords": [
+        "简洁木色单人床"
+      ],
+      "questions": [],
+      "imageNote": "按主要单品简要整理；材质、品牌与尺寸需另行确认。",
+      "imageUrl": "assets/微信图片_20261109163208_88_167.jpg",
+      "thumbnailUrl": "thumbs/微信图片_20261109163208_88_167.jpg",
+      "personalNote": "",
+      "favorite": false,
+      "analysisStatus": "analyzed"
+    },
+    {
+      "id": "ref-a5031aaaf3",
+      "filename": "微信图片_20261109163208_89_167.jpg",
+      "space": "椅凳单品",
+      "title": "蓝坐面折叠椅·收拢状态",
+      "summary": "蓝坐面折叠椅·收拢状态。",
+      "batch": "11.9 单品软装与家具",
+      "styleHints": [],
+      "palette": [
+        "蓝色",
+        "深木色",
+        "银色"
+      ],
+      "elements": [
+        {
+          "id": "a5031aaaf3-01",
+          "category": "家具与软装",
+          "name": "蓝坐面折叠椅",
+          "location": "主要单品",
+          "description": "圆形蓝坐面、弧形木色靠背与亮银色管架，可折叠收拢。",
+          "certainty": "可见外观",
+          "priority": "主要",
+          "preference": "liked",
+          "note": "",
+          "targetSpace": ""
+        }
+      ],
+      "keywords": [
+        "蓝坐面折叠椅"
+      ],
+      "questions": [],
+      "imageNote": "按主要单品简要整理；材质、品牌与尺寸需另行确认。",
+      "imageUrl": "assets/微信图片_20261109163208_89_167.jpg",
+      "thumbnailUrl": "thumbs/微信图片_20261109163208_89_167.jpg",
+      "personalNote": "",
+      "favorite": false,
+      "analysisStatus": "analyzed"
+    },
+    {
+      "id": "ref-09f5017b99",
+      "filename": "微信图片_20261109163208_90_167.jpg",
+      "space": "椅凳单品",
+      "title": "蓝坐面折叠椅·使用状态",
+      "summary": "蓝坐面折叠椅·使用状态。",
+      "batch": "11.9 单品软装与家具",
+      "styleHints": [],
+      "palette": [
+        "蓝色",
+        "深木色",
+        "银色"
+      ],
+      "elements": [
+        {
+          "id": "09f5017b99-01",
+          "category": "家具与软装",
+          "name": "蓝坐面折叠椅",
+          "location": "主要单品",
+          "description": "展开后以弧形靠背、圆坐面和细管架形成轻巧轮廓。",
+          "certainty": "可见外观",
+          "priority": "主要",
+          "preference": "liked",
+          "note": "",
+          "targetSpace": ""
+        }
+      ],
+      "keywords": [
+        "蓝坐面折叠椅"
+      ],
+      "questions": [],
+      "imageNote": "按主要单品简要整理；材质、品牌与尺寸需另行确认。",
+      "imageUrl": "assets/微信图片_20261109163208_90_167.jpg",
+      "thumbnailUrl": "thumbs/微信图片_20261109163208_90_167.jpg",
+      "personalNote": "",
+      "favorite": false,
+      "analysisStatus": "analyzed"
+    },
+    {
+      "id": "ref-25649e19f3",
+      "filename": "微信图片_20261109163208_91_167.jpg",
+      "space": "卫浴单品",
+      "title": "圆角浴室镜与悬浮浴室柜",
+      "summary": "圆角浴室镜与悬浮浴室柜。",
+      "batch": "11.9 单品软装与家具",
+      "styleHints": [],
+      "palette": [
+        "暖木色",
+        "金色",
+        "白色"
+      ],
+      "elements": [
+        {
+          "id": "25649e19f3-01",
+          "category": "家具与软装",
+          "name": "圆角长方形浴室镜",
+          "location": "主要单品",
+          "description": "横向圆角镜面配细金色边框。",
+          "certainty": "可见外观",
+          "priority": "主要",
+          "preference": "liked",
+          "note": "",
+          "targetSpace": ""
+        },
+        {
+          "id": "25649e19f3-02",
+          "category": "家具与软装",
+          "name": "悬浮木色浴室柜",
+          "location": "主要单品",
+          "description": "圆角抽屉柜搭配开放搁板和浅色一体台面外观。",
+          "certainty": "可见外观",
+          "priority": "主要",
+          "preference": "liked",
+          "note": "",
+          "targetSpace": ""
+        },
+        {
+          "id": "25649e19f3-03",
+          "category": "灯光与氛围",
+          "name": "双球壁灯",
+          "location": "主要单品",
+          "description": "上下排列的乳白球形灯罩，适合镜旁补光。",
+          "certainty": "可见外观",
+          "priority": "主要",
+          "preference": "liked",
+          "note": "",
+          "targetSpace": ""
+        }
+      ],
+      "keywords": [
+        "圆角长方形浴室镜",
+        "悬浮木色浴室柜",
+        "双球壁灯"
+      ],
+      "questions": [],
+      "imageNote": "按主要单品简要整理；材质、品牌与尺寸需另行确认。",
+      "imageUrl": "assets/微信图片_20261109163208_91_167.jpg",
+      "thumbnailUrl": "thumbs/微信图片_20261109163208_91_167.jpg",
+      "personalNote": "",
+      "favorite": false,
+      "analysisStatus": "analyzed"
+    },
+    {
+      "id": "ref-0aaf0a4910",
+      "filename": "微信图片_20261109163208_92_167.jpg",
+      "space": "书房收纳单品",
+      "title": "长书桌与开放展示收纳",
+      "summary": "长书桌与开放展示收纳。",
+      "batch": "11.9 单品软装与家具",
+      "styleHints": [],
+      "palette": [
+        "深木色",
+        "黑色"
+      ],
+      "elements": [
+        {
+          "id": "0aaf0a4910-01",
+          "category": "家具与软装",
+          "name": "长条木色书桌",
+          "location": "主要单品",
+          "description": "沿墙长桌面搭配抽屉支撑，兼作办公与咖啡操作台。",
+          "certainty": "可见外观",
+          "priority": "主要",
+          "preference": "liked",
+          "note": "",
+          "targetSpace": ""
+        },
+        {
+          "id": "0aaf0a4910-02",
+          "category": "家具与软装",
+          "name": "双层壁挂搁板",
+          "location": "主要单品",
+          "description": "深色细框架与长搁板，用于书籍、画和器物展示。",
+          "certainty": "可见外观",
+          "priority": "主要",
+          "preference": "liked",
+          "note": "",
+          "targetSpace": ""
+        },
+        {
+          "id": "0aaf0a4910-03",
+          "category": "家具与软装",
+          "name": "分格杯具展示架",
+          "location": "主要单品",
+          "description": "木色开放分格架，集中陈列杯具与小物。",
+          "certainty": "可见外观",
+          "priority": "主要",
+          "preference": "liked",
+          "note": "",
+          "targetSpace": ""
+        }
+      ],
+      "keywords": [
+        "长条木色书桌",
+        "双层壁挂搁板",
+        "分格杯具展示架"
+      ],
+      "questions": [],
+      "imageNote": "按主要单品简要整理；材质、品牌与尺寸需另行确认。",
+      "imageUrl": "assets/微信图片_20261109163208_92_167.jpg",
+      "thumbnailUrl": "thumbs/微信图片_20261109163208_92_167.jpg",
+      "personalNote": "",
+      "favorite": false,
+      "analysisStatus": "analyzed"
     }
   ],
   "taxonomyVersion": 1,
@@ -13175,7 +13961,8 @@ window.REFERENCE_DATA = {
     "trial-4-initial",
     "trial-4-taxonomy-v1",
     "update-1793635460695",
-    "full-93-20261102-v1"
+    "full-93-20261102-v1",
+    "update-1793689538624"
   ],
   "materialTypes": [
     {
