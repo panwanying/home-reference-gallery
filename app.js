@@ -15,7 +15,7 @@
   const params = new URLSearchParams(location.search);
   const state = {
     data: clone(canonical), dirty: false, view: VIEWS.includes(params.get('view')) ? params.get('view') : 'gallery',
-    readOnly: params.get('mode') === 'view', search:params.get('q') || '', space:params.get('space') || 'all', category:CATEGORIES.includes(params.get('category')) ? params.get('category') : 'all', material:MATERIAL_GROUPS.includes(params.get('material')) ? params.get('material') : 'all', materialType:params.get('materialType') || 'all', preference:Object.hasOwn(LABELS,params.get('preference')) ? params.get('preference') : 'all', favorite:params.get('favorite')==='1',
+    addedDate:params.get('date') || 'all', readOnly: params.get('mode') === 'view', search:params.get('q') || '', space:params.get('space') || 'all', category:CATEGORIES.includes(params.get('category')) ? params.get('category') : 'all', material:MATERIAL_GROUPS.includes(params.get('material')) ? params.get('material') : 'all', materialType:params.get('materialType') || 'all', preference:Object.hasOwn(LABELS,params.get('preference')) ? params.get('preference') : 'all', favorite:params.get('favorite')==='1',
     selected: params.get('image'), activeElement:params.get('element'), detailPreference:Object.hasOwn(LABELS,params.get('detailPref')) && params.get('detailPref')!=='unmarked' ? params.get('detailPref') : null, zoom:false, personalNoteOpen:false, openNotes:new Set(), noteDrafts:new Map(), assetFiles:new Map(), assetUrls:new Map(),
     importData:null, editing:null, lastDeletion:null, detailSequence:null, detailCursor:-1, toastTimer:null,
   };
@@ -74,6 +74,7 @@
       }
       if (!/^assets\/[^/\\?#]+\.(jpe?g|png|webp|gif)$/i.test(image.imageUrl)) throw new Error('图片路径必须位于 assets 文件夹');
       if (image.thumbnailUrl !== undefined && (typeof image.thumbnailUrl !== 'string' || !/^thumbs\/[^/\\?#]+\.(jpe?g|png|webp)$/i.test(image.thumbnailUrl))) throw new Error('预览图路径必须位于 thumbs 文件夹');
+      if(image.addedDate!==undefined && !validAddedDate(image.addedDate)) throw new Error('添加日期格式不正确');
       if(image.batch!==undefined && (typeof image.batch!=='string' || image.batch.length>200)) throw new Error('图片批次格式不正确');
       if (!Array.isArray(image.elements) || image.elements.length > 100) throw new Error('元素数量或格式不正确');
       const elementIds = new Set();
@@ -132,6 +133,15 @@
     render();
     if (message) toast(message);
   }
+  function validAddedDate(value) {
+    return typeof value==='string' && /^\d{4}-\d{2}-\d{2}$/.test(value) && !Number.isNaN(Date.parse(value+'T00:00:00Z')) && new Date(value+'T00:00:00Z').toISOString().slice(0,10)===value;
+  }
+  function addedDate(image) {
+    return validAddedDate(image.addedDate) ? image.addedDate : canonical.images.find((item) => item.id===image.id)?.addedDate || 'unknown';
+  }
+  function localDate() {
+    const now=new Date();return `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`;
+  }
   function getImage(id) { return state.data.images.find((image) => image.id === id); }
   function source(image, thumbnail=false) {
     const path=thumbnail && image.thumbnailUrl ? image.thumbnailUrl : image.imageUrl;
@@ -140,14 +150,15 @@
   function getElement(imageId,elementId) { return getImage(imageId)?.elements.find((element) => element.id === elementId); }
   function updateAddress() {
     const url = new URL(location.href);
-    for (const key of ['view','image','element','entry','detailPref','mode','q','space','category','material','materialType','preference','favorite']) url.searchParams.delete(key);
+    for (const key of ['view','image','element','entry','detailPref','mode','q','space','category','material','materialType','preference','favorite','date']) url.searchParams.delete(key);
     if (state.view !== 'gallery') url.searchParams.set('view',state.view);
     if (state.selected) url.searchParams.set('image',state.selected);
     if (state.selected && state.activeElement) url.searchParams.set('element',state.activeElement);
     if (state.selected && state.detailPreference) url.searchParams.set('detailPref',state.detailPreference);
     if (state.selected && state.detailSequence?.[state.detailCursor]) url.searchParams.set('entry',state.detailSequence[state.detailCursor].elementId);
     if(state.search)url.searchParams.set('q',state.search);
-    if(state.view==='preferences'){
+    if(state.addedDate!=='all')url.searchParams.set('date',state.addedDate);
+    {
       for(const key of ['space','category','material','materialType','preference']) if(state[key]!=='all')url.searchParams.set(key,state[key]);
       if(state.favorite)url.searchParams.set('favorite','1');
     }
@@ -174,6 +185,7 @@
   }
   function matchedImages() {
     return state.data.images.filter((image) => {
+      if(state.addedDate!=='all' && addedDate(image)!==state.addedDate) return false;
       if (state.space !== 'all' && image.space !== state.space) return false;
       if (state.favorite && !image.favorite) return false;
       if (state.view === 'pending' && image.analysisStatus !== 'pending') return false;
@@ -247,7 +259,8 @@
     } else {
       const rows = images.flatMap((image) => matchedElements(image).map((element) => ({image,element})));
       $('result-count').textContent = `显示 ${rows.length} 个元素 · 来自 ${images.length} 张参考图`;
-      const intro = state.view === 'preferences' ? `<div class="preference-intro"><strong>喜欢 ${allElements.filter((e) => e.preference === 'liked').length}</strong>　待考虑 ${allElements.filter((e) => e.preference === 'considering').length}　不喜欢 ${allElements.filter((e) => e.preference === 'disliked').length}</div>` : '';
+      const visibleElements=rows.map((row) => row.element);
+      const intro = state.view === 'preferences' ? `<div class="preference-intro"><strong>喜欢 ${visibleElements.filter((e) => e.preference === 'liked').length}</strong>　待考虑 ${visibleElements.filter((e) => e.preference === 'considering').length}　不喜欢 ${visibleElements.filter((e) => e.preference === 'disliked').length}</div>` : '';
       $('content').innerHTML = intro + (rows.length ? CATEGORIES.map((category) => {
         const group = rows.filter((row) => row.element.category === category);
         if (!group.length) return '';
@@ -275,6 +288,12 @@
   }
 
   function refreshFilterOptions() {
+    const dates=[...new Set(state.data.images.map(addedDate))].sort().reverse();
+    const knownDates=dates.filter((date) => date!=='unknown');
+    $('date-filter').innerHTML='<option value="all">全部添加日期</option>'+knownDates.map((date) => `<option value="${date}">${date}（${state.data.images.filter((image) => addedDate(image)===date).length} 张）</option>`).join('')+(dates.includes('unknown') ? '<option value="unknown">未记录日期</option>' : '');
+    if(!dates.includes(state.addedDate))state.addedDate='all';
+    $('date-filter').value=state.addedDate;
+
     $('space-filter').innerHTML = '<option value="all">全部空间</option>' + [...new Set(state.data.images.map((image) => image.space))].map((space) => `<option value="${escape(space)}">${escape(space)}</option>`).join('');
     if (![...$('space-filter').options].some((option) => option.value === state.space)) state.space = 'all';
     $('space-filter').value = state.space;
@@ -510,7 +529,7 @@
   }
   function exportedData() {
     const data=clone(state.data); data.revision=`update-${Date.now()}`;
-    for (const image of data.images) delete image._pendingAsset;
+    for (const image of data.images) {delete image._pendingAsset;const date=addedDate(image);if(date!=='unknown')image.addedDate=date;}
     return data;
   }
   function dataScript(data) { return `window.REFERENCE_DATA = ${JSON.stringify(data,null,2)};\n`; }
@@ -561,7 +580,7 @@
       const ext=file.name.split('.').pop().toLowerCase(); const id=`ref-${Date.now()}-${Math.random().toString(36).slice(2,8)}`;const path=`assets/${id}.${ext}`;
       try {
         await storeAsset(path,file); state.assetFiles.set(path,file);state.assetUrls.set(path,URL.createObjectURL(file));
-        state.data.images.push({id,filename:file.name,imageUrl:path,title:file.name,space:'待分类',summary:'新添加的参考图，等待补充分析。',styleHints:[],palette:[],elements:[],keywords:[],questions:[],imageNote:'',personalNote:'',favorite:false,analysisStatus:'pending',_pendingAsset:true}); added++;
+        state.data.images.push({id,addedDate:localDate(),filename:file.name,imageUrl:path,title:file.name,space:'待分类',summary:'新添加的参考图，等待补充分析。',styleHints:[],palette:[],elements:[],keywords:[],questions:[],imageNote:'',personalNote:'',favorite:false,analysisStatus:'pending',_pendingAsset:true}); added++;
       } catch {errors.push(`${file.name}：浏览器无法保存图片草稿，请检查存储权限`);}
     }
     if (added) {state.view='pending';resetFilters(false);refreshFilterOptions();saveDraft();updateAddress();}
@@ -575,14 +594,14 @@
     utility('确认导入资料',`<p>将导入 ${incoming.images.length} 张图片的分析与标记，替换当前浏览器的资料草稿。原 Git 仓库不会自动改变。</p><p>如果文件包含新的图片路径，还需要把对应的 assets 图片文件上传到仓库。</p><div class="dialog-actions"><button class="button quiet" data-action="close-utility">取消</button><button class="button primary" data-action="confirm-import">导入并保存为本机草稿</button></div>`);
   }
   function resetFilters(redraw=true) {
-    state.search='';state.space='all';state.category='all';state.material='all';state.materialType='all';state.preference='all';state.favorite=false;
-    refreshFilterOptions();if(redraw)render();if(state.view==='preferences')updateAddress();
+    state.addedDate='all';state.search='';state.space='all';state.category='all';state.material='all';state.materialType='all';state.preference='all';state.favorite=false;
+    refreshFilterOptions();if(redraw)render();updateAddress();
   }
   function printChecklist() {
     document.querySelector('.print-sheet')?.remove();
     const sheet=document.createElement('section');sheet.className='print-sheet';
-    const rows=state.data.images.flatMap((image) => image.elements.filter((element) => element.preference !== 'unmarked').map((element) => ({image,element})));
-    sheet.innerHTML=`<h1>家的参考册 · 设计师沟通清单</h1><p>生成日期：${new Date().toLocaleDateString('zh-CN')}　${state.dirty ? '包含当前本机草稿' : '已上传版本'}。仅列出已标记的元素；未标记不等于不喜欢。</p>`+
+    const rows=(state.addedDate==='all' ? state.data.images : matchedImages()).flatMap((image) => image.elements.filter((element) => element.preference !== 'unmarked').map((element) => ({image,element})));
+    sheet.innerHTML=`<h1>家的参考册 · 设计师沟通清单</h1><p>生成日期：${new Date().toLocaleDateString('zh-CN')}${state.addedDate!=='all' ? `　添加日期：${state.addedDate==='unknown' ? '未记录' : state.addedDate}` : ''}　${state.dirty ? '包含当前本机草稿' : '已上传版本'}。仅列出已标记的元素；未标记不等于不喜欢。</p>`+
       (rows.length ? CATEGORIES.map((category) => {const group=rows.filter((row) => row.element.category===category);return group.length ? `<h2>${category}</h2>${group.map(({image,element}) => `<article class="print-item"><img src="${escape(source(image))}" alt="${escape(image.filename)}"><div><h3>${escape(element.name)} <span class="pref-status">· ${LABELS[element.preference]}</span></h3><p>参考文件：${escape(image.filename)}｜位置：${escape(element.location)}</p><p>分类：${escape(element.category)} · ${escape(element.priority)}</p>${element.targetSpace ? `<p>考虑用于：${escape(element.targetSpace)}</p>` : ''}${element.note ? `<p>我的备注：${escape(element.note)}</p>` : ''}<p>设计师意见：________________________________________________</p></div></article>`).join('')}` : '';}).join('') : '<p>尚未标记偏好。请先在图片分析中选择喜欢、待考虑或不喜欢的元素。</p>');
     document.body.append(sheet);setTimeout(() => window.print(),150);
   }
@@ -639,7 +658,7 @@
         try{await navigator.clipboard.writeText(url.href);toast(state.dirty?'链接已复制；本机草稿需上传后，别人才能看到。':'查看链接已复制，可以发给设计师。');}
         catch{utility('复制查看链接',`<label class="field">选中并复制下面的地址<input readonly value="${escape(url.href)}"></label><p>链接展示 Git 上的版本，不包含尚未上传的本机草稿。</p>`);}break;
       }
-      case 'help':utility('如何维护这份参考册',`<h3>看图和选元素</h3><p>点开图片，分别标记喜欢、待考虑或不喜欢。收藏只表示方便回看，不代表喜欢图里全部内容。元素名称、分析和备注都能修改。</p><h3>修改怎样同步？</h3><ol><li>网页修改先保存到当前浏览器，顶部显示“本机草稿”。</li><li>点击“导出更新”。只改文字和标记时导出 data.js；添加图片后导出 ZIP 更新包。</li><li>把文件上传到 Git 仓库原位置，等待 Pages 部署完成。</li><li>其他电脑重新打开网页，就能看到已上传的修改。</li></ol><h3>添加图片与继续分析</h3><p>新增图片保留原文件名，默认待分析，不会自动调用 AI。你可以手动补充元素，也可以把后续图片交给我继续分析。</p><h3>分享与权限</h3><p>查看链接默认隐藏编辑控件。它是界面模式，不是密码保护；只有有仓库写入权限的人才能更改线上文件。公开 GitHub Pages 与公开仓库中的资料可被他人访问。</p><h3>草稿与备份</h3><p>本机草稿不等于 Git 备份。清理浏览器数据、更换浏览器或使用无痕模式可能使草稿丢失。请及时导出。上传了新版 data.js 后，旧版本本机草稿不会自动覆盖新版。</p>`);break;
+      case 'help':utility('如何维护这份参考册',`<h3>看图和选元素</h3><p>点开图片，分别标记喜欢、待考虑或不喜欢。收藏只表示方便回看，不代表喜欢图里全部内容。元素名称、分析和备注都能修改。</p><h3>按添加日期查看</h3><p>在筛选栏选择添加日期，可只看某次新增图片，也能和偏好筛选一起使用。复制查看链接会保留所选日期。修改喜好或备注不会改变图片的添加日期。</p><h3>修改怎样同步？</h3><ol><li>网页修改先保存到当前浏览器，顶部显示“本机草稿”。</li><li>点击“导出更新”。只改文字和标记时导出 data.js；添加图片后导出 ZIP 更新包。</li><li>把文件上传到 Git 仓库原位置，等待 Pages 部署完成。</li><li>其他电脑重新打开网页，就能看到已上传的修改。</li></ol><h3>添加图片与继续分析</h3><p>新增图片保留原文件名，默认待分析，不会自动调用 AI。你可以手动补充元素，也可以把后续图片交给我继续分析。</p><h3>分享与权限</h3><p>查看链接默认隐藏编辑控件。它是界面模式，不是密码保护；只有有仓库写入权限的人才能更改线上文件。公开 GitHub Pages 与公开仓库中的资料可被他人访问。</p><h3>草稿与备份</h3><p>本机草稿不等于 Git 备份。清理浏览器数据、更换浏览器或使用无痕模式可能使草稿丢失。请及时导出。上传了新版 data.js 后，旧版本本机草稿不会自动覆盖新版。</p>`);break;
     }
   }
 
@@ -670,17 +689,17 @@
     if(event.target.dataset.noteText) draft.note=event.target.value; else draft.targetSpace=event.target.value;
     state.noteDrafts.set(key,draft);
   });
-  $('search').addEventListener('input',(event) => {state.search=event.target.value.trim();render();if(state.view==='preferences')updateAddress();});
-  for (const [id,key] of [['space-filter','space'],['category-filter','category'],['preference-filter','preference'],['material-filter','material'],['material-type-filter','materialType']]) {
+  $('search').addEventListener('input',(event) => {state.search=event.target.value.trim();render();updateAddress();});
+  for (const [id,key] of [['date-filter','addedDate'],['space-filter','space'],['category-filter','category'],['preference-filter','preference'],['material-filter','material'],['material-type-filter','materialType']]) {
     $(id).addEventListener('change',(event) => {
       state[key]=event.target.value;
       if(key==='material'){state.materialType='all';if(state.material!=='all')state.category='材质与肌理';}
       if(key==='materialType' && state.materialType!=='all'){state.category='材质与肌理';state.material=state.data.materialTypes.find((type) => type.id===state.materialType)?.group || 'all';}
       if(key==='category' && state.category!=='材质与肌理'){state.material='all';state.materialType='all';}
-      refreshFilterOptions();render();if(state.view==='preferences')updateAddress();
+      refreshFilterOptions();render();updateAddress();
     });
   }
-  $('favorite-filter').addEventListener('change',(event) => {state.favorite=event.target.checked;render();if(state.view==='preferences')updateAddress();});
+  $('favorite-filter').addEventListener('change',(event) => {state.favorite=event.target.checked;render();updateAddress();});
   $('detail-dialog').addEventListener('cancel',() => {imageStageObserver.disconnect();state.selected=null;state.activeElement=null;state.detailPreference=null;state.detailSequence=null;state.detailCursor=-1;updateAddress();});
   $('image-input').addEventListener('change',(event) => {addImages([...event.target.files]).catch((error) => toast(error.message));event.target.value='';});
   $('data-input').addEventListener('change',(event) => {const file=event.target.files[0];if(file)importData(file).catch((error) => toast(error instanceof SyntaxError?'文件无法解析，请选择导出的 JSON 或 data.js。':error.message));event.target.value='';});
@@ -715,6 +734,7 @@
       try {const file=await readAsset(image.imageUrl);if(file){state.assetFiles.set(image.imageUrl,file);state.assetUrls.set(image.imageUrl,URL.createObjectURL(file));}else restoreMessage=`${image.filename} 的本机图片草稿缺失，请重新添加。`;}
       catch {restoreMessage='本机新增图片暂时无法读取，请检查浏览器存储权限。';}
     }
+    for(const image of state.data.images){const date=addedDate(image);if(date!=='unknown')image.addedDate=date;}
     refreshFilterOptions();render();
     if(state.selected && getImage(state.selected))openDetail(state.selected,state.activeElement,state.detailPreference || undefined,params.get('entry') || state.activeElement);
     if(restoreMessage)toast(restoreMessage);

@@ -166,7 +166,8 @@ window.REFERENCE_DATA = {
       "personalNote": "",
       "favorite": false,
       "analysisStatus": "analyzed",
-      "thumbnailUrl": "thumbs/IMG_5306.jpg"
+      "thumbnailUrl": "thumbs/IMG_5306.jpg",
+      "addedDate": "2026-11-02"
     },
     {
       "id": "ref-002",
@@ -331,7 +332,8 @@ window.REFERENCE_DATA = {
       "personalNote": "",
       "favorite": false,
       "analysisStatus": "analyzed",
-      "thumbnailUrl": "thumbs/IMG_5308.jpg"
+      "thumbnailUrl": "thumbs/IMG_5308.jpg",
+      "addedDate": "2026-11-02"
     },
     {
       "id": "ref-003",
@@ -483,7 +485,8 @@ window.REFERENCE_DATA = {
       "personalNote": "",
       "favorite": false,
       "analysisStatus": "analyzed",
-      "thumbnailUrl": "thumbs/IMG_5309.jpg"
+      "thumbnailUrl": "thumbs/IMG_5309.jpg",
+      "addedDate": "2026-11-02"
     },
     {
       "id": "ref-004",
@@ -659,7 +662,8 @@ window.REFERENCE_DATA = {
       "personalNote": "",
       "favorite": false,
       "analysisStatus": "analyzed",
-      "thumbnailUrl": "thumbs/IMG_5316.jpg"
+      "thumbnailUrl": "thumbs/IMG_5316.jpg",
+      "addedDate": "2026-11-02"
     },
     {
       "id": "ref-3efd51765e",
@@ -807,7 +811,8 @@ window.REFERENCE_DATA = {
       "personalNote": "",
       "favorite": false,
       "analysisStatus": "analyzed",
-      "thumbnailUrl": "thumbs/IMG_5320.jpg"
+      "thumbnailUrl": "thumbs/IMG_5320.jpg",
+      "addedDate": "2026-11-02"
     },
     {
       "id": "ref-047017b3fd",
@@ -967,7 +972,8 @@ window.REFERENCE_DATA = {
       "personalNote": "",
       "favorite": false,
       "analysisStatus": "analyzed",
-      "thumbnailUrl": "thumbs/IMG_5324.jpg"
+      "thumbnailUrl": "thumbs/IMG_5324.jpg",
+      "addedDate": "2026-11-02"
     },
     {
       "id": "ref-a65fe91a6b",
@@ -1103,7 +1109,8 @@ window.REFERENCE_DATA = {
       "personalNote": "",
       "favorite": false,
       "analysisStatus": "analyzed",
-      "thumbnailUrl": "thumbs/IMG_5326.jpg"
+      "thumbnailUrl": "thumbs/IMG_5326.jpg",
+      "addedDate": "2026-11-02"
     },
     {
       "id": "ref-dfcfc75288",
@@ -1265,7 +1272,8 @@ window.REFERENCE_DATA = {
       "personalNote": "",
       "favorite": false,
       "analysisStatus": "analyzed",
-      "thumbnailUrl": "thumbs/IMG_5329.jpg"
+      "thumbnailUrl": "thumbs/IMG_5329.jpg",
+      "addedDate": "2026-11-02"
     },
     {
       "id": "ref-7fd2fa2a1c",
@@ -1398,7 +1406,8 @@ window.REFERENCE_DATA = {
       "personalNote": "",
       "favorite": false,
       "analysisStatus": "analyzed",
-      "thumbnailUrl": "thumbs/IMG_5331.jpg"
+      "thumbnailUrl": "thumbs/IMG_5331.jpg",
+      "addedDate": "2026-11-02"
     },
     {
       "id": "ref-a990124e80",
@@ -1548,7 +1557,8 @@ window.REFERENCE_DATA = {
       "personalNote": "",
       "favorite": false,
       "analysisStatus": "analyzed",
-      "thumbnailUrl": "thumbs/IMG_5335.jpg"
+      "thumbnailUrl": "thumbs/IMG_5335.jpg",
+      "addedDate": "2026-11-02"
     },
     {
       "id": "ref-784c388bab",
@@ -1680,7 +1690,8 @@ window.REFERENCE_DATA = {
       "personalNote": "",
       "favorite": false,
       "analysisStatus": "analyzed",
-      "thumbnailUrl": "thumbs/IMG_5336.jpg"
+      "thumbnailUrl": "thumbs/IMG_5336.jpg",
+      "addedDate": "2026-11-02"
     },
     {
       "id": "ref-fec265e089",
@@ -1828,7 +1839,8 @@ window.REFERENCE_DATA = {
       "personalNote": "",
       "favorite": false,
       "analysisStatus": "analyzed",
-      "thumbnailUrl": "thumbs/IMG_5337.jpg"
+      "thumbnailUrl": "thumbs/IMG_5337.jpg",
+      "addedDate": "2026-11-02"
     },
     {
       "id": "ref-132917ebda",
@@ -1976,7 +1988,8 @@ window.REFERENCE_DATA = {
       "personalNote": "",
       "favorite": false,
       "analysisStatus": "analyzed",
-      "thumbnailUrl": "thumbs/IMG_5341.jpg"
+      "thumbnailUrl": "thumbs/IMG_5341.jpg",
+      "addedDate": "2026-11-02"
     },
     {
       "id": "ref-9434b5eb9d",
@@ -2109,7 +2122,8 @@ window.REFERENCE_DATA = {
       "personalNote": "",
       "favorite": false,
       "analysisStatus": "analyzed",
-      "thumbnailUrl": "thumbs/IMG_5347.jpg"
+      "thumbnailUrl": "thumbs/IMG_5347.jpg",
+      "addedDate": "2026-11-02"
     },
     {
       "id": "ref-8cc5ab752f",
@@ -2242,7 +2256,8 @@ window.REFERENCE_DATA = {
       "personalNote": "",
       "favorite": false,
       "analysisStatus": "analyzed",
-      "thumbnailUrl": "thumbs/IMG_5349.jpg"
+      "thumbnailUrl": "thumbs/IMG_5349.jpg",
+      "addedDate": "2026-11-02"
     },
     {
       "id": "ref-e0159b8069",
@@ -2391,7 +2406,8 @@ window.REFERENCE_DATA = {
       "personalNote": "",
       "favorite": false,
       "analysisStatus": "analyzed",
-      "thumbnailUrl": "thumbs/IMG_5350.jpg"
+      "thumbnailUrl": "thumbs/IMG_5350.jpg",
+      "addedDate": "2026-11-02"
     },
     {
       "id": "ref-00ee431409",
@@ -2529,7 +2545,8 @@ window.REFERENCE_DATA = {
       "personalNote": "",
       "favorite": false,
       "analysisStatus": "analyzed",
-      "thumbnailUrl": "thumbs/IMG_5351.jpg"
+      "thumbnailUrl": "thumbs/IMG_5351.jpg",
+      "addedDate": "2026-11-02"
     },
     {
       "id": "ref-3e5ac13cf6",
@@ -2664,7 +2681,8 @@ window.REFERENCE_DATA = {
       "personalNote": "",
       "favorite": false,
       "analysisStatus": "analyzed",
-      "thumbnailUrl": "thumbs/IMG_5352.jpg"
+      "thumbnailUrl": "thumbs/IMG_5352.jpg",
+      "addedDate": "2026-11-02"
     },
     {
       "id": "ref-f8a1d0538d",
@@ -2813,7 +2831,8 @@ window.REFERENCE_DATA = {
       "personalNote": "",
       "favorite": false,
       "analysisStatus": "analyzed",
-      "thumbnailUrl": "thumbs/IMG_5353.jpg"
+      "thumbnailUrl": "thumbs/IMG_5353.jpg",
+      "addedDate": "2026-11-02"
     },
     {
       "id": "ref-46c87bc3c1",
@@ -2948,7 +2967,8 @@ window.REFERENCE_DATA = {
       "personalNote": "",
       "favorite": false,
       "analysisStatus": "analyzed",
-      "thumbnailUrl": "thumbs/IMG_5356.jpg"
+      "thumbnailUrl": "thumbs/IMG_5356.jpg",
+      "addedDate": "2026-11-02"
     },
     {
       "id": "ref-7b820f75fd",
@@ -3083,7 +3103,8 @@ window.REFERENCE_DATA = {
       "personalNote": "",
       "favorite": false,
       "analysisStatus": "analyzed",
-      "thumbnailUrl": "thumbs/IMG_5357.jpg"
+      "thumbnailUrl": "thumbs/IMG_5357.jpg",
+      "addedDate": "2026-11-02"
     },
     {
       "id": "ref-bb7522520d",
@@ -3233,7 +3254,8 @@ window.REFERENCE_DATA = {
       "personalNote": "",
       "favorite": false,
       "analysisStatus": "analyzed",
-      "thumbnailUrl": "thumbs/IMG_5363.jpg"
+      "thumbnailUrl": "thumbs/IMG_5363.jpg",
+      "addedDate": "2026-11-02"
     },
     {
       "id": "ref-456826650b",
@@ -3368,7 +3390,8 @@ window.REFERENCE_DATA = {
       "personalNote": "",
       "favorite": false,
       "analysisStatus": "analyzed",
-      "thumbnailUrl": "thumbs/IMG_5364.jpg"
+      "thumbnailUrl": "thumbs/IMG_5364.jpg",
+      "addedDate": "2026-11-02"
     },
     {
       "id": "ref-95455f9bb2",
@@ -3505,7 +3528,8 @@ window.REFERENCE_DATA = {
       "personalNote": "",
       "favorite": false,
       "analysisStatus": "analyzed",
-      "thumbnailUrl": "thumbs/IMG_5374.jpg"
+      "thumbnailUrl": "thumbs/IMG_5374.jpg",
+      "addedDate": "2026-11-02"
     },
     {
       "id": "ref-3b9f19dcbb",
@@ -3655,7 +3679,8 @@ window.REFERENCE_DATA = {
       "personalNote": "",
       "favorite": false,
       "analysisStatus": "analyzed",
-      "thumbnailUrl": "thumbs/IMG_5376.jpg"
+      "thumbnailUrl": "thumbs/IMG_5376.jpg",
+      "addedDate": "2026-11-02"
     },
     {
       "id": "ref-b68bcf928a",
@@ -3822,7 +3847,8 @@ window.REFERENCE_DATA = {
       "personalNote": "",
       "favorite": false,
       "analysisStatus": "analyzed",
-      "thumbnailUrl": "thumbs/IMG_5378.jpg"
+      "thumbnailUrl": "thumbs/IMG_5378.jpg",
+      "addedDate": "2026-11-02"
     },
     {
       "id": "ref-23c35e415c",
@@ -3957,7 +3983,8 @@ window.REFERENCE_DATA = {
       "personalNote": "",
       "favorite": false,
       "analysisStatus": "analyzed",
-      "thumbnailUrl": "thumbs/IMG_5380.jpg"
+      "thumbnailUrl": "thumbs/IMG_5380.jpg",
+      "addedDate": "2026-11-02"
     },
     {
       "id": "ref-45ad4ae279",
@@ -4096,7 +4123,8 @@ window.REFERENCE_DATA = {
       "personalNote": "",
       "favorite": false,
       "analysisStatus": "analyzed",
-      "thumbnailUrl": "thumbs/IMG_5381.jpg"
+      "thumbnailUrl": "thumbs/IMG_5381.jpg",
+      "addedDate": "2026-11-02"
     },
     {
       "id": "ref-b8bf2c3888",
@@ -4246,7 +4274,8 @@ window.REFERENCE_DATA = {
       "personalNote": "",
       "favorite": false,
       "analysisStatus": "analyzed",
-      "thumbnailUrl": "thumbs/IMG_5383.jpg"
+      "thumbnailUrl": "thumbs/IMG_5383.jpg",
+      "addedDate": "2026-11-02"
     },
     {
       "id": "ref-1285b8050e",
@@ -4394,7 +4423,8 @@ window.REFERENCE_DATA = {
       "personalNote": "",
       "favorite": false,
       "analysisStatus": "analyzed",
-      "thumbnailUrl": "thumbs/IMG_5384.jpg"
+      "thumbnailUrl": "thumbs/IMG_5384.jpg",
+      "addedDate": "2026-11-02"
     },
     {
       "id": "ref-c072a4bff6",
@@ -4533,7 +4563,8 @@ window.REFERENCE_DATA = {
       "personalNote": "",
       "favorite": false,
       "analysisStatus": "analyzed",
-      "thumbnailUrl": "thumbs/moving_photo(1).jpg"
+      "thumbnailUrl": "thumbs/moving_photo(1).jpg",
+      "addedDate": "2026-11-02"
     },
     {
       "id": "ref-3c45a5b9c3",
@@ -4698,7 +4729,8 @@ window.REFERENCE_DATA = {
       "personalNote": "",
       "favorite": false,
       "analysisStatus": "analyzed",
-      "thumbnailUrl": "thumbs/moving_photo.jpg"
+      "thumbnailUrl": "thumbs/moving_photo.jpg",
+      "addedDate": "2026-11-02"
     },
     {
       "id": "ref-584191d11e",
@@ -4763,7 +4795,8 @@ window.REFERENCE_DATA = {
       "personalNote": "",
       "favorite": false,
       "analysisStatus": "analyzed",
-      "thumbnailUrl": "thumbs/screenshot_20261101_152006_com.xingin.xhs_hos.jpg"
+      "thumbnailUrl": "thumbs/screenshot_20261101_152006_com.xingin.xhs_hos.jpg",
+      "addedDate": "2026-11-02"
     },
     {
       "id": "ref-e49aa60f3f",
@@ -4829,7 +4862,8 @@ window.REFERENCE_DATA = {
       "personalNote": "",
       "favorite": false,
       "analysisStatus": "analyzed",
-      "thumbnailUrl": "thumbs/screenshot_20261101_153915_com.xingin.xhs_hos.jpg"
+      "thumbnailUrl": "thumbs/screenshot_20261101_153915_com.xingin.xhs_hos.jpg",
+      "addedDate": "2026-11-02"
     },
     {
       "id": "ref-e7d17fb16d",
@@ -4894,7 +4928,8 @@ window.REFERENCE_DATA = {
       "personalNote": "",
       "favorite": false,
       "analysisStatus": "analyzed",
-      "thumbnailUrl": "thumbs/screenshot_20261101_154126_com.xingin.xhs_hos.jpg"
+      "thumbnailUrl": "thumbs/screenshot_20261101_154126_com.xingin.xhs_hos.jpg",
+      "addedDate": "2026-11-02"
     },
     {
       "id": "ref-c7b29d1849",
@@ -5002,7 +5037,8 @@ window.REFERENCE_DATA = {
       "personalNote": "",
       "favorite": false,
       "analysisStatus": "analyzed",
-      "thumbnailUrl": "thumbs/screenshot_20261101_154533_com.xingin.xhs_hos.jpg"
+      "thumbnailUrl": "thumbs/screenshot_20261101_154533_com.xingin.xhs_hos.jpg",
+      "addedDate": "2026-11-02"
     },
     {
       "id": "ref-29e47f3b3b",
@@ -5124,7 +5160,8 @@ window.REFERENCE_DATA = {
       "personalNote": "",
       "favorite": false,
       "analysisStatus": "analyzed",
-      "thumbnailUrl": "thumbs/screenshot_20261101_154615_com.xingin.xhs_hos.jpg"
+      "thumbnailUrl": "thumbs/screenshot_20261101_154615_com.xingin.xhs_hos.jpg",
+      "addedDate": "2026-11-02"
     },
     {
       "id": "ref-e23089e86e",
@@ -5259,7 +5296,8 @@ window.REFERENCE_DATA = {
       "personalNote": "",
       "favorite": false,
       "analysisStatus": "analyzed",
-      "thumbnailUrl": "thumbs/screenshot_20261102_093021_com.xingin.xhs_hos.jpg"
+      "thumbnailUrl": "thumbs/screenshot_20261102_093021_com.xingin.xhs_hos.jpg",
+      "addedDate": "2026-11-02"
     },
     {
       "id": "ref-0432d2eb10",
@@ -5380,7 +5418,8 @@ window.REFERENCE_DATA = {
       "personalNote": "",
       "favorite": false,
       "analysisStatus": "analyzed",
-      "thumbnailUrl": "thumbs/screenshot_20261102_093848_com.xingin.xhs_hos.jpg"
+      "thumbnailUrl": "thumbs/screenshot_20261102_093848_com.xingin.xhs_hos.jpg",
+      "addedDate": "2026-11-02"
     },
     {
       "id": "ref-5886f8983b",
@@ -5528,7 +5567,8 @@ window.REFERENCE_DATA = {
       "personalNote": "",
       "favorite": false,
       "analysisStatus": "analyzed",
-      "thumbnailUrl": "thumbs/screenshot_20261102_093929_com.xingin.xhs_hos.jpg"
+      "thumbnailUrl": "thumbs/screenshot_20261102_093929_com.xingin.xhs_hos.jpg",
+      "addedDate": "2026-11-02"
     },
     {
       "id": "ref-0078d73309",
@@ -5676,7 +5716,8 @@ window.REFERENCE_DATA = {
       "personalNote": "",
       "favorite": false,
       "analysisStatus": "analyzed",
-      "thumbnailUrl": "thumbs/screenshot_20261102_094931_com.xingin.xhs_hos.jpg"
+      "thumbnailUrl": "thumbs/screenshot_20261102_094931_com.xingin.xhs_hos.jpg",
+      "addedDate": "2026-11-02"
     },
     {
       "id": "ref-36975a608a",
@@ -5813,7 +5854,8 @@ window.REFERENCE_DATA = {
       "personalNote": "",
       "favorite": false,
       "analysisStatus": "analyzed",
-      "thumbnailUrl": "thumbs/screenshot_20261102_100121_com.xingin.xhs_hos.jpg"
+      "thumbnailUrl": "thumbs/screenshot_20261102_100121_com.xingin.xhs_hos.jpg",
+      "addedDate": "2026-11-02"
     },
     {
       "id": "ref-935ad757f4",
@@ -5877,7 +5919,8 @@ window.REFERENCE_DATA = {
       "personalNote": "",
       "favorite": false,
       "analysisStatus": "analyzed",
-      "thumbnailUrl": "thumbs/screenshot_20261102_100323_com.xingin.xhs_hos.jpg"
+      "thumbnailUrl": "thumbs/screenshot_20261102_100323_com.xingin.xhs_hos.jpg",
+      "addedDate": "2026-11-02"
     },
     {
       "id": "ref-8b76f5f629",
@@ -5999,7 +6042,8 @@ window.REFERENCE_DATA = {
       "personalNote": "",
       "favorite": false,
       "analysisStatus": "analyzed",
-      "thumbnailUrl": "thumbs/screenshot_20261102_100458_com.xingin.xhs_hos.jpg"
+      "thumbnailUrl": "thumbs/screenshot_20261102_100458_com.xingin.xhs_hos.jpg",
+      "addedDate": "2026-11-02"
     },
     {
       "id": "ref-a6adec3a32",
@@ -6134,7 +6178,8 @@ window.REFERENCE_DATA = {
       "personalNote": "",
       "favorite": false,
       "analysisStatus": "analyzed",
-      "thumbnailUrl": "thumbs/screenshot_20261102_100607_com.xingin.xhs_hos.jpg"
+      "thumbnailUrl": "thumbs/screenshot_20261102_100607_com.xingin.xhs_hos.jpg",
+      "addedDate": "2026-11-02"
     },
     {
       "id": "ref-0536f55997",
@@ -6282,7 +6327,8 @@ window.REFERENCE_DATA = {
       "personalNote": "",
       "favorite": false,
       "analysisStatus": "analyzed",
-      "thumbnailUrl": "thumbs/screenshot_20261102_105718_com.xingin.xhs_hos.jpg"
+      "thumbnailUrl": "thumbs/screenshot_20261102_105718_com.xingin.xhs_hos.jpg",
+      "addedDate": "2026-11-02"
     },
     {
       "id": "ref-2f58af143a",
@@ -6415,7 +6461,8 @@ window.REFERENCE_DATA = {
       "personalNote": "",
       "favorite": false,
       "analysisStatus": "analyzed",
-      "thumbnailUrl": "thumbs/screenshot_20261102_105952_com.xingin.xhs_hos.jpg"
+      "thumbnailUrl": "thumbs/screenshot_20261102_105952_com.xingin.xhs_hos.jpg",
+      "addedDate": "2026-11-02"
     },
     {
       "id": "ref-721b73b5d2",
@@ -6536,7 +6583,8 @@ window.REFERENCE_DATA = {
       "personalNote": "",
       "favorite": false,
       "analysisStatus": "analyzed",
-      "thumbnailUrl": "thumbs/screenshot_20261102_110147_com.xingin.xhs_hos.jpg"
+      "thumbnailUrl": "thumbs/screenshot_20261102_110147_com.xingin.xhs_hos.jpg",
+      "addedDate": "2026-11-02"
     },
     {
       "id": "ref-20630b9fbb",
@@ -6686,7 +6734,8 @@ window.REFERENCE_DATA = {
       "personalNote": "",
       "favorite": false,
       "analysisStatus": "analyzed",
-      "thumbnailUrl": "thumbs/screenshot_20261102_110337_com.xingin.xhs_hos.jpg"
+      "thumbnailUrl": "thumbs/screenshot_20261102_110337_com.xingin.xhs_hos.jpg",
+      "addedDate": "2026-11-02"
     },
     {
       "id": "ref-122135aff3",
@@ -6823,7 +6872,8 @@ window.REFERENCE_DATA = {
       "personalNote": "",
       "favorite": false,
       "analysisStatus": "analyzed",
-      "thumbnailUrl": "thumbs/screenshot_20261102_110728_com.xingin.xhs_hos.jpg"
+      "thumbnailUrl": "thumbs/screenshot_20261102_110728_com.xingin.xhs_hos.jpg",
+      "addedDate": "2026-11-02"
     },
     {
       "id": "ref-b300a526b3",
@@ -6955,7 +7005,8 @@ window.REFERENCE_DATA = {
       "personalNote": "",
       "favorite": false,
       "analysisStatus": "analyzed",
-      "thumbnailUrl": "thumbs/screenshot_20261102_111118_com.xingin.xhs_hos.jpg"
+      "thumbnailUrl": "thumbs/screenshot_20261102_111118_com.xingin.xhs_hos.jpg",
+      "addedDate": "2026-11-02"
     },
     {
       "id": "ref-7378166889",
@@ -7092,7 +7143,8 @@ window.REFERENCE_DATA = {
       "personalNote": "",
       "favorite": false,
       "analysisStatus": "analyzed",
-      "thumbnailUrl": "thumbs/screenshot_20261102_111232_com.xingin.xhs_hos.jpg"
+      "thumbnailUrl": "thumbs/screenshot_20261102_111232_com.xingin.xhs_hos.jpg",
+      "addedDate": "2026-11-02"
     },
     {
       "id": "ref-9397977b00",
@@ -7226,7 +7278,8 @@ window.REFERENCE_DATA = {
       "personalNote": "",
       "favorite": false,
       "analysisStatus": "analyzed",
-      "thumbnailUrl": "thumbs/screenshot_20261102_111303_com.xingin.xhs_hos.jpg"
+      "thumbnailUrl": "thumbs/screenshot_20261102_111303_com.xingin.xhs_hos.jpg",
+      "addedDate": "2026-11-02"
     },
     {
       "id": "ref-d5a0d517d7",
@@ -7372,7 +7425,8 @@ window.REFERENCE_DATA = {
       "personalNote": "",
       "favorite": false,
       "analysisStatus": "analyzed",
-      "thumbnailUrl": "thumbs/screenshot_20261102_111625_com.xingin.xhs_hos.jpg"
+      "thumbnailUrl": "thumbs/screenshot_20261102_111625_com.xingin.xhs_hos.jpg",
+      "addedDate": "2026-11-02"
     },
     {
       "id": "ref-02d7114404",
@@ -7522,7 +7576,8 @@ window.REFERENCE_DATA = {
       "personalNote": "",
       "favorite": false,
       "analysisStatus": "analyzed",
-      "thumbnailUrl": "thumbs/screenshot_20261102_111722_com.xingin.xhs_hos.jpg"
+      "thumbnailUrl": "thumbs/screenshot_20261102_111722_com.xingin.xhs_hos.jpg",
+      "addedDate": "2026-11-02"
     },
     {
       "id": "ref-5123dd403d",
@@ -7628,7 +7683,8 @@ window.REFERENCE_DATA = {
       "personalNote": "",
       "favorite": false,
       "analysisStatus": "analyzed",
-      "thumbnailUrl": "thumbs/screenshot_20261102_112923_com.xingin.xhs_hos.jpg"
+      "thumbnailUrl": "thumbs/screenshot_20261102_112923_com.xingin.xhs_hos.jpg",
+      "addedDate": "2026-11-02"
     },
     {
       "id": "ref-e8f6556eef",
@@ -7748,7 +7804,8 @@ window.REFERENCE_DATA = {
       "personalNote": "",
       "favorite": false,
       "analysisStatus": "analyzed",
-      "thumbnailUrl": "thumbs/screenshot_20261102_113113_com.xingin.xhs_hos.jpg"
+      "thumbnailUrl": "thumbs/screenshot_20261102_113113_com.xingin.xhs_hos.jpg",
+      "addedDate": "2026-11-02"
     },
     {
       "id": "ref-a237473a5c",
@@ -7881,7 +7938,8 @@ window.REFERENCE_DATA = {
       "personalNote": "",
       "favorite": false,
       "analysisStatus": "analyzed",
-      "thumbnailUrl": "thumbs/screenshot_20261102_113121_com.xingin.xhs_hos.jpg"
+      "thumbnailUrl": "thumbs/screenshot_20261102_113121_com.xingin.xhs_hos.jpg",
+      "addedDate": "2026-11-02"
     },
     {
       "id": "ref-b7ab16d034",
@@ -8016,7 +8074,8 @@ window.REFERENCE_DATA = {
       "personalNote": "",
       "favorite": false,
       "analysisStatus": "analyzed",
-      "thumbnailUrl": "thumbs/screenshot_20261102_113135_com.xingin.xhs_hos.jpg"
+      "thumbnailUrl": "thumbs/screenshot_20261102_113135_com.xingin.xhs_hos.jpg",
+      "addedDate": "2026-11-02"
     },
     {
       "id": "ref-7f5d9278ed",
@@ -8094,7 +8153,8 @@ window.REFERENCE_DATA = {
       "personalNote": "",
       "favorite": false,
       "analysisStatus": "analyzed",
-      "thumbnailUrl": "thumbs/screenshot_20261102_122748_com.xingin.xhs_hos.jpg"
+      "thumbnailUrl": "thumbs/screenshot_20261102_122748_com.xingin.xhs_hos.jpg",
+      "addedDate": "2026-11-02"
     },
     {
       "id": "ref-2c60934cf6",
@@ -8229,7 +8289,8 @@ window.REFERENCE_DATA = {
       "personalNote": "",
       "favorite": false,
       "analysisStatus": "analyzed",
-      "thumbnailUrl": "thumbs/screenshot_20261102_133338_com.xingin.xhs_hos.jpg"
+      "thumbnailUrl": "thumbs/screenshot_20261102_133338_com.xingin.xhs_hos.jpg",
+      "addedDate": "2026-11-02"
     },
     {
       "id": "ref-72bec9eadf",
@@ -8336,7 +8397,8 @@ window.REFERENCE_DATA = {
       "personalNote": "",
       "favorite": false,
       "analysisStatus": "analyzed",
-      "thumbnailUrl": "thumbs/screenshot_20261102_140115_com.xingin.xhs_hos.jpg"
+      "thumbnailUrl": "thumbs/screenshot_20261102_140115_com.xingin.xhs_hos.jpg",
+      "addedDate": "2026-11-02"
     },
     {
       "id": "ref-60b0535b57",
@@ -8415,7 +8477,8 @@ window.REFERENCE_DATA = {
       "personalNote": "",
       "favorite": false,
       "analysisStatus": "analyzed",
-      "thumbnailUrl": "thumbs/screenshot_20261102_153935_com.xingin.xhs_hos.jpg"
+      "thumbnailUrl": "thumbs/screenshot_20261102_153935_com.xingin.xhs_hos.jpg",
+      "addedDate": "2026-11-02"
     },
     {
       "id": "ref-5e1c2e9cb4",
@@ -8563,7 +8626,8 @@ window.REFERENCE_DATA = {
       "personalNote": "",
       "favorite": false,
       "analysisStatus": "analyzed",
-      "thumbnailUrl": "thumbs/screenshot_20261102_154013_com.xingin.xhs_hos.jpg"
+      "thumbnailUrl": "thumbs/screenshot_20261102_154013_com.xingin.xhs_hos.jpg",
+      "addedDate": "2026-11-02"
     },
     {
       "id": "ref-ee11b647b8",
@@ -8738,7 +8802,8 @@ window.REFERENCE_DATA = {
       "thumbnailUrl": "thumbs/IMG_5418.jpg",
       "personalNote": "",
       "favorite": false,
-      "analysisStatus": "analyzed"
+      "analysisStatus": "analyzed",
+      "addedDate": "2026-11-03"
     },
     {
       "id": "ref-076e640c16",
@@ -8917,7 +8982,8 @@ window.REFERENCE_DATA = {
       "thumbnailUrl": "thumbs/IMG_5419.jpg",
       "personalNote": "",
       "favorite": false,
-      "analysisStatus": "analyzed"
+      "analysisStatus": "analyzed",
+      "addedDate": "2026-11-03"
     },
     {
       "id": "ref-baf25921f0",
@@ -9092,7 +9158,8 @@ window.REFERENCE_DATA = {
       "thumbnailUrl": "thumbs/IMG_5421.jpg",
       "personalNote": "",
       "favorite": false,
-      "analysisStatus": "analyzed"
+      "analysisStatus": "analyzed",
+      "addedDate": "2026-11-03"
     },
     {
       "id": "ref-1a99b47a75",
@@ -9262,7 +9329,8 @@ window.REFERENCE_DATA = {
       "thumbnailUrl": "thumbs/IMG_5422.jpg",
       "personalNote": "",
       "favorite": false,
-      "analysisStatus": "analyzed"
+      "analysisStatus": "analyzed",
+      "addedDate": "2026-11-03"
     },
     {
       "id": "ref-a45b3def9a",
@@ -9370,7 +9438,8 @@ window.REFERENCE_DATA = {
       "thumbnailUrl": "thumbs/IMG_5423.jpg",
       "personalNote": "",
       "favorite": false,
-      "analysisStatus": "analyzed"
+      "analysisStatus": "analyzed",
+      "addedDate": "2026-11-03"
     },
     {
       "id": "ref-251c4094f4",
@@ -9552,7 +9621,8 @@ window.REFERENCE_DATA = {
       "thumbnailUrl": "thumbs/IMG_5425.jpg",
       "personalNote": "",
       "favorite": false,
-      "analysisStatus": "analyzed"
+      "analysisStatus": "analyzed",
+      "addedDate": "2026-11-03"
     },
     {
       "id": "ref-1348058085",
@@ -9714,7 +9784,8 @@ window.REFERENCE_DATA = {
       "thumbnailUrl": "thumbs/screenshot_20261103_084648_com.xingin.xhs_hos.jpg",
       "personalNote": "",
       "favorite": false,
-      "analysisStatus": "analyzed"
+      "analysisStatus": "analyzed",
+      "addedDate": "2026-11-03"
     },
     {
       "id": "ref-7145b25396",
@@ -9907,7 +9978,8 @@ window.REFERENCE_DATA = {
       "thumbnailUrl": "thumbs/screenshot_20261103_084809_com.xingin.xhs_hos.jpg",
       "personalNote": "",
       "favorite": false,
-      "analysisStatus": "analyzed"
+      "analysisStatus": "analyzed",
+      "addedDate": "2026-11-03"
     },
     {
       "id": "ref-c297c4af03",
@@ -10083,7 +10155,8 @@ window.REFERENCE_DATA = {
       "thumbnailUrl": "thumbs/screenshot_20261103_113005_com.xingin.xhs_hos.jpg",
       "personalNote": "",
       "favorite": false,
-      "analysisStatus": "analyzed"
+      "analysisStatus": "analyzed",
+      "addedDate": "2026-11-03"
     },
     {
       "id": "ref-f689cc8300",
@@ -10264,7 +10337,8 @@ window.REFERENCE_DATA = {
       "thumbnailUrl": "thumbs/screenshot_20261103_113101_com.xingin.xhs_hos.jpg",
       "personalNote": "",
       "favorite": false,
-      "analysisStatus": "analyzed"
+      "analysisStatus": "analyzed",
+      "addedDate": "2026-11-03"
     },
     {
       "id": "ref-4feb4f313b",
@@ -10431,7 +10505,8 @@ window.REFERENCE_DATA = {
       "thumbnailUrl": "thumbs/screenshot_20261103_113127_com.xingin.xhs_hos.jpg",
       "personalNote": "",
       "favorite": false,
-      "analysisStatus": "analyzed"
+      "analysisStatus": "analyzed",
+      "addedDate": "2026-11-03"
     },
     {
       "id": "ref-e9657d3658",
@@ -10604,7 +10679,8 @@ window.REFERENCE_DATA = {
       "thumbnailUrl": "thumbs/screenshot_20261103_114410_com.xingin.xhs_hos.jpg",
       "personalNote": "",
       "favorite": false,
-      "analysisStatus": "analyzed"
+      "analysisStatus": "analyzed",
+      "addedDate": "2026-11-03"
     },
     {
       "id": "ref-0df5132722",
@@ -10781,7 +10857,8 @@ window.REFERENCE_DATA = {
       "thumbnailUrl": "thumbs/screenshot_20261103_140037_com.xingin.xhs_hos.jpg",
       "personalNote": "",
       "favorite": false,
-      "analysisStatus": "analyzed"
+      "analysisStatus": "analyzed",
+      "addedDate": "2026-11-03"
     },
     {
       "id": "ref-c5da1feaf7",
@@ -10943,7 +11020,8 @@ window.REFERENCE_DATA = {
       "thumbnailUrl": "thumbs/screenshot_20261103_140114_com.xingin.xhs_hos.jpg",
       "personalNote": "",
       "favorite": false,
-      "analysisStatus": "analyzed"
+      "analysisStatus": "analyzed",
+      "addedDate": "2026-11-03"
     },
     {
       "id": "ref-2c09241b30",
@@ -11092,7 +11170,8 @@ window.REFERENCE_DATA = {
       "thumbnailUrl": "thumbs/微信图片_20261103121854_55_167.jpg",
       "personalNote": "",
       "favorite": false,
-      "analysisStatus": "analyzed"
+      "analysisStatus": "analyzed",
+      "addedDate": "2026-11-03"
     },
     {
       "id": "ref-1545dc57a5",
@@ -11254,7 +11333,8 @@ window.REFERENCE_DATA = {
       "thumbnailUrl": "thumbs/微信图片_20261103121855_56_167.jpg",
       "personalNote": "",
       "favorite": false,
-      "analysisStatus": "analyzed"
+      "analysisStatus": "analyzed",
+      "addedDate": "2026-11-03"
     },
     {
       "id": "ref-a97b06d76b",
@@ -11431,7 +11511,8 @@ window.REFERENCE_DATA = {
       "thumbnailUrl": "thumbs/微信图片_20261103121856_57_167.jpg",
       "personalNote": "",
       "favorite": false,
-      "analysisStatus": "analyzed"
+      "analysisStatus": "analyzed",
+      "addedDate": "2026-11-03"
     },
     {
       "id": "ref-48e5cb8199",
@@ -11591,7 +11672,8 @@ window.REFERENCE_DATA = {
       "thumbnailUrl": "thumbs/微信图片_20261103121856_58_167.jpg",
       "personalNote": "",
       "favorite": false,
-      "analysisStatus": "analyzed"
+      "analysisStatus": "analyzed",
+      "addedDate": "2026-11-03"
     },
     {
       "id": "ref-e96d85eff0",
@@ -11770,7 +11852,8 @@ window.REFERENCE_DATA = {
       "thumbnailUrl": "thumbs/微信图片_20261103121857_59_167.jpg",
       "personalNote": "",
       "favorite": false,
-      "analysisStatus": "analyzed"
+      "analysisStatus": "analyzed",
+      "addedDate": "2026-11-03"
     },
     {
       "id": "ref-066ba606dd",
@@ -11936,7 +12019,8 @@ window.REFERENCE_DATA = {
       "thumbnailUrl": "thumbs/微信图片_20261103121857_60_167.jpg",
       "personalNote": "",
       "favorite": false,
-      "analysisStatus": "analyzed"
+      "analysisStatus": "analyzed",
+      "addedDate": "2026-11-03"
     },
     {
       "id": "ref-169cc2f11d",
@@ -12109,7 +12193,8 @@ window.REFERENCE_DATA = {
       "thumbnailUrl": "thumbs/微信图片_20261103121858_61_167.jpg",
       "personalNote": "",
       "favorite": false,
-      "analysisStatus": "analyzed"
+      "analysisStatus": "analyzed",
+      "addedDate": "2026-11-03"
     },
     {
       "id": "ref-490591023d",
@@ -12288,7 +12373,8 @@ window.REFERENCE_DATA = {
       "thumbnailUrl": "thumbs/微信图片_20261103121859_62_167.jpg",
       "personalNote": "",
       "favorite": false,
-      "analysisStatus": "analyzed"
+      "analysisStatus": "analyzed",
+      "addedDate": "2026-11-03"
     },
     {
       "id": "ref-4594d3ff0f",
@@ -12461,7 +12547,8 @@ window.REFERENCE_DATA = {
       "thumbnailUrl": "thumbs/微信图片_20261103121859_63_167.jpg",
       "personalNote": "",
       "favorite": false,
-      "analysisStatus": "analyzed"
+      "analysisStatus": "analyzed",
+      "addedDate": "2026-11-03"
     },
     {
       "id": "ref-ba9085f80c",
@@ -12636,7 +12723,8 @@ window.REFERENCE_DATA = {
       "thumbnailUrl": "thumbs/微信图片_20261103121900_64_167.jpg",
       "personalNote": "",
       "favorite": false,
-      "analysisStatus": "analyzed"
+      "analysisStatus": "analyzed",
+      "addedDate": "2026-11-03"
     },
     {
       "id": "ref-812091be49",
@@ -12817,7 +12905,8 @@ window.REFERENCE_DATA = {
       "thumbnailUrl": "thumbs/微信图片_20261103121901_66_167.jpg",
       "personalNote": "",
       "favorite": false,
-      "analysisStatus": "analyzed"
+      "analysisStatus": "analyzed",
+      "addedDate": "2026-11-03"
     },
     {
       "id": "ref-d93e7093e2",
@@ -12979,7 +13068,8 @@ window.REFERENCE_DATA = {
       "thumbnailUrl": "thumbs/微信图片_20261103121902_67_167.jpg",
       "personalNote": "",
       "favorite": false,
-      "analysisStatus": "analyzed"
+      "analysisStatus": "analyzed",
+      "addedDate": "2026-11-03"
     },
     {
       "id": "ref-47cab2fb8d",
@@ -13167,7 +13257,8 @@ window.REFERENCE_DATA = {
       "thumbnailUrl": "thumbs/微信图片_20261103121903_68_167.jpg",
       "personalNote": "",
       "favorite": false,
-      "analysisStatus": "analyzed"
+      "analysisStatus": "analyzed",
+      "addedDate": "2026-11-03"
     },
     {
       "id": "ref-d8c09b6656",
@@ -13203,7 +13294,8 @@ window.REFERENCE_DATA = {
       "thumbnailUrl": "thumbs/微信图片_20261109163208_75_167.jpg",
       "personalNote": "",
       "favorite": false,
-      "analysisStatus": "analyzed"
+      "analysisStatus": "analyzed",
+      "addedDate": "2026-11-09"
     },
     {
       "id": "ref-aaf92a2063",
@@ -13253,7 +13345,8 @@ window.REFERENCE_DATA = {
       "thumbnailUrl": "thumbs/微信图片_20261109163208_76_167.jpg",
       "personalNote": "",
       "favorite": false,
-      "analysisStatus": "analyzed"
+      "analysisStatus": "analyzed",
+      "addedDate": "2026-11-09"
     },
     {
       "id": "ref-2e3a13a64c",
@@ -13290,7 +13383,8 @@ window.REFERENCE_DATA = {
       "thumbnailUrl": "thumbs/微信图片_20261109163208_77_167.jpg",
       "personalNote": "",
       "favorite": false,
-      "analysisStatus": "analyzed"
+      "analysisStatus": "analyzed",
+      "addedDate": "2026-11-09"
     },
     {
       "id": "ref-948eb85dcf",
@@ -13327,7 +13421,8 @@ window.REFERENCE_DATA = {
       "thumbnailUrl": "thumbs/微信图片_20261109163208_78_167.jpg",
       "personalNote": "",
       "favorite": false,
-      "analysisStatus": "analyzed"
+      "analysisStatus": "analyzed",
+      "addedDate": "2026-11-09"
     },
     {
       "id": "ref-2f3af23034",
@@ -13377,7 +13472,8 @@ window.REFERENCE_DATA = {
       "thumbnailUrl": "thumbs/微信图片_20261109163208_79_167.jpg",
       "personalNote": "",
       "favorite": false,
-      "analysisStatus": "analyzed"
+      "analysisStatus": "analyzed",
+      "addedDate": "2026-11-09"
     },
     {
       "id": "ref-a38ec3ea3c",
@@ -13414,7 +13510,8 @@ window.REFERENCE_DATA = {
       "thumbnailUrl": "thumbs/微信图片_20261109163208_80_167.jpg",
       "personalNote": "",
       "favorite": false,
-      "analysisStatus": "analyzed"
+      "analysisStatus": "analyzed",
+      "addedDate": "2026-11-09"
     },
     {
       "id": "ref-5e6858ac5f",
@@ -13451,7 +13548,8 @@ window.REFERENCE_DATA = {
       "thumbnailUrl": "thumbs/微信图片_20261109163208_81_167.jpg",
       "personalNote": "",
       "favorite": false,
-      "analysisStatus": "analyzed"
+      "analysisStatus": "analyzed",
+      "addedDate": "2026-11-09"
     },
     {
       "id": "ref-c99649a233",
@@ -13488,7 +13586,8 @@ window.REFERENCE_DATA = {
       "thumbnailUrl": "thumbs/微信图片_20261109163208_82_167.jpg",
       "personalNote": "",
       "favorite": false,
-      "analysisStatus": "analyzed"
+      "analysisStatus": "analyzed",
+      "addedDate": "2026-11-09"
     },
     {
       "id": "ref-57d970a16c",
@@ -13525,7 +13624,8 @@ window.REFERENCE_DATA = {
       "thumbnailUrl": "thumbs/微信图片_20261109163208_83_167.jpg",
       "personalNote": "",
       "favorite": false,
-      "analysisStatus": "analyzed"
+      "analysisStatus": "analyzed",
+      "addedDate": "2026-11-09"
     },
     {
       "id": "ref-1d08d44099",
@@ -13576,7 +13676,8 @@ window.REFERENCE_DATA = {
       "thumbnailUrl": "thumbs/微信图片_20261109163208_84_167.jpg",
       "personalNote": "",
       "favorite": false,
-      "analysisStatus": "analyzed"
+      "analysisStatus": "analyzed",
+      "addedDate": "2026-11-09"
     },
     {
       "id": "ref-1610b8e93a",
@@ -13613,7 +13714,8 @@ window.REFERENCE_DATA = {
       "thumbnailUrl": "thumbs/微信图片_20261109163208_85_167.jpg",
       "personalNote": "",
       "favorite": false,
-      "analysisStatus": "analyzed"
+      "analysisStatus": "analyzed",
+      "addedDate": "2026-11-09"
     },
     {
       "id": "ref-b2162aa6ef",
@@ -13650,7 +13752,8 @@ window.REFERENCE_DATA = {
       "thumbnailUrl": "thumbs/微信图片_20261109163208_86_167.jpg",
       "personalNote": "",
       "favorite": false,
-      "analysisStatus": "analyzed"
+      "analysisStatus": "analyzed",
+      "addedDate": "2026-11-09"
     },
     {
       "id": "ref-11af61fe2f",
@@ -13713,7 +13816,8 @@ window.REFERENCE_DATA = {
       "thumbnailUrl": "thumbs/微信图片_20261109163208_87_167.jpg",
       "personalNote": "",
       "favorite": false,
-      "analysisStatus": "analyzed"
+      "analysisStatus": "analyzed",
+      "addedDate": "2026-11-09"
     },
     {
       "id": "ref-f079502fed",
@@ -13750,7 +13854,8 @@ window.REFERENCE_DATA = {
       "thumbnailUrl": "thumbs/微信图片_20261109163208_88_167.jpg",
       "personalNote": "",
       "favorite": false,
-      "analysisStatus": "analyzed"
+      "analysisStatus": "analyzed",
+      "addedDate": "2026-11-09"
     },
     {
       "id": "ref-a5031aaaf3",
@@ -13788,7 +13893,8 @@ window.REFERENCE_DATA = {
       "thumbnailUrl": "thumbs/微信图片_20261109163208_89_167.jpg",
       "personalNote": "",
       "favorite": false,
-      "analysisStatus": "analyzed"
+      "analysisStatus": "analyzed",
+      "addedDate": "2026-11-09"
     },
     {
       "id": "ref-09f5017b99",
@@ -13826,7 +13932,8 @@ window.REFERENCE_DATA = {
       "thumbnailUrl": "thumbs/微信图片_20261109163208_90_167.jpg",
       "personalNote": "",
       "favorite": false,
-      "analysisStatus": "analyzed"
+      "analysisStatus": "analyzed",
+      "addedDate": "2026-11-09"
     },
     {
       "id": "ref-25649e19f3",
@@ -13890,7 +13997,8 @@ window.REFERENCE_DATA = {
       "thumbnailUrl": "thumbs/微信图片_20261109163208_91_167.jpg",
       "personalNote": "",
       "favorite": false,
-      "analysisStatus": "analyzed"
+      "analysisStatus": "analyzed",
+      "addedDate": "2026-11-09"
     },
     {
       "id": "ref-0aaf0a4910",
@@ -13953,7 +14061,8 @@ window.REFERENCE_DATA = {
       "thumbnailUrl": "thumbs/微信图片_20261109163208_92_167.jpg",
       "personalNote": "",
       "favorite": false,
-      "analysisStatus": "analyzed"
+      "analysisStatus": "analyzed",
+      "addedDate": "2026-11-09"
     }
   ],
   "taxonomyVersion": 1,

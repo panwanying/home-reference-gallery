@@ -8,9 +8,9 @@
   <meta name="description" content="按原文件名浏览装修参考图，逐个选择喜欢的材质、色彩、造型与灯光，整理给设计师的沟通清单。">
   <link rel="stylesheet" href="styles.css?v=compact-heading-1">
   <link rel="stylesheet" href="positions.css?v=preferences-photo-4">
-  <script src="data.js?v=update-1794216428730" defer></script>
+  <script src="data.js?v=added-date-1" defer></script>
   <script src="positions.js?v=batch-20261109-single-items-v1" defer></script>
-  <script src="app.js?v=compact-heading-1" defer></script>
+  <script src="app.js?v=added-date-1" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main">跳到参考图</a>
@@ -48,6 +48,7 @@
       <div id="view-notice" class="notice" hidden></div>
       <section class="filters" aria-label="筛选参考图">
         <label class="search-box"><span aria-hidden="true">⌕</span><input id="search" type="search" placeholder="搜索文件名、元素或备注" aria-label="搜索文件名、元素或备注"></label>
+        <label><span class="sr-only">添加日期</span><select id="date-filter" aria-label="按添加日期筛选"><option value="all">全部添加日期</option></select></label>
         <label><span class="sr-only">空间</span><select id="space-filter" aria-label="按空间筛选"><option value="all">全部空间</option></select></label>
         <label><span class="sr-only">元素分类</span><select id="category-filter" aria-label="按元素分类筛选"><option value="all">全部元素</option></select></label>
         <label><span class="sr-only">材质细类</span><select id="material-filter" aria-label="按材质细类筛选"><option value="all">全部材质细类</option></select></label>
