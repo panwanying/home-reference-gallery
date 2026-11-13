@@ -1,7 +1,7 @@
 window.REFERENCE_DATA = {
   "schemaVersion": 1,
   "collectionId": "home-reference-trial",
-  "revision": "batch-20261112-items-and-spaces-v1",
+  "revision": "batch-20261113-references-v1",
   "title": "家的参考册",
   "images": [
     {
@@ -15410,6 +15410,732 @@ window.REFERENCE_DATA = {
       "personalNote": "",
       "favorite": false,
       "analysisStatus": "analyzed"
+    },
+    {
+      "id": "ref-d211bbccf8",
+      "filename": "微信图片_20261113174632_163_167.jpg",
+      "addedDate": "2026-11-13",
+      "batch": "11.13 单品与空间参考",
+      "space": "客厅",
+      "title": "黑色沙发与低矮方茶几客厅",
+      "summary": "黑色沙发与低矮方茶几客厅。",
+      "styleHints": [],
+      "palette": [
+        "米白",
+        "黑色",
+        "暖木色"
+      ],
+      "elements": [
+        {
+          "id": "d211bbccf8-01",
+          "category": "空间与部位",
+          "name": "低矮家具围合布局",
+          "location": "客厅整体",
+          "description": "两侧沙发围绕低茶几布置，窗边保留自然采光。",
+          "certainty": "可见外观",
+          "priority": "主要",
+          "preference": "unmarked",
+          "note": "",
+          "targetSpace": ""
+        },
+        {
+          "id": "d211bbccf8-02",
+          "category": "家具与软装",
+          "name": "低矮布艺沙发",
+          "location": "画面右侧",
+          "description": "黑色软包与宽大坐面形成低矮轮廓。",
+          "certainty": "可见外观",
+          "priority": "主要",
+          "preference": "unmarked",
+          "note": "",
+          "targetSpace": ""
+        },
+        {
+          "id": "d211bbccf8-03",
+          "category": "家具与软装",
+          "name": "黑色方形茶几",
+          "location": "沙发前方",
+          "description": "低矮盒状茶几，台面简洁平整。",
+          "certainty": "可见外观",
+          "priority": "主要",
+          "preference": "unmarked",
+          "note": "",
+          "targetSpace": ""
+        },
+        {
+          "id": "d211bbccf8-04",
+          "category": "家具与软装",
+          "name": "粗纹地毯",
+          "location": "客厅地面",
+          "description": "棕灰色粗纹地毯界定会客区。",
+          "certainty": "可见外观",
+          "priority": "主要",
+          "preference": "unmarked",
+          "note": "",
+          "targetSpace": ""
+        },
+        {
+          "id": "d211bbccf8-05",
+          "category": "灯光与氛围",
+          "name": "长臂壁灯",
+          "location": "右上方",
+          "description": "细长金属臂伸向沙发上方，配浅色灯罩。",
+          "certainty": "可见外观",
+          "priority": "主要",
+          "preference": "unmarked",
+          "note": "",
+          "targetSpace": ""
+        },
+        {
+          "id": "d211bbccf8-06",
+          "category": "造型与线条",
+          "name": "木色窗帘盒边线",
+          "location": "顶部窗边",
+          "description": "长条木色边线衔接窗顶与空调风口。",
+          "certainty": "可见外观",
+          "priority": "主要",
+          "preference": "unmarked",
+          "note": "",
+          "targetSpace": ""
+        }
+      ],
+      "keywords": [
+        "低矮家具围合布局",
+        "低矮布艺沙发",
+        "黑色方形茶几",
+        "粗纹地毯",
+        "长臂壁灯",
+        "木色窗帘盒边线"
+      ],
+      "questions": [],
+      "imageNote": "按主要单品或可见空间结构整理；实际材质、尺寸和使用条件需另行确认。",
+      "imageUrl": "assets/微信图片_20261113174632_163_167.jpg",
+      "thumbnailUrl": "thumbs/微信图片_20261113174632_163_167.jpg",
+      "personalNote": "",
+      "favorite": false,
+      "analysisStatus": "analyzed"
+    },
+    {
+      "id": "ref-c13882519b",
+      "filename": "微信图片_20261113174633_164_167.jpg",
+      "addedDate": "2026-11-13",
+      "batch": "11.13 单品与空间参考",
+      "space": "客厅",
+      "title": "深蓝软包沙发与暖橙地毯客厅",
+      "summary": "深蓝软包沙发与暖橙地毯客厅。",
+      "styleHints": [],
+      "palette": [
+        "深蓝",
+        "砖红",
+        "米白",
+        "木色"
+      ],
+      "elements": [
+        {
+          "id": "c13882519b-01",
+          "category": "家具与软装",
+          "name": "深蓝软包沙发与脚凳",
+          "location": "窗边和右侧",
+          "description": "分块蓬松软包与同色脚凳组合。",
+          "certainty": "可见外观",
+          "priority": "主要",
+          "preference": "unmarked",
+          "note": "",
+          "targetSpace": ""
+        },
+        {
+          "id": "c13882519b-02",
+          "category": "家具与软装",
+          "name": "暖橙色地毯",
+          "location": "会客区地面",
+          "description": "低饱和暖橙色块与深蓝沙发呼应。",
+          "certainty": "可见外观",
+          "priority": "主要",
+          "preference": "unmarked",
+          "note": "",
+          "targetSpace": ""
+        },
+        {
+          "id": "c13882519b-03",
+          "category": "家具与软装",
+          "name": "玻璃椭圆茶几",
+          "location": "沙发之间",
+          "description": "透明薄桌面配纤细支脚。",
+          "certainty": "可见外观",
+          "priority": "主要",
+          "preference": "unmarked",
+          "note": "",
+          "targetSpace": ""
+        },
+        {
+          "id": "c13882519b-04",
+          "category": "家具与软装",
+          "name": "编织靠背木椅",
+          "location": "窗前左侧",
+          "description": "木色框架配深色编织靠背。",
+          "certainty": "可见外观",
+          "priority": "主要",
+          "preference": "unmarked",
+          "note": "",
+          "targetSpace": ""
+        },
+        {
+          "id": "c13882519b-05",
+          "category": "灯光与氛围",
+          "name": "层叠灯罩吊灯",
+          "location": "前景顶部",
+          "description": "深色多层灯罩内侧透出暖橙光。",
+          "certainty": "可见外观",
+          "priority": "主要",
+          "preference": "unmarked",
+          "note": "",
+          "targetSpace": ""
+        },
+        {
+          "id": "c13882519b-06",
+          "category": "色彩搭配",
+          "name": "深蓝与暖橙配色",
+          "location": "整体配色",
+          "description": "深蓝主座搭配暖橙地毯，浅色窗帘作为背景。",
+          "certainty": "可见外观",
+          "priority": "主要",
+          "preference": "unmarked",
+          "note": "",
+          "targetSpace": ""
+        }
+      ],
+      "keywords": [
+        "深蓝软包沙发与脚凳",
+        "暖橙色地毯",
+        "玻璃椭圆茶几",
+        "编织靠背木椅",
+        "层叠灯罩吊灯",
+        "深蓝与暖橙配色"
+      ],
+      "questions": [],
+      "imageNote": "按主要单品或可见空间结构整理；实际材质、尺寸和使用条件需另行确认。",
+      "imageUrl": "assets/微信图片_20261113174633_164_167.jpg",
+      "thumbnailUrl": "thumbs/微信图片_20261113174633_164_167.jpg",
+      "personalNote": "",
+      "favorite": false,
+      "analysisStatus": "analyzed"
+    },
+    {
+      "id": "ref-5f489ee3e0",
+      "filename": "微信图片_20261113174634_165_167.jpg",
+      "addedDate": "2026-11-13",
+      "batch": "11.13 单品与空间参考",
+      "space": "厨房局部",
+      "title": "三眼燃气灶与厨师造型锅具",
+      "summary": "三眼燃气灶与厨师造型锅具。",
+      "styleHints": [],
+      "palette": [
+        "银灰",
+        "米白",
+        "黑色"
+      ],
+      "elements": [
+        {
+          "id": "5f489ee3e0-01",
+          "category": "家具与软装",
+          "name": "三眼燃气灶",
+          "location": "灶台",
+          "description": "三个灶眼横向排列，前部设独立旋钮。",
+          "certainty": "可见外观",
+          "priority": "主要",
+          "preference": "unmarked",
+          "note": "",
+          "targetSpace": ""
+        },
+        {
+          "id": "5f489ee3e0-02",
+          "category": "材质与肌理",
+          "name": "素色瓷砖",
+          "location": "灶后墙面",
+          "description": "浅色方砖带细微凹凸纹理。",
+          "certainty": "可见外观，实际材质待确认",
+          "priority": "主要",
+          "preference": "unmarked",
+          "note": "",
+          "targetSpace": "",
+          "materialTypeId": "plain-tile",
+          "appearance": "浅色方砖带细微凹凸纹理。"
+        },
+        {
+          "id": "5f489ee3e0-03",
+          "category": "家具与软装",
+          "name": "厨师造型锅具",
+          "location": "灶台左侧",
+          "description": "黑色圆鼓锅体配卡通面部与厨师帽造型。",
+          "certainty": "可见外观",
+          "priority": "主要",
+          "preference": "unmarked",
+          "note": "",
+          "targetSpace": ""
+        }
+      ],
+      "keywords": [
+        "三眼燃气灶",
+        "素色瓷砖",
+        "厨师造型锅具"
+      ],
+      "questions": [],
+      "imageNote": "按主要单品或可见空间结构整理；实际材质、尺寸和使用条件需另行确认。",
+      "imageUrl": "assets/微信图片_20261113174634_165_167.jpg",
+      "thumbnailUrl": "thumbs/微信图片_20261113174634_165_167.jpg",
+      "personalNote": "",
+      "favorite": false,
+      "analysisStatus": "analyzed"
+    },
+    {
+      "id": "ref-970da71e2e",
+      "filename": "微信图片_20261113174634_166_167.jpg",
+      "addedDate": "2026-11-13",
+      "batch": "11.13 单品与空间参考",
+      "space": "厨房局部",
+      "title": "藏入吊柜的烟机与木色地柜",
+      "summary": "藏入吊柜的烟机与木色地柜。",
+      "styleHints": [],
+      "palette": [
+        "浅灰",
+        "暖木色",
+        "银色"
+      ],
+      "elements": [
+        {
+          "id": "970da71e2e-01",
+          "category": "空间与部位",
+          "name": "吊柜隐藏式烟机位",
+          "location": "吊柜底部",
+          "description": "烟机主体与上柜结合，底部保留操作和排烟口。",
+          "certainty": "可见外观",
+          "priority": "主要",
+          "preference": "unmarked",
+          "note": "",
+          "targetSpace": ""
+        },
+        {
+          "id": "970da71e2e-02",
+          "category": "材质与肌理",
+          "name": "木纹饰面",
+          "location": "地柜",
+          "description": "暖棕木纹用于下部柜门与抽屉。",
+          "certainty": "可见外观，实际材质待确认",
+          "priority": "主要",
+          "preference": "unmarked",
+          "note": "",
+          "targetSpace": "",
+          "materialTypeId": "wood-grain",
+          "appearance": "暖棕木纹用于下部柜门与抽屉。"
+        },
+        {
+          "id": "970da71e2e-03",
+          "category": "灯光与氛围",
+          "name": "柜下线性照明",
+          "location": "上柜下沿",
+          "description": "灯带沿吊柜下方照亮灶后墙面。",
+          "certainty": "可见外观",
+          "priority": "主要",
+          "preference": "unmarked",
+          "note": "",
+          "targetSpace": ""
+        },
+        {
+          "id": "970da71e2e-04",
+          "category": "家具与软装",
+          "name": "厨房横杆挂架",
+          "location": "灶台左上方",
+          "description": "横杆配挂钩，集中悬挂小厨具。",
+          "certainty": "可见外观",
+          "priority": "主要",
+          "preference": "unmarked",
+          "note": "",
+          "targetSpace": ""
+        }
+      ],
+      "keywords": [
+        "吊柜隐藏式烟机位",
+        "木纹饰面",
+        "柜下线性照明",
+        "厨房横杆挂架"
+      ],
+      "questions": [],
+      "imageNote": "按主要单品或可见空间结构整理；实际材质、尺寸和使用条件需另行确认。",
+      "imageUrl": "assets/微信图片_20261113174634_166_167.jpg",
+      "thumbnailUrl": "thumbs/微信图片_20261113174634_166_167.jpg",
+      "personalNote": "",
+      "favorite": false,
+      "analysisStatus": "analyzed"
+    },
+    {
+      "id": "ref-dc061b9194",
+      "filename": "微信图片_20261113174635_167_167.jpg",
+      "addedDate": "2026-11-13",
+      "batch": "11.13 单品与空间参考",
+      "space": "收纳柜局部",
+      "title": "柜内洞洞板收纳模块",
+      "summary": "柜内洞洞板收纳模块。",
+      "styleHints": [],
+      "palette": [
+        "木色",
+        "深灰"
+      ],
+      "elements": [
+        {
+          "id": "dc061b9194-01",
+          "category": "家具与软装",
+          "name": "洞洞板收纳模块",
+          "location": "柜内",
+          "description": "竖向孔板配网篮、挂钩与小搁板，集中收纳配件。",
+          "certainty": "可见外观",
+          "priority": "主要",
+          "preference": "unmarked",
+          "note": "",
+          "targetSpace": ""
+        }
+      ],
+      "keywords": [
+        "洞洞板收纳模块"
+      ],
+      "questions": [],
+      "imageNote": "按主要单品或可见空间结构整理；实际材质、尺寸和使用条件需另行确认。",
+      "imageUrl": "assets/微信图片_20261113174635_167_167.jpg",
+      "thumbnailUrl": "thumbs/微信图片_20261113174635_167_167.jpg",
+      "personalNote": "",
+      "favorite": false,
+      "analysisStatus": "analyzed"
+    },
+    {
+      "id": "ref-0f5c72dd29",
+      "filename": "微信图片_20261113174637_168_167.jpg",
+      "addedDate": "2026-11-13",
+      "batch": "11.13 单品与空间参考",
+      "space": "收纳柜单品",
+      "title": "带轮双面收纳柜·白板面",
+      "summary": "带轮双面收纳柜·白板面。",
+      "styleHints": [],
+      "palette": [
+        "木色",
+        "浅灰白",
+        "暗红"
+      ],
+      "elements": [
+        {
+          "id": "0f5c72dd29-01",
+          "category": "家具与软装",
+          "name": "带轮双面收纳柜",
+          "location": "画面中央",
+          "description": "这面以两块浅色展示板为主，下部设小柜和开放格；磁吸及书写功能需另行确认。",
+          "certainty": "可见外观",
+          "priority": "主要",
+          "preference": "unmarked",
+          "note": "",
+          "targetSpace": ""
+        }
+      ],
+      "keywords": [
+        "带轮双面收纳柜"
+      ],
+      "questions": [],
+      "imageNote": "按主要单品或可见空间结构整理；实际材质、尺寸和使用条件需另行确认。",
+      "imageUrl": "assets/微信图片_20261113174637_168_167.jpg",
+      "thumbnailUrl": "thumbs/微信图片_20261113174637_168_167.jpg",
+      "personalNote": "",
+      "favorite": false,
+      "analysisStatus": "analyzed"
+    },
+    {
+      "id": "ref-17a867ae5d",
+      "filename": "微信图片_20261113174638_169_167.jpg",
+      "addedDate": "2026-11-13",
+      "batch": "11.13 单品与空间参考",
+      "space": "收纳柜单品",
+      "title": "带轮双面收纳柜·电视面",
+      "summary": "带轮双面收纳柜·电视面。",
+      "styleHints": [],
+      "palette": [
+        "木色",
+        "浅灰白",
+        "黑色"
+      ],
+      "elements": [
+        {
+          "id": "17a867ae5d-01",
+          "category": "家具与软装",
+          "name": "带轮双面收纳柜",
+          "location": "画面中央",
+          "description": "这面放置电视，底部保留柜门、置物台和脚轮。",
+          "certainty": "可见外观",
+          "priority": "主要",
+          "preference": "unmarked",
+          "note": "",
+          "targetSpace": ""
+        }
+      ],
+      "keywords": [
+        "带轮双面收纳柜"
+      ],
+      "questions": [],
+      "imageNote": "按主要单品或可见空间结构整理；实际材质、尺寸和使用条件需另行确认。",
+      "imageUrl": "assets/微信图片_20261113174638_169_167.jpg",
+      "thumbnailUrl": "thumbs/微信图片_20261113174638_169_167.jpg",
+      "personalNote": "",
+      "favorite": false,
+      "analysisStatus": "analyzed"
+    },
+    {
+      "id": "ref-27dd5cd30c",
+      "filename": "微信图片_20261113174639_170_167.jpg",
+      "addedDate": "2026-11-13",
+      "batch": "11.13 单品与空间参考",
+      "space": "开放厨房",
+      "title": "红棕柜体与悬吊层架开放厨房",
+      "summary": "红棕柜体与悬吊层架开放厨房。",
+      "styleHints": [],
+      "palette": [
+        "红棕木色",
+        "白色",
+        "银色"
+      ],
+      "elements": [
+        {
+          "id": "27dd5cd30c-01",
+          "category": "空间与部位",
+          "name": "半高台面连接餐区",
+          "location": "中部前景",
+          "description": "厨房前方台面衔接餐桌，保持开放视线。",
+          "certainty": "可见外观",
+          "priority": "主要",
+          "preference": "unmarked",
+          "note": "",
+          "targetSpace": ""
+        },
+        {
+          "id": "27dd5cd30c-02",
+          "category": "空间与部位",
+          "name": "悬吊开放层架",
+          "location": "左上方",
+          "description": "木色层板以细金属杆悬挂，兼作轻量分隔。",
+          "certainty": "可见外观",
+          "priority": "主要",
+          "preference": "unmarked",
+          "note": "",
+          "targetSpace": ""
+        },
+        {
+          "id": "27dd5cd30c-03",
+          "category": "材质与肌理",
+          "name": "木纹饰面",
+          "location": "橱柜",
+          "description": "红棕木色柜面用于上下柜。",
+          "certainty": "可见外观，实际材质待确认",
+          "priority": "主要",
+          "preference": "unmarked",
+          "note": "",
+          "targetSpace": "",
+          "materialTypeId": "wood-grain",
+          "appearance": "红棕木色柜面用于上下柜。"
+        },
+        {
+          "id": "27dd5cd30c-04",
+          "category": "材质与肌理",
+          "name": "素色瓷砖",
+          "location": "操作台后方",
+          "description": "白色窄砖竖向铺贴于厨房后墙。",
+          "certainty": "可见外观，实际材质待确认",
+          "priority": "主要",
+          "preference": "unmarked",
+          "note": "",
+          "targetSpace": "",
+          "materialTypeId": "plain-tile",
+          "appearance": "白色窄砖竖向铺贴于厨房后墙。"
+        },
+        {
+          "id": "27dd5cd30c-05",
+          "category": "灯光与氛围",
+          "name": "金属锥形罩台灯",
+          "location": "餐桌左侧",
+          "description": "亮银色小台灯以锥形罩和弧形细颈组成。",
+          "certainty": "可见外观",
+          "priority": "主要",
+          "preference": "unmarked",
+          "note": "",
+          "targetSpace": ""
+        },
+        {
+          "id": "27dd5cd30c-06",
+          "category": "空间与部位",
+          "name": "柜内嵌入电器位",
+          "location": "后方下柜",
+          "description": "部分厨电纳入下柜，操作面与柜体齐整衔接。",
+          "certainty": "可见外观",
+          "priority": "主要",
+          "preference": "unmarked",
+          "note": "",
+          "targetSpace": ""
+        }
+      ],
+      "keywords": [
+        "半高台面连接餐区",
+        "悬吊开放层架",
+        "木纹饰面",
+        "素色瓷砖",
+        "金属锥形罩台灯",
+        "柜内嵌入电器位"
+      ],
+      "questions": [],
+      "imageNote": "按主要单品或可见空间结构整理；实际材质、尺寸和使用条件需另行确认。",
+      "imageUrl": "assets/微信图片_20261113174639_170_167.jpg",
+      "thumbnailUrl": "thumbs/微信图片_20261113174639_170_167.jpg",
+      "personalNote": "",
+      "favorite": false,
+      "analysisStatus": "analyzed"
+    },
+    {
+      "id": "ref-40f031e930",
+      "filename": "微信图片_20261113174640_171_167.jpg",
+      "addedDate": "2026-11-13",
+      "batch": "11.13 单品与空间参考",
+      "space": "厨房结构",
+      "title": "转角厨房与窗下水槽",
+      "summary": "转角厨房与窗下水槽。",
+      "styleHints": [],
+      "palette": [
+        "红棕木色",
+        "米白",
+        "银灰"
+      ],
+      "elements": [
+        {
+          "id": "40f031e930-01",
+          "category": "空间与部位",
+          "name": "转角厨房布局",
+          "location": "整体厨房",
+          "description": "工作台沿两面墙转折，侧边另设窄台面。",
+          "certainty": "可见外观",
+          "priority": "主要",
+          "preference": "unmarked",
+          "note": "",
+          "targetSpace": ""
+        },
+        {
+          "id": "40f031e930-02",
+          "category": "空间与部位",
+          "name": "窗下水槽",
+          "location": "后方窗下",
+          "description": "水槽置于窗前，借用自然采光。",
+          "certainty": "可见外观",
+          "priority": "主要",
+          "preference": "unmarked",
+          "note": "",
+          "targetSpace": ""
+        },
+        {
+          "id": "40f031e930-03",
+          "category": "材质与肌理",
+          "name": "木纹饰面",
+          "location": "下部柜体",
+          "description": "暖红棕木色用于下柜，与浅色墙面对比。",
+          "certainty": "可见外观，实际材质待确认",
+          "priority": "主要",
+          "preference": "unmarked",
+          "note": "",
+          "targetSpace": "",
+          "materialTypeId": "wood-grain",
+          "appearance": "暖红棕木色用于下柜，与浅色墙面对比。"
+        },
+        {
+          "id": "40f031e930-04",
+          "category": "材质与肌理",
+          "name": "素色瓷砖",
+          "location": "右侧墙面",
+          "description": "细长浅色砖竖向排列，作为灶台后方饰面。",
+          "certainty": "可见外观，实际材质待确认",
+          "priority": "主要",
+          "preference": "unmarked",
+          "note": "",
+          "targetSpace": "",
+          "materialTypeId": "plain-tile",
+          "appearance": "细长浅色砖竖向排列，作为灶台后方饰面。"
+        },
+        {
+          "id": "40f031e930-05",
+          "category": "灯光与氛围",
+          "name": "长臂壁灯",
+          "location": "窗前上方",
+          "description": "金属关节灯臂伸向水槽上方。",
+          "certainty": "可见外观",
+          "priority": "主要",
+          "preference": "unmarked",
+          "note": "",
+          "targetSpace": ""
+        },
+        {
+          "id": "40f031e930-06",
+          "category": "灯光与氛围",
+          "name": "金属锥形罩台灯",
+          "location": "左侧台面",
+          "description": "小型亮银色台灯点缀侧边窄台。",
+          "certainty": "可见外观",
+          "priority": "主要",
+          "preference": "unmarked",
+          "note": "",
+          "targetSpace": ""
+        }
+      ],
+      "keywords": [
+        "转角厨房布局",
+        "窗下水槽",
+        "木纹饰面",
+        "素色瓷砖",
+        "长臂壁灯",
+        "金属锥形罩台灯"
+      ],
+      "questions": [],
+      "imageNote": "按主要单品或可见空间结构整理；实际材质、尺寸和使用条件需另行确认。",
+      "imageUrl": "assets/微信图片_20261113174640_171_167.jpg",
+      "thumbnailUrl": "thumbs/微信图片_20261113174640_171_167.jpg",
+      "personalNote": "",
+      "favorite": false,
+      "analysisStatus": "analyzed"
+    },
+    {
+      "id": "ref-312c14211f",
+      "filename": "微信图片_20261113174641_172_167.jpg",
+      "addedDate": "2026-11-13",
+      "batch": "11.13 单品与空间参考",
+      "space": "玻璃单品",
+      "title": "绿色球形高脚单品",
+      "summary": "绿色球形高脚单品。",
+      "styleHints": [],
+      "palette": [
+        "绿色",
+        "木色"
+      ],
+      "elements": [
+        {
+          "id": "312c14211f-01",
+          "category": "家具与软装",
+          "name": "绿色球形高脚单品",
+          "location": "画面中央",
+          "description": "透光球体配细颈底座与顶部圆钮；具体用途待确认。",
+          "certainty": "可见外观",
+          "priority": "主要",
+          "preference": "unmarked",
+          "note": "",
+          "targetSpace": ""
+        }
+      ],
+      "keywords": [
+        "绿色球形高脚单品"
+      ],
+      "questions": [],
+      "imageNote": "按主要单品或可见空间结构整理；实际材质、尺寸和使用条件需另行确认。",
+      "imageUrl": "assets/微信图片_20261113174641_172_167.jpg",
+      "thumbnailUrl": "thumbs/微信图片_20261113174641_172_167.jpg",
+      "personalNote": "",
+      "favorite": false,
+      "analysisStatus": "analyzed"
     }
   ],
   "taxonomyVersion": 1,
@@ -15419,7 +16145,8 @@ window.REFERENCE_DATA = {
     "update-1793635460695",
     "full-93-20261102-v1",
     "update-1793689538624",
-    "update-1794216428730"
+    "update-1794216428730",
+    "batch-20261112-items-and-spaces-v1"
   ],
   "materialTypes": [
     {
